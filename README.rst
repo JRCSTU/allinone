@@ -9,4 +9,4 @@ WinPython:
 
 Install also::
 
-    pip install virtualenv
+    pip install virtualenv snakemake
