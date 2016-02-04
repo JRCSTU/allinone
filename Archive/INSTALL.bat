@@ -5,4 +5,5 @@ REM
 REM		Invoke this script after extracting ALLINONE. 
 cd "%~dp0"
 call "%~dp0co2mpas-env.bat" 
+clink autorun install
 bash -c "./.install.sh" >> install.log  2>&1

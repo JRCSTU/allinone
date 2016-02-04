@@ -9,6 +9,6 @@ REM To run commands and remain:
 REM     cmd-console -r "-c 'cmd1 arg; exec $SHELL'"
 
 call "%~dp0co2mpas-env.bat"
-start "" "%~dp0Apps\Console2\Console.exe" -c "%~dp0Apps\Console2\console.xml" -t bash %1 %2 %3 %4 %5 %6 %7 %8 %9
+start "" "Console.exe" -c "%~dp0Apps\Console\console.xml" -t bash %1 %2 %3 %4 %5 %6 %7 %8 %9
 
 REM pause

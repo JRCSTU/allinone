@@ -2,11 +2,19 @@
 CO2MPAS ALLINONE archive
 ########################
 
-The development tools and ingridients for baking a pre-populated archive with WinPython+Consoles+Graphviz for running *CO2MPAS on *Windows*.
+The tools and ingredients for a pre-populated archive with WinPython+Consoles+Graphviz to run *CO2MPAS* on *Windows*.
 
 WinPython:
 ==========
 
 Install also::
 
-    pip install virtualenv snakemake
+    pip install virtualenv snakemake pyreadline
+
+Cygwin
+======
+
+- git, git-completion
+- make, zip, unzip, bzip2, 7z, dos2unix
+- openssh, curl, wget
+- procps
