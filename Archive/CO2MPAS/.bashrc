@@ -199,3 +199,4 @@ alias fgrep='fgrep --color=auto'              # show differences in colour
 
 ## JRC alias
 alias start=cygstart
+complete -fd -W "`co2mpas-autocompletions`" co2mpas

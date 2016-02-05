@@ -6,6 +6,10 @@ The tools and ingredients for a pre-populated archive with WinPython+Consoles+Gr
 
 WinPython:
 ==========
+Login to the cmd-console and issue::
+
+    pip install co2mpas --download CO2MPAS/packages (--pre)
+
 
 Install also::
 
@@ -16,5 +20,5 @@ Cygwin
 
 - git, git-completion
 - make, zip, unzip, bzip2, 7z, dos2unix
-- openssh, curl, wget
+- openssh, curl, wget, gnupg
 - procps
