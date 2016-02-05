@@ -21,16 +21,9 @@ function words_generator(prefix, first, last)
         
         -- Add matching files & dirs.
         --
-        local files = {}
-        for k, f in pairs(clink.find_files(prefix..'*', true)) do
-            table.insert(files, f)
-        end
-
-        for k, f in pairs(files) do
-            clink.add_match(f)
-        end
-        
-        if #files > 0 then
+        full_path = true
+        n = clink.match_files(prefix..'*', full_path)
+        if n > 0 then
             clink.matches_are_files()
         end
     end

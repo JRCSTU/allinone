@@ -8,7 +8,10 @@ WinPython:
 ==========
 Login to the cmd-console and issue::
 
-    pip install co2mpas --download CO2MPAS/packages (--pre)
+    md %HOME%\packages
+    pip install co2mpas --download %HOME%\packages (--pre)
+    pip install co2mpas -f %HOME%\packages         (--pre)
+    co2mpas --version -v
 
 
 Install also::
