@@ -2,4 +2,5 @@
 *.rst   text eol=lf
 *.bat   text eol=crlf
 *.txt   text eol=crlf
+*.xml   text eol=crlf
 *.ico   binary

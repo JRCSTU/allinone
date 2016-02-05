@@ -15,6 +15,7 @@ function words_generator(prefix, first, last)
     
     for w in string.gmatch(words_str, "%S+") do
         -- Add matching app-words.
+        --
         if w:sub(1, prefix_len) == prefix then
             clink.add_match(w)
         end
@@ -22,8 +23,8 @@ function words_generator(prefix, first, last)
         -- Add matching files & dirs.
         --
         full_path = true
-        n = clink.match_files(prefix..'*', full_path)
-        if n > 0 then
+        nf = clink.match_files(prefix..'*', full_path)
+        if nf > 0 then
             clink.matches_are_files()
         end
     end

@@ -22,6 +22,6 @@ Cygwin
 ======
 
 - git, git-completion
-- make, zip, unzip, bzip2, 7z, dos2unix
+- make, zip, unzip, bzip2, 7z, dos2unix, rsync
 - openssh, curl, wget, gnupg
 - procps
