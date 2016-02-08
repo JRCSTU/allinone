@@ -21,7 +21,7 @@ Install also::
 Cygwin
 ======
 
-- git, git-completion
+- git, git-completion, colordif
 - make, zip, unzip, bzip2, 7z, dos2unix, rsync
 - openssh, curl, wget, gnupg
-- procps
+- procps, vim, vim-syntax

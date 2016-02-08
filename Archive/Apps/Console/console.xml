@@ -46,7 +46,7 @@
 		<font name="Courier New" size="10" bold="0" italic="0" smoothing="0" bold_intensified="1" italic_intensified="0" extra_width="0" ligature="0">
 			<color use="0" r="0" g="0" b="0"/>
 		</font>
-		<window title="CO2" icon="" use_tab_icon="1" use_console_title="0" show_cmd="1" show_cmd_tabs="1" use_tab_title="0" trim_tab_titles="20" trim_tab_titles_right="0" main_title_format="?U([%u] )?N({%u} )%m?s(-%s)" tab_title_format="%n. ?U([%u] )?N({%u} )%t?s( - %s)"/>
+		<window title="CO2-1.1.0" icon="" use_tab_icon="1" use_console_title="0" show_cmd="1" show_cmd_tabs="1" use_tab_title="0" trim_tab_titles="20" trim_tab_titles_right="0" main_title_format="?U([%u] )?N({%u} )%m?s(-%s)" tab_title_format="%n. ?U([%u] )?N({%u} )%t?s( - %s)"/>
 		<controls show_menu="1" show_toolbar="0" show_statusbar="1" show_tabs="1" hide_single_tab="0" show_scrollbars="1" flat_scrollbars="0" tabs_on_bottom="0" hide_tab_icons="0" show_searchbar="1"/>
 		<styles caption="1" resizable="1" taskbar_button="1" border="1" inside_border="2" tray_icon="1" quake_like="0" jumplist="0" integrated_ime="0" quake_animation_time="300" hide_when_inactive="0" per_monitor_dpi="0">
 			<selection_color r="120" g="120" b="120"/>
@@ -192,7 +192,7 @@
 	</mouse>
 	<tabs>
 		<tab title="cmd" use_default_icon="1">
-			<console shell="cmd /k clink inject" init_dir="" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0"/>
+			<console shell="cmd /k clink inject" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0"/>
 			<background type="0" r="231" g="251" b="254">
 				<image file="" relative="0" extend="0" position="0">
 					<tint opacity="0" r="0" g="0" b="0"/>
@@ -200,7 +200,7 @@
 			</background>
 		</tab>
 		<tab title="bash" icon="Cygwin.ico" use_default_icon="0">
-			<console shell="cmd /C bash -i" init_dir="" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0"/>
+			<console shell="bash -i" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0"/>
 			<background type="0" r="255" g="244" b="234">
 				<image file="" relative="0" extend="0" position="0">
 					<tint opacity="0" r="0" g="0" b="0"/>
