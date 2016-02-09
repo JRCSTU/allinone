@@ -6,8 +6,8 @@
 mydir=`dirname "$0"`
 cd "$mydir"
 
-
-app_group="CO2MPAS/CO2MPAS-1.0.5"
+app_ver=`co2mpas -V`
+app_group="CO2MPAS/CO2MPAS-$app_ver"
 apps_folder="`cygpath -u "$APPDATA"`"
 
 menus_folder="$apps_folder/Microsoft/Windows/Start Menu/Programs"
