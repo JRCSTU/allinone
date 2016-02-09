@@ -21,7 +21,7 @@ mkdir -p "$mymenu_folder"
 
 mkshortcut --name="$mymenu_folder/Run CO2MPAS" \
 	--desc="Asks for Input & Output folders, and runs CO2MPAS for all Excel-files in Input." \
-	--arguments="co2mpas" \
+	--arguments="co2mpas batch --gui" \
 	--workingdir="$mydir" \
 	--icon=Apps/CO2MPAS_play.ico \
 	--show=min \
@@ -29,7 +29,7 @@ mkshortcut --name="$mymenu_folder/Run CO2MPAS" \
 
 mkshortcut --name="$mymenu_folder/New CO2MPAS Template" \
 	--desc="Asks for a folder to store an empty CO2MPAS input-file." \
-	--arguments="co2mpas template" \
+	--arguments="co2mpas template --gui" \
 	--workingdir="$mydir" \
 	--icon=Apps/CO2MPAS_play.ico \
 	--show=min \
@@ -37,7 +37,7 @@ mkshortcut --name="$mymenu_folder/New CO2MPAS Template" \
 	
 mkshortcut --name="$mymenu_folder/New CO2MPAS demos" \
 	--desc="Asks for a folder to store demo CO2MPAS input-files." \
-	--arguments="co2mpas demo" \
+	--arguments="co2mpas demo --gui" \
 	--workingdir="$mydir" \
 	--icon=Apps/CO2MPAS_play.ico \
 	--show=min \
@@ -45,7 +45,7 @@ mkshortcut --name="$mymenu_folder/New CO2MPAS demos" \
 
 mkshortcut --name="$mymenu_folder/New IPYTHON Notebooks" \
 	--desc="Asks for a folder to store IPYTHON NOTEBOOKS that run CO2MPAS and generate reports." \
-	--arguments="co2mpas ipynb" \
+	--arguments="co2mpas ipynb --gui" \
 	--workingdir="$mydir" \
 	--icon=Apps/CO2MPAS_play.ico \
 	--show=min \

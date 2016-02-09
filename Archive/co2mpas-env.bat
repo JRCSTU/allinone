@@ -11,5 +11,5 @@ IF DEFINED CO2MPAS_PATH GOTO env_exists
 
 :env_exists
 IF [%1] == [] GOTO end
-	%1 %2 %3 %4 %5 %6 %7 %8 %9 >> "%~dp0CO2MPAS\co2mpas.log" 2>&1
+	%1 %2 %3 %4 %5 %6 %7 %8 %9 2>&1 | tee -a "%~dp0CO2MPAS\co2mpas.log"
 :end

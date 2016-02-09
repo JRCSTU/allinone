@@ -25,3 +25,8 @@ Cygwin
 - make, zip, unzip, bzip2, 7z, dos2unix, rsync
 - openssh, curl, wget, gnupg
 - procps, vim, vim-syntax
+
+Docs
+====
+
+- Copy ``co2mpas.git:doc/allinone .rst`` as ``./README.txt`` and FIX version!
