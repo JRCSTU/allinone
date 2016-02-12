@@ -66,22 +66,22 @@
 		<search match_case="0" match_whole_word="0"/>
 		<runas use_credprov="1"/>
 	</behavior>
-	<hotkeys use_scroll_lock="1">
+	<hotkeys use_scroll_lock="0">
 		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="83" command="settings"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="112" command="help"/>
 		<hotkey ctrl="0" shift="0" alt="1" extended="0" code="115" command="exit"/>
 		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="112" command="newtab1"/>
 		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="113" command="newtab2"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="114" command="newtab3"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="115" command="newtab4"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="116" command="newtab5"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="117" command="newtab6"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="118" command="newtab7"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="119" command="newtab8"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="120" command="newtab9"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="121" command="newtab10"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="122" command="newtab11"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="123" command="newtab12"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="newtab3"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="newtab4"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="newtab5"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="newtab6"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="newtab7"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="newtab8"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="newtab9"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="newtab10"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="newtab11"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="newtab12"/>
 		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="49" command="switchtab1"/>
 		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="50" command="switchtab2"/>
 		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="51" command="switchtab3"/>
@@ -125,15 +125,15 @@
 		<hotkey ctrl="1" shift="1" alt="0" extended="0" code="71" command="ungroupall"/>
 		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="84" command="grouptab"/>
 		<hotkey ctrl="1" shift="1" alt="0" extended="0" code="84" command="ungrouptab"/>
-		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="clear"/>
+		<hotkey ctrl="1" shift="1" alt="0" extended="0" code="76" command="clear"/>
 		<hotkey ctrl="1" shift="0" alt="0" extended="1" code="45" command="copy"/>
-		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="65" command="selectall"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="selectall"/>
 		<hotkey ctrl="1" shift="0" alt="0" extended="1" code="46" command="clear_selection"/>
 		<hotkey ctrl="0" shift="1" alt="0" extended="1" code="45" command="paste"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="paste_selection"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="stopscroll"/>
-		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="textselleft"/>
-		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="textselright"/>
+		<hotkey ctrl="0" shift="1" alt="0" extended="1" code="37" command="textselleft"/>
+		<hotkey ctrl="0" shift="1" alt="0" extended="1" code="39" command="textselright"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="textseltop"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="textselbottom"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="textselhome"/>
@@ -148,23 +148,23 @@
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="colselend"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="colselpageup"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="colselpagedown"/>
-		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="scrollrowup"/>
-		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="scrollrowdown"/>
+		<hotkey ctrl="0" shift="1" alt="0" extended="1" code="38" command="scrollrowup"/>
+		<hotkey ctrl="0" shift="1" alt="0" extended="1" code="40" command="scrollrowdown"/>
 		<hotkey ctrl="0" shift="1" alt="0" extended="1" code="33" command="scrollpageup"/>
 		<hotkey ctrl="0" shift="1" alt="0" extended="1" code="34" command="scrollpagedown"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="scrollcolleft"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="scrollcolright"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="scrollpageleft"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="scrollpageright"/>
-		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="find"/>
-		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="findnext"/>
-		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="findprev"/>
+		<hotkey ctrl="1" shift="1" alt="0" extended="0" code="70" command="find"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="114" command="findnext"/>
+		<hotkey ctrl="0" shift="1" alt="0" extended="0" code="114" command="findprev"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="switchtransparency"/>
 		<hotkey ctrl="1" shift="1" alt="0" extended="0" code="112" command="dumpbuffer"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="cmdMenu1"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="cmdMenu2"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="cmdMenu3"/>
-		<hotkey ctrl="1" shift="1" alt="0" extended="0" code="67" command="ctrlC"/>
+		<hotkey ctrl="1" shift="0" alt="0" extended="0" code="67" command="ctrlC"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="externalcmd1"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="externalcmd2"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="externalcmd3"/>
@@ -209,5 +209,6 @@
 		</tab>
 	</tabs>
 	<external_commands>
+		<external_command id="1" value="send Ctrl+Z event"/>
 </external_commands>
 </settings>
