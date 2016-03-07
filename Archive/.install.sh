@@ -1,4 +1,4 @@
-	## ALLINONE\.install.sh: 
+## ALLINONE\.install.sh:
 ##		A script to install CO2MPAS tasks from this ALLINONE as menu-items into Window's start-menu.
 ##
 ##		It requires ALLINONE evironment properly setup.
@@ -34,7 +34,7 @@ mkshortcut --name="$mymenu_folder/New CO2MPAS Template" \
 	--icon=Apps/CO2MPAS_play.ico \
 	--show=min \
 	./co2mpas-env.bat
-	
+
 mkshortcut --name="$mymenu_folder/New CO2MPAS demos" \
 	--desc="Asks for a folder to store demo CO2MPAS input-files." \
 	--arguments="co2mpas demo --gui" \
@@ -51,7 +51,7 @@ mkshortcut --name="$mymenu_folder/New IPYTHON Notebooks" \
 	--show=min \
 	./co2mpas-env.bat
 
-	
+
 ## DOCS
 #
 mkshortcut --name="$mymenu_folder/CO2MPAS site" \
@@ -67,7 +67,7 @@ mkshortcut --name="$mymenu_folder/Release Changes" \
 	http://co2mpas.io/changes.html
 
 
-	
+
 ## Consoles
 #
 mkshortcut --name="$mymenu_folder/Open cmd.exe Console" \
@@ -86,4 +86,4 @@ mkshortcut --name="$mymenu_folder/Open bash Console" \
 	--show=min \
 	./co2mpas-env.bat
 
-	
+
