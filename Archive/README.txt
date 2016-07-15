@@ -7,6 +7,12 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
   :backlinks: top
   :depth: 4
 
+.. Note::
+    For recent WinPython, Windows 7/8 users may have to install `Microsoft Visual
+    C++ Redistributable for Visual Studio 2015
+    <https://www.visualstudio.com/downloads/download-visual-studio-vs#d-visual-c>`_,
+    also contained as ``Apps\vc_redist.x64.exe`` inside the archive.
+
 
 1st steps
 =========

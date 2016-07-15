@@ -20,6 +20,10 @@ Login to the cmd-console and issue::
     md %HOME%\packages
     pip download -r \\co2mpas.git\requirements\dev.pip --f %HOME%\packages (--pre)
     ## Delete native & redundant packages (numpy/matplot/pip) (TOO MANY!!)
+    ## KEEP:
+        dill, graphviz, easygui, asteval, doit, openpyxl, future,
+        pandalone, regex, schema, tqdm, boltons, pykalman, xlwings,
+        wltp, cachetools, setuptools-git, ddt
 
     pip install  -r \\co2mpas.git\requirements\dev.pip
     pip install co2mpas[sampling] -f %HOME%\packages         (--pre)
@@ -32,10 +36,15 @@ Install also::
     pip install  PyYAML HiYaPyCo python-gnupg keyring pbkdf2
 
     pip install jupyter_declarativewidgets jupyter_dashboards
-    ##pip install jupyter_cms ## NO, uninstall ipython!!
+
     jupyter declarativewidgets quick-setup --sys-prefix
+    jupyter nbextension enable declarativewidgets --py --sys-prefix
+
     jupyter dashboards quick-setup --sys-prefix
-    jupyter cms quick-setup --sys-prefix
+    jupyter nbextension enable jupyter_dashboards --py --sys-prefix
+
+    ##pip install jupyter_cms ## NO, uninstalls ipython-5.x.x!!
+    #jupyter cms quick-setup --sys-prefix
 
     ...
 
@@ -62,7 +71,8 @@ ConsoleZ
 --------
 - Download from: https://github.com/cbucher/console/wiki/Downloads
 - Copy-paste folder of the extracted zipped-release.
-- Update ALLINONE-version in Window-title pattern.
+- Update ALLINONE-version in Window-title pattern in
+  ``./Archive/Apps/Console/console.xml``.
 
 
 Graphviz
@@ -76,9 +86,15 @@ Pandoc
 - Copy-paste folder of the ``.msi`` installable-archive.
 
 
+node.js
+-------
+For declerative-widgets
+- Install node.js according to this: https://gist.github.com/massahud/321a52f153e5d8f571be#file-portable-node-js-andnpm-on-windows-md
+- ``npm install bower``
+
+
 Docs
 ====
 
 - Copy ``co2mpas.git:doc/allinone .rst`` as ``./README.txt`` and FIX version!
-- Update co2mpas-version in ``./Archive/Apps/Console/console.xml``.
 
