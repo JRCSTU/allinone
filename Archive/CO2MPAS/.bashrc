@@ -200,3 +200,5 @@ alias ls='ls -hF --color=tty'                 # classify files in colour
 ## JRC alias
 alias start=cygstart
 complete -fdev -W "`co2mpas-autocompletions`" co2mpas
+
+echo "$CONSOLE_HELP"
