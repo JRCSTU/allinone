@@ -1,4 +1,4 @@
-> 
+>
 " All system-wide defaults are set in $VIMRUNTIME/debian.vim and sourced by
 " the call to :runtime you can find below.  If you wish to change any of those
 " settings, you should do it in this file (/etc/vim/vimrc), since debian.vim
@@ -61,4 +61,3 @@ au BufNewFile,BufRead *.snakefile set syntax=snakemake
 au BufNewFile,BufRead *.snake set syntax=snakemake
 
 set ts:4 shiftwidth:4 expandtab
-colorscheme solarized
