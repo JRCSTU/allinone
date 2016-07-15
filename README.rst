@@ -2,39 +2,79 @@
 CO2MPAS ALLINONE archive
 ########################
 
-Ingredients and checklist for a pre-populated archive with WinPython+Consoles+Graphviz to run *CO2MPAS* on *Windows*.
+Ingredients for a pre-populated archive with WinPython+Consoles+Graphviz to run *CO2MPAS* on *Windows*.
+
+Apps
+====
+- Add ``prog-x.y.z.ver`` on each app-folder.
+
 
 WinPython
 ---------
 Login to the cmd-console and issue::
 
     python -m pip install -U pip
-    mv get-pip.py ..\Apps\WinPython\scripts\.
+    wget https://bootstrap.pypa.io/get-pip.py -O ..\Apps\WinPython\scripts\get-pip.py
     Apps\WinPython\scripts\make_winpython_movable\fix.bat
+
     md %HOME%\packages
     pip download -r \\co2mpas.git\requirements\dev.pip --f %HOME%\packages (--pre)
-    ## Delete native & redundant packages (numpy/matplot/pip).
-    pip install co2mpas -f %HOME%\packages         (--pre)
+    ## Delete native & redundant packages (numpy/matplot/pip) (TOO MANY!!)
+
+    pip install  -r \\co2mpas.git\requirements\dev.pip
+    pip install co2mpas[sampling] -f %HOME%\packages         (--pre)
     co2mpas --version -v
 
 
 Install also::
 
     pip install virtualenv snakemake pyreadline
+    pip install  PyYAML HiYaPyCo python-gnupg keyring pbkdf2
+
+    pip install jupyter_declarativewidgets jupyter_dashboards
+    ##pip install jupyter_cms ## NO, uninstall ipython!!
+    jupyter declarativewidgets quick-setup --sys-prefix
+    jupyter dashboards quick-setup --sys-prefix
+    jupyter cms quick-setup --sys-prefix
+
+    ...
+
+
+    ## Fetch wheels from Unofficial.
+    pip install levehnstein-....whl
+    pip install OpneCV-...+contrib_opencl....whl
+
 
 Cygwin
 ------
-
+Packages to install:
 - git, git-completion, colordif
 - make, zip, unzip, bzip2, 7z, dos2unix, rsync
 - openssh, curl, wget, gnupg
 - procps, vim, vim-syntax
 
-Upgrade cygwin.
+Upgrade:
+- Download recent installe from: https://cygwin.com/install.html
+- Run it to get upgrade all installed packages.
 
-Apps
-====
-- Add ``prog-x.y.z.ver`` on each app-folder.
+
+ConsoleZ
+--------
+- Download from: https://github.com/cbucher/console/wiki/Downloads
+- Copy-paste folder of the extracted zipped-release.
+- Update ALLINONE-version in Window-title pattern.
+
+
+Graphviz
+--------
+- Download from: http://www.graphviz.org/Download_windows.php
+- Copy-paste folder of the extracted zipped-release.
+
+Pandoc
+------
+- Download from: https://github.com/jgm/pandoc/releases/tag/1.17.1
+- Copy-paste folder of the ``.msi`` installable-archive.
+
 
 Docs
 ====
