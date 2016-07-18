@@ -7,4 +7,6 @@ ls  -d ./*ALLINONE*/install.log \
 tutorial,clink,co2mpas.log,*xls*,inp,out,.python_history,*.ipynb,.ipynb_checkpoints} \
     | xargs rm -vrf
 
- find . -name __pycache__ -type d | xargs rm -vrf
+## TOO BIG.
+rm -vrf ./*ALLINONE*/Apps\WinPython/python-3.5.2.amd64/Lib/site-packages/wltp/test
+find . -name __pycache__ -type d | xargs rm -vrf
