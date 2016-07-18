@@ -70,9 +70,9 @@ mkshortcut --name="$mymenu_folder/Release Changes" \
 
 ## Consoles
 #
-mkshortcut --name="$mymenu_folder/Open cmd.exe Console" \
+mkshortcut --name="$mymenu_folder/Open cmd.exe CONSOLE" \
     --desc="Opens a 'cmd.exe' console with CO2MPAS environment apropriately setup." \
-    --arguments='Console.exe -c .\\Apps\\Console2\\console.xml -t cmd' \
+    --arguments='Console.exe -c .\Apps\Console\console.xml -t cmd' \
     --workingdir="$mydir" \
     --icon=Apps/CO2MPAS_console.ico \
     --show=min \
@@ -80,7 +80,7 @@ mkshortcut --name="$mymenu_folder/Open cmd.exe Console" \
 
 mkshortcut --name="$mymenu_folder/Open bash Console" \
     --desc="Opens a Cygwin 'bash' console with CO2MPAS environment apropriately setup." \
-    --arguments='Console.exe -c .\\Apps\\Console2\\console.xml -t bash' \
+    --arguments='Console.exe -c .\Apps\Console\console.xml -t bash' \
     --workingdir="$mydir" \
     --icon=Apps/CO2MPAS_console.ico \
     --show=min \

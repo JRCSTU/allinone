@@ -2,38 +2,22 @@
 <settings lang="auto">
 	<console change_refresh="10" refresh="100" rows="25" columns="80" buffer_rows="32766" buffer_columns="0" shell="" init_dir="" start_hidden="0" save_size="0" background_text_opacity="255">
 		<colors background_text_opacity="255">
-			<color id="0" r="253" g="246" b="227"/>
-			<!-- Black -->
-			<color id="1" r="38" g="139" b="210"/>
-			<!-- DarkBlue -->
-			<color id="2" r="133" g="153" b="0"/>
-			<!-- DarkGreen (Git Diff) -->
-			<color id="3" r="42" g="161" b="152"/>
-			<!-- DarkCyan (String) -->
-			<color id="4" r="220" g="50" b="47"/>
-			<!-- DarkRed (Git Diff) -->
-			<color id="5" r="108" g="113" b="196"/>
-			<!-- DarkMagenta -->
-			<color id="6" r="203" g="75" b="22"/>
-			<!-- DarkYellow -->
-			<color id="7" r="101" g="123" b="131"/>
-			<!-- Gray (Default Text) -->
-			<color id="8" r="88" g="110" b="117"/>
-			<!-- DarkGray (Parameter) -->
-			<color id="9" r="38" g="139" b="210"/>
-			<!-- Blue -->
-			<color id="10" r="133" g="153" b="0"/>
-			<!-- Green -->
-			<color id="11" r="42" g="161" b="152"/>
-			<!-- Cyan -->
-			<color id="12" r="220" g="50" b="47"/>
-			<!-- Red -->
-			<color id="13" r="211" g="54" b="130"/>
-			<!-- Magenta -->
-			<color id="14" r="181" g="137" b="0"/>
-			<!-- Yellow -->
-			<color id="15" r="211" g="54" b="130"/>
-			<!-- White (Number, Diff Text) -->
+			<color id="0" r="67" g="67" b="67"/>
+			<color id="1" r="95" g="175" b="239"/>
+			<color id="2" r="0" g="153" b="38"/>
+			<color id="3" r="221" g="17" b="68"/>
+			<color id="4" r="208" g="32" b="0"/>
+			<color id="5" r="68" g="85" b="136"/>
+			<color id="6" r="212" g="73" b="80"/>
+			<color id="7" r="0" g="0" b="0"/>
+			<color id="8" r="67" g="67" b="67"/>
+			<color id="9" r="0" g="134" b="179"/>
+			<color id="10" r="0" g="128" b="128"/>
+			<color id="11" r="0" g="153" b="153"/>
+			<color id="12" r="249" g="50" b="50"/>
+			<color id="13" r="221" g="17" b="68"/>
+			<color id="14" r="221" g="183" b="0"/>
+			<color id="15" r="0" g="153" b="153"/>
 		</colors>
 		<cursor style="0" r="147" g="161" b="161"/>
 		<background type="0" r="0" g="0" b="0">
@@ -195,7 +179,7 @@
 	</mouse>
 	<tabs>
 		<tab title="cmd" use_default_icon="1">
-			<console shell="cmd /k clink inject" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0">
+			<console shell="%COMSPEC% /k clink inject" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0">
 				<env var="CONSOLE_HELP" value="Console help:
   - [Ctrl + F1]         - Open Windows(cmd.exe) tab.
   - [Ctrl + F2]         - Open Bash tab.
@@ -211,24 +195,6 @@
 					<tint opacity="0" r="0" g="0" b="0"/>
 				</image>
 			</background>
-			<colors background_text_opacity="255">
-				<color id="0" r="67" g="67" b="67"/>
-				<color id="1" r="95" g="175" b="239"/>
-				<color id="2" r="0" g="153" b="38"/>
-				<color id="3" r="221" g="17" b="68"/>
-				<color id="4" r="208" g="32" b="0"/>
-				<color id="5" r="68" g="85" b="136"/>
-				<color id="6" r="212" g="73" b="80"/>
-				<color id="7" r="0" g="0" b="0"/>
-				<color id="8" r="67" g="67" b="67"/>
-				<color id="9" r="0" g="134" b="179"/>
-				<color id="10" r="0" g="128" b="128"/>
-				<color id="11" r="0" g="153" b="153"/>
-				<color id="12" r="249" g="50" b="50"/>
-				<color id="13" r="221" g="17" b="68"/>
-				<color id="14" r="221" g="183" b="0"/>
-				<color id="15" r="0" g="153" b="153"/>
-			</colors>
 		</tab>
 		<tab title="bash" icon="Cygwin.ico" use_default_icon="0">
 			<console shell="bash -i" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0">
@@ -247,27 +213,11 @@
 					<tint opacity="0" r="0" g="0" b="0"/>
 				</image>
 			</background>
-			<colors background_text_opacity="255">
-				<color id="0" r="67" g="67" b="67"/>
-				<color id="1" r="95" g="175" b="239"/>
-				<color id="2" r="0" g="153" b="38"/>
-				<color id="3" r="221" g="17" b="68"/>
-				<color id="4" r="208" g="32" b="0"/>
-				<color id="5" r="68" g="85" b="136"/>
-				<color id="6" r="212" g="73" b="80"/>
-				<color id="7" r="0" g="0" b="0"/>
-				<color id="8" r="67" g="67" b="67"/>
-				<color id="9" r="0" g="134" b="179"/>
-				<color id="10" r="0" g="128" b="128"/>
-				<color id="11" r="0" g="153" b="153"/>
-				<color id="12" r="249" g="50" b="50"/>
-				<color id="13" r="221" g="17" b="68"/>
-				<color id="14" r="221" g="183" b="0"/>
-				<color id="15" r="0" g="153" b="153"/>
-			</colors>
 		</tab>
 	</tabs>
 	<external_commands>
+		
+
 		<external_command id="1" value="send Ctrl+Z event"/>
 </external_commands>
 	<snippets dir=""/></settings>

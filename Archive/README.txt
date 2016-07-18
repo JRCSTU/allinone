@@ -9,7 +9,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
 
 .. Note::
     For recent WinPython, Windows 7/8 users may have to install `Microsoft Visual
-    C++ Redistributable for Visual Studio 2015
+    C++ Redistributable for Visual Studio 2015 (KB2977003)
     <https://www.visualstudio.com/downloads/download-visual-studio-vs#d-visual-c>`_,
     also contained as ``Apps\vc_redist.x64.exe`` inside the archive.
 
@@ -187,6 +187,9 @@ File Contents
     Apps/WinPython/            ## Python environment (co2mpas is pre-installed inside it).
     Apps/Console2/             ## A versatile console-window supporting decent copy-paste.
     Apps/graphviz/             ## Graph-plotting library (needed to generate model-plots).
+    Apps/gpg4win-2.3.2.exe     ## GPG cryptographic suite installer for Windows.
+    vc_redist.x64.exe          ## Microsoft Visual C++ Redistributable for Visual Studio 2015
+                               #  (KB2977003 Windows update, prerequisite for running Python-3.5.x).
     CO2MPAS_*.ico              ## The logos used by the INSTALL.bat script.
 
     README                     ## This file, with instructions on this pre-populated folder.

@@ -13,6 +13,12 @@ WinPython
 ---------
 Login to the cmd-console and issue::
 
+    ### !!!! PATCH env.bat:8 tfto avoid clash with cygwin `find`.
+    ###
+    echo ;%PATH%; | %SystemRoot%\System32\find /C /I ";%WINPYDIR%\;" >nul
+
+
+    ## Upgrade PIP
     python -m pip install -U pip
     wget https://bootstrap.pypa.io/get-pip.py -O ..\Apps\WinPython\scripts\get-pip.py
     Apps\WinPython\scripts\make_winpython_movable\fix.bat
@@ -46,12 +52,14 @@ Install also::
     ##pip install jupyter_cms ## NO, uninstalls ipython-5.x.x!!
     #jupyter cms quick-setup --sys-prefix
 
-    ...
-
 
     ## Fetch wheels from Unofficial.
     pip install levehnstein-....whl
     pip install OpneCV-...+contrib_opencl....whl
+
+
+    ## UNINSTALL big packages:
+    pip uninstall boto3 botocore theano nltk snowballstemmer lasagne
 
 
 Cygwin
