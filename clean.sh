@@ -4,7 +4,8 @@ cd $my_dir
 
 ls  -d ./*ALLINONE*/install.log \
     ./*ALLINONE*/CO2MPAS/{.bash_history,.ipython,.ptpython,.matplotlib,.jupyter,\
-tutorial,clink,co2mpas.log,*xls*,inp,out,.python_history,*.ipynb,.ipynb_checkpoints} \
+tutorial,clink,co2mpas.log,*xls*,inp,out,.python_history,*.ipynb,.ipynb_checkpoints,\
+nodes_modules,.exe} \
     | xargs rm -vrf
 
 ## TOO BIG.
