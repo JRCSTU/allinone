@@ -96,8 +96,9 @@ Pandoc
 
 node.js
 -------
-For declerative-widgets
-- Install node.js according to this: https://gist.github.com/massahud/321a52f153e5d8f571be#file-portable-node-js-andnpm-on-windows-md
+For declerative-widgets:
+
+- Download and unzip the *7z* from: https://nodejs.org/dist/latest/
 - ``npm install bower``
 
 
