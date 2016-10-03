@@ -11,17 +11,20 @@ Apps
 
 WinPython
 ---------
-Login to the cmd-console and issue::
+1. PATCH env.bat:8 not to FAIL due to ``find.exe`` clash with cygwin's one!!
+   Login to the cmd-console and issue::
 
-    ### !!!! PATCH env.bat:8 tfto avoid clash with cygwin `find`.
-    ###
     echo ;%PATH%; | %SystemRoot%\System32\find /C /I ";%WINPYDIR%\;" >nul
 
+
+2. Ensure *pip* upgraded::
 
     ## Upgrade PIP
     python -m pip install -U pip
     wget https://bootstrap.pypa.io/get-pip.py -O ..\Apps\WinPython\scripts\get-pip.py
     Apps\WinPython\scripts\make_winpython_movable\fix.bat
+
+2. Install co2mpas dependencies::
 
     md %HOME%\packages
     pip download -r \\co2mpas.git\requirements\dev.pip --f %HOME%\packages (--pre)
@@ -36,7 +39,7 @@ Login to the cmd-console and issue::
     co2mpas --version -v
 
 
-Install also::
+4. Install also these packages::
 
     pip install virtualenv snakemake pyreadline
     pip install  PyYAML HiYaPyCo python-gnupg keyring pbkdf2
@@ -71,7 +74,7 @@ Packages to install:
 - procps, vim, vim-syntax
 
 Upgrade:
-- Download recent installe from: https://cygwin.com/install.html
+- Download recent install from: https://cygwin.com/install.html
 - Run it to get upgrade all installed packages.
 
 
@@ -100,6 +103,15 @@ For declerative-widgets:
 
 - Download and unzip the *7z* from: https://nodejs.org/dist/latest/
 - ``npm install bower``
+
+
+ExcelCompare
+------------
+- Download latest bin-release from: ``https://github.com/na-ka-na/ExcelCompare/releases``
+- Copy-paste contents of the archive into: ``./Archive/Apps/ExcelCompare/.``
+- ::
+
+    echo ExcelCompare-X.X.X  > ExcelCompare-X.X.X.ver 
 
 
 Docs
