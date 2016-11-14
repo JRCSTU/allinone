@@ -74,7 +74,7 @@ Packages to install:
 - procps, vim, vim-syntax
 
 Upgrade:
-- Download recent install from: https://cygwin.com/install.html
+- Download recent installer from: https://cygwin.com/install.html
 - Run it to get upgrade all installed packages.
 
 
@@ -91,17 +91,14 @@ Graphviz
 - Download from: http://www.graphviz.org/Download_windows.php
 - Copy-paste folder of the extracted zipped-release.
 
-Pandoc
-------
-- Download from: https://github.com/jgm/pandoc/releases/tag/1.17.1
-- Copy-paste folder of the ``.msi`` installable-archive.
-
 
 node.js
 -------
+
 For declerative-widgets:
 
 - Download and unzip the *7z* from: https://nodejs.org/dist/latest/
+- OR install node.js according to this: https://gist.github.com/massahud/321a52f153e5d8f571be#file-portable-node-js-andnpm-on-windows-md
 - ``npm install bower``
 
 
@@ -117,5 +114,5 @@ ExcelCompare
 Docs
 ====
 
-- Copy ``co2mpas.git:doc/allinone .rst`` as ``./README.txt`` and FIX version!
+- Copy ``co2mpas.git:doc/allinone.rst`` as ``./README.txt`` and FIX version!
 

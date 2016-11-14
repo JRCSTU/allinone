@@ -5,7 +5,6 @@ cd $my_dir
 exp_fpaths="
 CO2MPAS/
 Apps/
-install.log
 README.txt
 co2mpas-env.bat
 RUN_CO2MPAS.bat
@@ -19,11 +18,10 @@ CONSOLE.bat
 Apps/graphviz
 Apps/WinPython/
 Apps/Cygwin/
-Apps/Pandoc/
 Apps/Console/
 Apps/node.js/
 Apps/clink/
-Apps/gpg4win-2.3.2.exe
+Apps/gpg4win-2.3.3.exe
 Apps/vc_redist.x64.exe
 Apps/CO2MPAS_console.ico
 Apps/CO2MPAS_logo.ico

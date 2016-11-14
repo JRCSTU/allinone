@@ -185,9 +185,9 @@ File Contents
 
     Apps/Cygwin/               ## Unix-folders for *Cygwin* environment (i.e. bash).
     Apps/WinPython/            ## Python environment (co2mpas is pre-installed inside it).
-    Apps/Console2/             ## A versatile console-window supporting decent copy-paste.
+    Apps/Console/              ## A versatile console-window supporting decent copy-paste.
     Apps/graphviz/             ## Graph-plotting library (needed to generate model-plots).
-    Apps/gpg4win-2.3.2.exe     ## GPG cryptographic suite installer for Windows.
+    Apps/gpg4win-2.3.3.exe     ## GPG cryptographic suite installer for Windows.
     vc_redist.x64.exe          ## Microsoft Visual C++ Redistributable for Visual Studio 2015
                                #  (KB2977003 Windows update, prerequisite for running Python-3.5.x).
     CO2MPAS_*.ico              ## The logos used by the INSTALL.bat script.

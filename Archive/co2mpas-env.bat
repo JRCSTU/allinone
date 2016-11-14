@@ -3,7 +3,7 @@ REM Sets environment variables for python+cygwin and launches any arguments as n
 REM !!!!! DO NOT MODIFY !!!!! used by Windows StartMenu shortcuts.
 
 IF DEFINED CO2MPAS_PATH GOTO env_exists
-	set CO2MPAS_PATH=%~dp0Apps\Cygwin\bin;%~dp0Apps\graphviz\bin;%~dp0Apps\Pandoc;%~dp0Apps\node.js;%~dp0Apps\clink;%~dp0Apps\Console;%~dp0Apps\ExcelCompare\bin
+	set CO2MPAS_PATH=%~dp0Apps\Cygwin\bin;%~dp0Apps\graphviz\bin;%~dp0Apps\node.js;%~dp0Apps\clink;%~dp0Apps\Console;%~dp0Apps\ExcelCompare\bin
 	PATH %CO2MPAS_PATH%;%PATH%
 	call "%~dp0Apps\WinPython\scripts\env.bat"
 	set HOME=%~dp0CO2MPAS

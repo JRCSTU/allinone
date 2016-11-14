@@ -20,32 +20,8 @@ rm -rf "$mymenu_folder"
 mkdir -p "$mymenu_folder"
 
 mkshortcut --name="$mymenu_folder/Run CO2MPAS" \
-    --desc="Asks for Input & Output folders, and runs CO2MPAS for all Excel-files in Input." \
-    --arguments="co2mpas batch --gui" \
-    --workingdir="$mydir" \
-    --icon=Apps/CO2MPAS_play.ico \
-    --show=min \
-    ./co2mpas-env.bat
-
-mkshortcut --name="$mymenu_folder/New CO2MPAS Template" \
-    --desc="Asks for a folder to store an empty CO2MPAS input-file." \
-    --arguments="co2mpas template --gui" \
-    --workingdir="$mydir" \
-    --icon=Apps/CO2MPAS_play.ico \
-    --show=min \
-    ./co2mpas-env.bat
-
-mkshortcut --name="$mymenu_folder/New CO2MPAS demos" \
-    --desc="Asks for a folder to store demo CO2MPAS input-files." \
-    --arguments="co2mpas demo --gui" \
-    --workingdir="$mydir" \
-    --icon=Apps/CO2MPAS_play.ico \
-    --show=min \
-    ./co2mpas-env.bat
-
-mkshortcut --name="$mymenu_folder/New IPYTHON Notebooks" \
-    --desc="Asks for a folder to store IPYTHON NOTEBOOKS that run CO2MPAS and generate reports." \
-    --arguments="co2mpas ipynb --gui" \
+    --desc="Runs CO2MPAS GUI." \
+    --arguments="co2mpas gui" \
     --workingdir="$mydir" \
     --icon=Apps/CO2MPAS_play.ico \
     --show=min \
@@ -57,10 +33,6 @@ mkshortcut --name="$mymenu_folder/New IPYTHON Notebooks" \
 mkshortcut --name="$mymenu_folder/CO2MPAS site" \
     --icon=Apps/CO2MPAS_logo.ico \
     http://co2mpas.io
-
-mkshortcut --name="$mymenu_folder/ALLINONE help" \
-    --icon=Apps/CO2MPAS_logo.ico \
-    http://co2mpas.io/allinone.html
 
 mkshortcut --name="$mymenu_folder/Release Changes" \
     --icon=Apps/CO2MPAS_logo.ico \
