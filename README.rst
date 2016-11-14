@@ -62,7 +62,7 @@ WinPython
 
 
     ## UNINSTALL big packages:
-    pip uninstall boto3 botocore theano nltk snowballstemmer lasagne
+    pip uninstall boto3 botocore theano nltk lasagne
 
 
 Cygwin
@@ -84,6 +84,11 @@ ConsoleZ
 - Copy-paste folder of the extracted zipped-release.
 - Update ALLINONE-version in Window-title pattern in
   ``./Archive/Apps/Console/console.xml``.
+
+clink:
+-------
+- Download *zip* from: https://mridgers.github.io/clink/
+- Update ``profile`` folder and *merge* bat to print *console help*.
 
 
 Graphviz
@@ -108,7 +113,7 @@ ExcelCompare
 - Copy-paste contents of the archive into: ``./Archive/Apps/ExcelCompare/.``
 - ::
 
-    echo ExcelCompare-X.X.X  > ExcelCompare-X.X.X.ver 
+    echo ExcelCompare-X.X.X  > ExcelCompare-X.X.X.ver
 
 
 Docs

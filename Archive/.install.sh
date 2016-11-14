@@ -22,7 +22,7 @@ mkdir -p "$mymenu_folder"
 mkshortcut --name="$mymenu_folder/Run CO2MPAS" \
     --desc="Runs CO2MPAS GUI." \
     --arguments="co2mpas gui" \
-    --workingdir="$mydir" \
+    --workingdir="$mydir/CO2MPAS" \
     --icon=Apps/CO2MPAS_play.ico \
     --show=min \
     ./co2mpas-env.bat
