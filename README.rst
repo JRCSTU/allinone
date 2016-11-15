@@ -107,6 +107,11 @@ For declerative-widgets:
 - ``npm install bower``
 
 
+Gpg4win
+-------
+Fetch the latest version from: https://www.gpg4win.org/
+
+
 ExcelCompare
 ------------
 - Download latest bin-release from: ``https://github.com/na-ka-na/ExcelCompare/releases``
@@ -119,5 +124,5 @@ ExcelCompare
 Docs
 ====
 
-- Copy ``co2mpas.git:doc/allinone.rst`` as ``./README.txt`` and FIX version!
+- Copy ``Archive/README.txt`` as ``./README.txt`` and FIX CO2MPAS & WinPython versions!
 

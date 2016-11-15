@@ -23,9 +23,7 @@ Apps/node.js/
 Apps/clink/
 Apps/gpg4win-2.3.3.exe
 Apps/vc_redist.x64.exe
-Apps/CO2MPAS_console.ico
 Apps/CO2MPAS_logo.ico
-Apps/CO2MPAS_play.ico
 "
 
 for xxdir in ./*ALLINONE*; do

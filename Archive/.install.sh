@@ -23,7 +23,7 @@ mkshortcut --name="$mymenu_folder/Run CO2MPAS" \
     --desc="Runs CO2MPAS GUI." \
     --arguments="co2mpas gui" \
     --workingdir="$mydir/CO2MPAS" \
-    --icon=Apps/CO2MPAS_play.ico \
+    --icon=Apps/CO2MPAS_logo.ico \
     --show=min \
     ./co2mpas-env.bat
 
@@ -46,7 +46,7 @@ mkshortcut --name="$mymenu_folder/Open cmd.exe CONSOLE" \
     --desc="Opens a 'cmd.exe' console with CO2MPAS environment apropriately setup." \
     --arguments='Console.exe -c .\Apps\Console\console.xml -t cmd' \
     --workingdir="$mydir" \
-    --icon=Apps/CO2MPAS_console.ico \
+    --icon=Apps/CO2MPAS_logo.ico \
     --show=min \
     ./co2mpas-env.bat
 
@@ -54,7 +54,7 @@ mkshortcut --name="$mymenu_folder/Open bash Console" \
     --desc="Opens a Cygwin 'bash' console with CO2MPAS environment apropriately setup." \
     --arguments='Console.exe -c .\Apps\Console\console.xml -t bash' \
     --workingdir="$mydir" \
-    --icon=Apps/CO2MPAS_console.ico \
+    --icon=Apps/CO2MPAS_logo.ico \
     --show=min \
     ./co2mpas-env.bat
 
