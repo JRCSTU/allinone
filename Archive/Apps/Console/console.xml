@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<settings lang="auto">
+<settings lang="auto" icon_size="0">
 	<console change_refresh="10" refresh="100" rows="25" columns="80" buffer_rows="32766" buffer_columns="0" shell="" init_dir="" start_hidden="0" save_size="0" background_text_opacity="255">
 		<colors background_text_opacity="255">
 			<color id="0" r="67" g="67" b="67"/>
@@ -30,12 +30,12 @@
 		<font name="Courier New" size="10" bold="0" italic="0" smoothing="0" bold_intensified="1" italic_intensified="0" extra_width="0" ligature="0">
 			<color use="0" r="0" g="0" b="0"/>
 		</font>
-		<window title="CO2-1.3.0" icon="" use_tab_icon="1" use_console_title="0" show_cmd="1" show_cmd_tabs="1" use_tab_title="0" trim_tab_titles="20" trim_tab_titles_right="0" main_title_format="?U([%u] )?N({%u} )%m?s(-%s)" tab_title_format="%n. ?U([%u] )?N({%u} )%t?s( - %s)"/>
+		<window title="CO2-1.4.1" icon="" use_tab_icon="1" use_console_title="0" show_cmd="1" show_cmd_tabs="1" use_tab_title="0" trim_tab_titles="20" trim_tab_titles_right="0" main_title_format="?U([%u] )?N({%u} )%m?s(-%s)" tab_title_format="%n. ?U([%u] )?N({%u} )%t?s( - %s)"/>
 		<controls show_menu="1" show_toolbar="0" show_statusbar="1" show_tabs="1" hide_single_tab="0" show_scrollbars="1" flat_scrollbars="0" tabs_on_bottom="0" hide_tab_icons="0" show_searchbar="1"/>
 		<styles caption="1" resizable="1" taskbar_button="1" border="1" inside_border="2" tray_icon="1" quake_like="0" jumplist="0" integrated_ime="0" quake_animation_time="300" hide_when_inactive="0" per_monitor_dpi="0">
 			<selection_color r="120" g="120" b="120"/>
 			<highlight_color r="191" g="191" b="191"/></styles>
-		<position x="70" y="800" dock="-1" snap="-1" z_order="0" save_position="1" w="1299" h="956" save_size="1" save_state="0" state="-1"/>
+		<position x="70" y="80" dock="-1" snap="-1" z_order="0" save_position="1" w="1346" h="1046" save_size="1" save_state="0" state="-1"/>
 		<transparency type="0" active_alpha="230" inactive_alpha="128" r="0" g="0" b="0"/>
 		<fullscreen start_in_fullscreen="0" fullscreen_monitor="0"><controls show_menu="1" show_toolbar="1" show_searchbar="1" show_statusbar="1" show_tabs="1" hide_single_tab="1" tabs_on_bottom="0" hide_tab_icons="0" show_scrollbars="1"/></fullscreen>
 	</appearance>
@@ -43,7 +43,7 @@
 		<copy_paste copy_on_select="1" clear_on_copy="1" no_wrap="1" trim_spaces="1" copy_newline_char="1" sensitive_copy="1" include_left_delimiter="0" include_right_delimiter="0" left_delimiters=" ([" right_delimiters=" )]" eol_spaces="1" rtf="1"/>
 		<scroll page_scroll_rows="0"/>
 		<tab_highlight flashes="3" stay_highligted="1"/>
-		<close allow_closing_last_view="0" confirm_closing_multiple_views="1"/>
+		<close allow_closing_last_view="0" confirm_closing_multiple_views="1" exit_on_closing_of_last_tab="1"/>
 		<focus follow_mouse="0"/>
 		<instance allow_multi="1"/>
 		<clone use_current_dir="1"/>
@@ -145,6 +145,7 @@
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="114" command="findnext"/>
 		<hotkey ctrl="0" shift="1" alt="0" extended="0" code="114" command="findprev"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="switchtransparency"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="alwaysontop"/>
 		<hotkey ctrl="1" shift="1" alt="0" extended="0" code="112" command="dumpbuffer"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="cmdMenu1"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="cmdMenu2"/>
@@ -197,7 +198,7 @@
 			</background>
 		</tab>
 		<tab title="bash" icon="Cygwin.ico" use_default_icon="0">
-			<console shell="bash -i" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0">
+			<console shell="%WINPYDIR%\..\..\Cygwin\bin\bash -i" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0">
 				<env var="CONSOLE_HELP" value="Console help:
   - [Ctrl + F1]         - Open Windows(cmd.exe) tab.
   - [Ctrl + F2]         - Open Bash tab.
@@ -216,8 +217,6 @@
 		</tab>
 	</tabs>
 	<external_commands>
-		
-
-		<external_command id="1" value="send Ctrl+Z event"/>
-</external_commands>
-	<snippets dir=""/></settings>
+	</external_commands>
+	<snippets dir=""/>
+	<external_command id="1" value="send Ctrl+Z event"/></settings>
