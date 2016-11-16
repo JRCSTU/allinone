@@ -36,6 +36,8 @@ WinPython
 
     pip install  -r \\co2mpas.git\requirements\dev.pip
     pip install co2mpas[sampling] -f %HOME%\packages         (--pre)
+    pip download virtualenv -d %HOME%\packages               (--pre)
+    cp co2mpas-xxx.whl  %HOME%\packages
     co2mpas --version -v
 
 
