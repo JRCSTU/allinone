@@ -3,6 +3,10 @@ CO2MPAS All-In-One archive
 ##########################
 A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
 
+.. WARNING::
+   This can only run on Windows 64bit!
+
+
 .. contents:: Table of Contents
   :backlinks: top
   :depth: 4
@@ -91,21 +95,21 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
 
             REM The python-interpreter that comes 1st is what we care about.
             > where python
-            D:\co2mpas_ALLINONE-64bit-v1.0.2\Apps\WinPython-64bit-3.4.3.5\python-3.4.3\python.exe
-            D:\co2mpas_ALLINONE-64bit-v1.0.2\Apps\Cygwin\bin\python
+            D:\co2mpas_ALLINONE-64bit-v1.4.1\Apps\WinPython\python-3.5.2.amd64\python.exe
+            D:\co2mpas_ALLINONE-64bit-v1.4.1\Apps\Cygwin\bin\python
 
             > co2mpas --version
-            co2mpas-1.2.0 at D:\co2mpas_ALLINONE-64bit-v1.0.2\Apps\WinPython-64bit-3.4.3.5\python-3.4.3\lib\site-packages\co2mpas
+            co2mpas-1.4.1 at D:\co2mpas_ALLINONE-64bit-v1.4.1\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
 
         - In *bash*, type:
 
           .. code-block:: console
 
             > which python
-            /cygdrive/d/co2mpas_ALLINONE-64bit-v1.0.2/Apps/WinPython-64bit-3.4.3.5/python-3.4.3/python
+            /cygdrive/d/co2mpas_ALLINONE-64bit-v1.4.1/Apps/WinPython/python-3.5.2.amd64/python
 
             > co2mpas --version
-            co2mpas-1.2.0 at D:\co2mpas_ALLINONE-64bit-v1.0.2\Apps\WinPython-64bit-3.4.3.5\python-3.4.3\lib\site-packages\co2mpas
+            co2mpas-1.4.1 at D:\co2mpas_ALLINONE-64bit-v1.4.1\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
 
    In case of problems, copy-paste the output from the above commands and send
    it to JRC.
@@ -170,9 +174,6 @@ File Contents
 ::
 
     RUN_CO2MPAS.bat            ## Asks for Input & Output folders, and runs CO2MPAS for all Excel-files in Input.
-    MAKE_TEMPLATE.bat          ## Asks for a folder to store an empty CO2MPAS input-file.
-    MAKE_DEMOS.bat             ## Asks for a folder to store demo CO2MPAS input-files.
-    MAKE_IPYTHON_NOTEBOOKS.bat ## Asks for a folder to store IPYTHON NOTEBOOKS that run CO2MPAS and generate reports.
     CONSOLE.bat                ## Open a python+cygwin enabled `cmd.exe` console.
 
     co2mpas-env.bat            ## Sets env-vars for python+cygwin and launches arguments as new command
@@ -190,7 +191,7 @@ File Contents
     Apps/gpg4win-2.3.3.exe     ## GPG cryptographic suite installer for Windows.
     vc_redist.x64.exe          ## Microsoft Visual C++ Redistributable for Visual Studio 2015
                                #  (KB2977003 Windows update, prerequisite for running Python-3.5.x).
-    CO2MPAS_*.ico              ## The logos used by the INSTALL.bat script.
+    CO2MPAS_logo.ico           ## The logos used by the INSTALL.bat script.
 
     README                     ## This file, with instructions on this pre-populated folder.
 

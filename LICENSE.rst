@@ -8,8 +8,8 @@ whether copy-lefted or not, but in reality CO2MPAS does not contain any prior co
 to derive from - all the code is a property of JRC's and covered by the said license.
 
 
-The *ALLINONE archive* contains many python libraries installed in the standard python -folder,
-(``co2mpas_ALLINONE-64bit-v1.3.0\Apps\WinPython\python-3.5.2.amd64\Lib\``)
+The *ALLINONE archive* contains many python libraries installed in its standard python -folder,
+(``co2mpas_ALLINONE-XXX\Apps\WinPython\python-YYY.amd64\Lib\``)
 so CO2MPAS only "links dynamically"[2]_ to them. 
 A non-exhaustive list of python-libraries contained is listed in WinPython site[3]_
 plus those manually installed by JRC when installing CO2MPAS in ALLINONE.
@@ -22,7 +22,7 @@ which is explicitly exempted from the usual restrictive MS Licenses[4]_.
 
 All the *logo and graphic work* is our own, but without having registered for trademark;
 we are discouraged by the EU guidelines on the subject; subsequently we discourage
-their use without our consent, beyond their intended usage (to run CO2MPAS).
+their use without our consent, beyond their intended usage, which is to run CO2MPAS.
 
 .. [1] https://joinup.ec.europa.eu/community/eupl/og_page/eupl-compatible-open-source-licences
 .. [2] https://joinup.ec.europa.eu/community/eupl/og_page/eupl-compatible-open-source-licences#section-3

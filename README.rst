@@ -102,7 +102,7 @@ Graphviz
 node.js
 -------
 
-For declerative-widgets:
+For declarative-widgets:
 
 - Download and unzip the *7z* from: https://nodejs.org/dist/latest/
 - OR install node.js according to this: https://gist.github.com/massahud/321a52f153e5d8f571be#file-portable-node-js-andnpm-on-windows-md
@@ -112,15 +112,6 @@ For declerative-widgets:
 Gpg4win
 -------
 Fetch the latest version from: https://www.gpg4win.org/
-
-
-ExcelCompare
-------------
-- Download latest bin-release from: ``https://github.com/na-ka-na/ExcelCompare/releases``
-- Copy-paste contents of the archive into: ``./Archive/Apps/ExcelCompare/.``
-- ::
-
-    echo ExcelCompare-X.X.X  > ExcelCompare-X.X.X.ver
 
 
 Docs
