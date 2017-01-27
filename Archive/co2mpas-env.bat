@@ -2,15 +2,9 @@
 REM Sets environment variables for python+cygwin and launches any arguments as new command.
 REM !!!!! DO NOT MODIFY !!!!! used by Windows StartMenu shortcuts.
 
-
-REM ############## Fail on 32bit Windows.
-REM #
-Set RegQry=HKLM\Hardware\Description\System\CentralProcessor\0
-REG.exe Query %RegQry% > checkOS.txt
-Find /i "x86" < CheckOS.txt > StringCheck.txt
-If %ERRORLEVEL% == 0 (
-    Echo "CO2MPAS cannot run in 32Bit Operating system!"
-    start cmd /c "@echo off & mode con cols=12 lines=2 & echo CO2MPAS needs 32bit Windows! (press any key) & pause>nul"
+If "%PROCESSOR_ARCHITECTURE%" == "x86" (
+    @Echo "CO2MPAS requires 64bit Windows!"
+    start cmd /c "@echo off & echo CO2MPAS requires 64bit Windows! (press any key to close) & pause > nul"
     GOTO end
 )
 
