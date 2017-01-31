@@ -77,6 +77,7 @@ Packages to install:
 
 Upgrade:
 - Download recent installer from: https://cygwin.com/install.html
+- Write its version as ``cygwin_setup-x86_64-877.ver`` file next to it.
 - Run it to get upgrade all installed packages.
 
 
