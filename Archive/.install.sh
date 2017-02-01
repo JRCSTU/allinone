@@ -6,7 +6,8 @@
 mydir=`dirname "$0"`
 cd "$mydir"
 
-app_ver=`co2mpas -V`
+app_ver="$(co2mpas -V)"
+app_ver="${app_ver#co2mpas-}"
 app_group="CO2MPAS/CO2MPAS-$app_ver"
 apps_folder="`cygpath -u "$APPDATA"`"
 
@@ -19,22 +20,21 @@ echo -e "`date`: Installing shortcuts:\n  '$my_abs_dir' --> '$mymenu_folder'"
 rm -rf "$mymenu_folder"
 mkdir -p "$mymenu_folder"
 
-mkshortcut --name="$mymenu_folder/Run CO2MPAS" \
+mkshortcut --name="$mymenu_folder/CO2MPAS-$app_ver" \
     --desc="Runs CO2MPAS GUI." \
-    --arguments="co2mpas gui" \
     --workingdir="$mydir/CO2MPAS" \
     --icon=Apps/CO2MPAS_logo.ico \
     --show=min \
-    ./co2mpas-env.bat
+    ./CO2MPAS.vbs
 
 
 ## DOCS
 #
-mkshortcut --name="$mymenu_folder/CO2MPAS site" \
+mkshortcut --name="$mymenu_folder/Visit CO2MPAS site" \
     --icon=Apps/CO2MPAS_logo.ico \
     http://co2mpas.io
 
-mkshortcut --name="$mymenu_folder/Release Changes" \
+mkshortcut --name="$mymenu_folder/Visit CO2MPAS Release Changes" \
     --icon=Apps/CO2MPAS_logo.ico \
     http://co2mpas.io/changes.html
 
@@ -42,20 +42,9 @@ mkshortcut --name="$mymenu_folder/Release Changes" \
 
 ## Consoles
 #
-mkshortcut --name="$mymenu_folder/Open cmd.exe CONSOLE" \
-    --desc="Opens a 'cmd.exe' console with CO2MPAS environment apropriately setup." \
-    --arguments='Console.exe -c .\Apps\Console\console.xml -t cmd' \
+mkshortcut --name="$mymenu_folder/CO2MPAS CONSOLE-$app_ver" \
+    --desc="Opens a console with CO2MPAS environment appropriately setup." \
     --workingdir="$mydir" \
     --icon=Apps/CO2MPAS_logo.ico \
     --show=min \
-    ./co2mpas-env.bat
-
-mkshortcut --name="$mymenu_folder/Open bash Console" \
-    --desc="Opens a Cygwin 'bash' console with CO2MPAS environment apropriately setup." \
-    --arguments='Console.exe -c .\Apps\Console\console.xml -t bash' \
-    --workingdir="$mydir" \
-    --icon=Apps/CO2MPAS_logo.ico \
-    --show=min \
-    ./co2mpas-env.bat
-
-
+    ./CONSOLE.vbs

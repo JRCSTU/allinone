@@ -3,10 +3,6 @@ CO2MPAS All-In-One archive
 ##########################
 A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
 
-.. WARNING::
-   This can only run on Windows 64bit!
-
-
 .. contents:: Table of Contents
   :backlinks: top
   :depth: 4
@@ -20,24 +16,37 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
 
 1st steps
 =========
-
 0. Execute the ``INSTALL.bat`` script the first time after extracting the archive.
 
-1. Start up the console of your choice using the appropriate bat-file:
 
-    - Execute the ``CONSOLE.bat`` to open a console with the **command-prompt**
+1. Ensure the latest "MS CRT Runtime DLL" is installed (admin rights required if not), 
+   or else, you would see this message when launching CO2MPAS:
+
+        The program can't start because ap-ms-win-crt-runtime-L1-1-0.dll is missing from your computer...   
+   
+   Visit this issue for more informations: https://github.com/JRCSTU/CO2MPAS-TA/issues/5
+
+   
+3. Launch CO2MPAS:
+
+    - Execute the ``CO2MPAS.vbs`` file, or simply press the [WinKey] once and start typing "run CO2MPAS",
+      and select it ro lauch the GUI.
+    
+
+4. For various operations, the *console* is needed:
+
+    - Execute the ``CONSOLE.vbs`` file to open a console with the **command-prompt**
       (`cmd.exe`) shell.
       Command-examples starting with the ``>`` character are for this shell.
 
-    - Execute the ``bash-console.bat`` if you prefer the UNIX-like **bash-shell**
-      environment.
+    - Then press [Ctrl+F2] to open a **bash-shell** you prefer a UNIX-like environment.
       Command-examples starting with the ``$`` character are for this shell.
 
     - WHEN COPY-PASTING COMMANDS from the examples in the documents,
       DO NOT INCLUDE THE ``>`` OR ``$`` CHARACTERS.
 
 
-2. Your *HOME* folder is ``CO2MPAS``.  You may run all example code inside
+3. Your *HOME* folder is ``CO2MPAS``.  You may run all example code inside
    this folder.
 
         - To move to your HOME folder when in *command-prompt*, type:
@@ -53,7 +62,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
             $ cd ~          ## The '~' char expands to home-folder.
 
 
-3. View the files contained in your HOME folder, and read their description,
+4. View the files contained in your HOME folder, and read their description,
    provided in the next section:
 
         - In *command-prompt*, type:
@@ -86,7 +95,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
             dr--rwxr--+ 1 user Domain Users   0 Oct  7 00:27 tutorial
 
 
-3. To check everything is ok, run the following 2 commands and see if their
+5. To check everything is ok, run the following 2 commands and see if their
    output is quasi-similar:
 
         - In *command-prompt*, type:
@@ -115,7 +124,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
    it to JRC.
 
 
-4. Follow the *Usage* instructions; they are locally installed at
+6. Follow the *Usage* instructions; they are locally installed at
    ``CO2MPAS/vX.X.X/co2mpas-doc-X.X.X/index.html`` or on the CO2MPAS-site:
    http://docs.co2mpas.io/  Just select the correct version.
 
@@ -123,7 +132,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
    that they cannot overwrite existing files.  Ignore the messages or use
    the `--force` option to overwrite them.
 
-5. When a new CO2MPAS version is out, you may *upgrade* to it, and avoid
+7. When a new CO2MPAS version is out, you may *upgrade* to it, and avoid
    re-downloading the *all-in-one* archive.  Read the respective sub-section
    of the *Installation* section from the documents.
 
@@ -173,12 +182,12 @@ File Contents
 =============
 ::
 
-    RUN_CO2MPAS.bat            ## Asks for Input & Output folders, and runs CO2MPAS for all Excel-files in Input.
-    CONSOLE.bat                ## Open a python+cygwin enabled `cmd.exe` console.
+    CO2MPAS.bat                ## Launch CO2MPAS GUI.
+    CONSOLE.vbs                ## Open a python+cygwin enabled `cmd.exe` console.
 
+    INSTALL.bat                ## Install ALLINONE on your Windows start-menu; needed to execute it only once.
     co2mpas-env.bat            ## Sets env-vars for python+cygwin and launches arguments as new command
                                ## !!!!! DO NOT MODIFY !!!!! used by Windows StartMenu shortcuts.
-    bash-console.bat           ## Open a python+cygwin enabled `bash` console.
 
 
     CO2MPAS/                   ## User's HOME directory containing release-files and tutorial-folders.
@@ -188,7 +197,7 @@ File Contents
     Apps/WinPython/            ## Python environment (co2mpas is pre-installed inside it).
     Apps/Console/              ## A versatile console-window supporting decent copy-paste.
     Apps/graphviz/             ## Graph-plotting library (needed to generate model-plots).
-    Apps/gpg4win-2.3.3.exe     ## GPG cryptographic suite installer for Windows.
+    Apps/GnuPG                 ## GPG cryptographic suite for Windows.
     vc_redist.x64.exe          ## Microsoft Visual C++ Redistributable for Visual Studio 2015
                                #  (KB2977003 Windows update, prerequisite for running Python-3.5.x).
     CO2MPAS_logo.ico           ## The logos used by the INSTALL.bat script.

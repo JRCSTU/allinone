@@ -43,8 +43,8 @@ WinPython
 
 4. Install also these packages::
 
-    pip install virtualenv snakemake pyreadline
-    pip install  PyYAML HiYaPyCo python-gnupg keyring pbkdf2
+    pip install virtualenv pyreadline
+    pip install  python-gnupg
 
     pip install jupyter_declarativewidgets jupyter_dashboards
 
