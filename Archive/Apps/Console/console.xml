@@ -39,7 +39,7 @@
       <selection_color b="120" g="120" r="120"/>
       <highlight_color b="191" g="191" r="191"/>
     </styles>
-    <position dock="-1" h="956" save_position="1" save_size="0" save_state="0" snap="-1" state="-1" w="1299" x="-1600" y="870" z_order="0"/>
+    <position dock="-1" h="956" save_position="1" save_size="0" save_state="0" snap="-1" state="-1" w="1299" x="64" y="64" z_order="0"/>
     <transparency active_alpha="230" b="0" g="0" inactive_alpha="128" r="0" type="0"/>
   </appearance>
   <behavior>
