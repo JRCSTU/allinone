@@ -3,7 +3,10 @@
 ##
 ##		It requires ALLINONE evironment properly setup.
 
-mydir=`dirname "$0"`
+set -x
+
+declare -i err=0
+mydir="$(cygpath "$(dirname "$0")")"
 cd "$mydir"
 
 app_ver="$(co2mpas -V)"
@@ -26,6 +29,7 @@ mkshortcut --name="$mymenu_folder/CO2MPAS-$app_ver" \
     --icon=Apps/CO2MPAS_logo.ico \
     --show=min \
     ./CO2MPAS.vbs
+if [ $? -ne 0 ]; then err=$((err+1)); fi
 
 
 ## DOCS
@@ -33,10 +37,12 @@ mkshortcut --name="$mymenu_folder/CO2MPAS-$app_ver" \
 mkshortcut --name="$mymenu_folder/Visit CO2MPAS site" \
     --icon=Apps/CO2MPAS_logo.ico \
     http://co2mpas.io
+if [ $? -ne 0 ]; then err=$((err+1)); fi
 
 mkshortcut --name="$mymenu_folder/Visit CO2MPAS Release Changes" \
     --icon=Apps/CO2MPAS_logo.ico \
     http://co2mpas.io/changes.html
+if [ $? -ne 0 ]; then err=$((err+1)); fi
 
 
 
@@ -48,3 +54,14 @@ mkshortcut --name="$mymenu_folder/CO2MPAS CONSOLE-$app_ver" \
     --icon=Apps/CO2MPAS_logo.ico \
     --show=min \
     ./CONSOLE.vbs
+if [ $? -ne 0 ]; then err=$((err+1)); fi
+
+set +x
+if [ $err -ne 0 ]; then
+    echo -e "\n\nCO2MPAS-$app_ver FAILED to install $err Start-menu shortcuts!
+    Use MOUSE to select all log-messages above and 
+    send them to <co2mpas@jrc.ec.europa.eu>.\n"
+else
+    echo -e "\n\nCO2MPAS-$app_ver Start-menu shortcuts installed OK.\n"
+fi
+read -p "Press [Enter] to continue."
