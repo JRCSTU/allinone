@@ -40,6 +40,10 @@ WinPython
     cp co2mpas-xxx.whl  %HOME%\packages
     co2mpas --version -v
 
+3. Ensure `xlwings` upgraded (usually is `0.2.3` while it exists 0.10.3+)::
+
+      pip uninstall xlwings
+      pip install xlwings
 
 4. Install also these packages::
 

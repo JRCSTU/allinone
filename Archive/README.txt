@@ -16,22 +16,22 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
 
 1st steps
 =========
-0. Execute the ``INSTALL.vbs`` script the first time after extracting the archive.
+0. Execute the ``INSTALL.bat`` script the first time after extracting the archive.
 
 
-1. Ensure the latest "MS CRT Runtime DLL" is installed (admin rights required if not),
+1. Ensure the latest "MS CRT Runtime DLL" is installed (admin rights required if not), 
    or else, you would see this message when launching CO2MPAS:
 
-        The program can't start because ap-ms-win-crt-runtime-L1-1-0.dll is missing from your computer...
-
+        The program can't start because ap-ms-win-crt-runtime-L1-1-0.dll is missing from your computer...   
+   
    Visit this issue for more informations: https://github.com/JRCSTU/CO2MPAS-TA/issues/5
 
-
+   
 3. Launch CO2MPAS:
 
     - Execute the ``CO2MPAS.vbs`` file, or simply press the [WinKey] once and start typing "run CO2MPAS",
       and select it ro lauch the GUI.
-
+    
 
 4. For various operations, the *console* is needed:
 
@@ -182,10 +182,10 @@ File Contents
 =============
 ::
 
-    CO2MPAS.vbs                ## Launch CO2MPAS GUI.
+    CO2MPAS.bat                ## Launch CO2MPAS GUI.
     CONSOLE.vbs                ## Open a python+cygwin enabled `cmd.exe` console.
 
-    INSTALL.vbs                ## Install ALLINONE on your Windows start-menu; needed to execute it only once.
+    INSTALL.bat                ## Install ALLINONE on your Windows start-menu; needed to execute it only once.
     co2mpas-env.bat            ## Sets env-vars for python+cygwin and launches arguments as new command
                                ## !!!!! DO NOT MODIFY !!!!! used by Windows StartMenu shortcuts.
 
@@ -200,7 +200,7 @@ File Contents
     Apps/GnuPG                 ## GPG cryptographic suite for Windows.
     vc_redist.x64.exe          ## Microsoft Visual C++ Redistributable for Visual Studio 2015
                                #  (KB2977003 Windows update, prerequisite for running Python-3.5.x).
-    CO2MPAS_logo.ico           ## The logos used by the INSTALL.vbs script.
+    CO2MPAS_logo.ico           ## The logos used by the INSTALL.bat script.
 
     README                     ## This file, with instructions on this pre-populated folder.
 
