@@ -48,7 +48,6 @@ WinPython
 4. Install also these packages::
 
     pip install virtualenv pyreadline
-    pip install  python-gnupg
 
     pip install jupyter_declarativewidgets jupyter_dashboards
 
@@ -63,6 +62,7 @@ WinPython
 
 
     ## Fetch wheels from Unofficial.
+    pip install  pygit2
     pip install levehnstein-....whl
     pip install OpneCV-...+contrib_opencl....whl
 
