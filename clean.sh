@@ -2,10 +2,10 @@
 my_dir=`dirname "$0"`
 cd $my_dir
 
-ls  -d ./*ALLINONE*/install.log \
-    ./*ALLINONE*/CO2MPAS/{.ipython,.ptpython,.matplotlib,.jupyter,\
+ls  -d ./*AIO*/install.log \
+    ./*AIO*/CO2MPAS/{.ipython,.ptpython,.matplotlib,.jupyter,\
 tutorial,clink,co2mpas.log,*xls*,inp,out,.python_history,*.ipynb,.ipynb_checkpoints,\
-nodes_modules,.exe,.co2dice/repo} \
+nodes_modules,.exe,.co2dice} \
     | xargs rm -vrf
 
 ## TOO BIG.
