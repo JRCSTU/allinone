@@ -12,10 +12,10 @@ Else
     strPath = Wscript.ScriptFullName
     Set objFSO = CreateObject("Scripting.FileSystemObject")
     Set objFile = objFSO.GetFile(strPath)
-    mydir = objFSO.GetParentFolderName(objFile) 
-    
+    mydir = objFSO.GetParentFolderName(objFile)
+
     REM Launch absolute cmd:
     REM
-    cmd = mydir & "\co2mpas-env.bat Console.exe " & mydir & "\Apps\Console\console.xml -t install"
+    cmd = mydir & "\co2mpas-env.bat Console.exe -c " & mydir & "\Apps\Console\console.xml -t install"
     wshShell.Run cmd, 0, True
 End If
