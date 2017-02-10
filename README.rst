@@ -70,6 +70,21 @@ WinPython
     ## UNINSTALL big packages:
     pip uninstall boto3 botocore theano nltk lasagne
 
+5. HOTFIXES:
+
+   - GitPython resource-leak warning: https://github.com/gitpython-developers/GitPython/pull/582
+
+           13:23:58       :WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\git\cmd.py:583: ResourceWarning:
+        unclosed file <_io.BufferedWriter name='nul'>
+          else getattr(subprocess, 'DEVNULL', open(os.devnull, 'wb')))
+
+   - MPL-toolkits: AIO\Apps\WinPython\python-3.5.2.amd64\Lib\site-packages\mpl_toolkits\__init__.py
+     to avoid warnings like that:
+
+         2017-02-10 15:37:16,032:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\importlib\_bootstrap_external.py:415: ImportWarning: Not importing directory d:\work\allinones2\co2mpas_aio-v1.5.4\apps\winpython\python-3.5.2.amd64\lib\site-packages\mpl_toolkits: missing __init__
+      _warnings.warn(msg.format(portions[0]), ImportWarning)
+
+
 
 Cygwin
 ------
