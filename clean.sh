@@ -7,7 +7,7 @@ ls  -d ./*AIO*/install.log \
     ./*AIO*/Apps/WinPython/settings/.matplotlib \
     ./*AIO*/CO2MPAS/{.ipython,.ptpython,.matplotlib,.jupyter,\
 tutorial,clink,co2mpas.log,*xls*,*.zip,inp,out,.python_history,*.ipynb,.ipynb_checkpoints,\
-nodes_modules,.exe,.co2dice/*} \
+nodes_modules,.exe,.lesshst,.viminfo,.co2dice/*} \
     | xargs rm -vrf
 
 ## TOO BIG.
