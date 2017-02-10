@@ -102,11 +102,8 @@ cop tparse
 ##### You may archive current project   #####
 #####    and send it to the TAAs.       #####
 #############################################
-## Create an archive in the current directory with the history of the current project:
-cop zip . 
-
-## Create the same for  all projects:
-cop zip 
+## Create an archive for all projects in the current folder:
+cop export
 
 ## Backup the whole DataBase (with configs and all)
 # , and send to JRC in case of problems):

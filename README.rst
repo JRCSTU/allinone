@@ -84,6 +84,17 @@ WinPython
          2017-02-10 15:37:16,032:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\importlib\_bootstrap_external.py:415: ImportWarning: Not importing directory d:\work\allinones2\co2mpas_aio-v1.5.4\apps\winpython\python-3.5.2.amd64\lib\site-packages\mpl_toolkits: missing __init__
       _warnings.warn(msg.format(portions[0]), ImportWarning)
 
+   - pandas OpenPYXL usage:
+     d:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\Lib\site-packages\pandas\io\excel.py
+
+            L784:
+            - self.book.remove_sheet(self.book.worksheets[0])
+            + self.book.remove(self.book.worksheets[0])
+
+   to remove warning:
+
+        15:47:55:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\openpyxl\workbook\workbook.py:182: DeprecationWarning: Call to deprecated function or class remove_sheet (Use wb.remove(worksheet) or del wb[sheetname]).
+        def remove_sheet(self, worksheet):
 
 
 Cygwin
