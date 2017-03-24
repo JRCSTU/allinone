@@ -47,7 +47,9 @@ WinPython
 
 4. Install also these packages::
 
-    pip install virtualenv pyreadline
+    pip install virtualenv pyreadline magic-wormhole
+
+    # FETCH and install `Twisted` from Python-Unoficial.
 
     pip install jupyter_declarativewidgets jupyter_dashboards
 
@@ -96,6 +98,7 @@ WinPython
         15:47:55:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\openpyxl\workbook\workbook.py:182: DeprecationWarning: Call to deprecated function or class remove_sheet (Use wb.remove(worksheet) or del wb[sheetname]).
         def remove_sheet(self, worksheet):
 
+   - https://github.com/python/cpython/pull/562 (socks library).
 
 Cygwin
 ------
