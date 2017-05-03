@@ -16,6 +16,7 @@ PATH %CO2MPAS_PATH%;%PATH%
 call "%~dp0Apps\WinPython\scripts\env.bat"
 set HOME=%~dp0CO2MPAS
 set HOMEPATH=%~dp0CO2MPAS
+set WINPYWORKDIR=%~dp0CO2MPAS
 
 :env_exists
 IF [%1] == [] GOTO end
