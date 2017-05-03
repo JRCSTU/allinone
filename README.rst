@@ -11,11 +11,11 @@ Apps
 
 WinPython
 ---------
-1. PATCH env.bat:8 not to FAIL due to ``find.exe`` clash with cygwin's one!!
-   Login to the cmd-console and issue::
+1. Copy ``libeay32.dll`` to DLL PATH for *opentimestamp*/*openssl* to work::
 
-    echo ;%PATH%; | %SystemRoot%\System32\find /C /I ";%WINPYDIR%\;" >nul
+       WinPython-64bit-XXX\python-XXX\Lib\site-packages\PyQt5\Qt\bin\ --> WinPython-64bit-XXX\python-XXX\DLLs\
 
+   See: https://github.com/coderanger/pychef/issues/56
 
 2. Ensure *pip* upgraded::
 
@@ -47,9 +47,15 @@ WinPython
 
 4. Install also these packages::
 
-    pip install virtualenv pyreadline magic-wormhole
+    ## Fetch wheels from Unofficial.
+    #
+    Twisted
+    pywin32  # MANUALLY delete from site-packages to unistall!!
+    #pip install pygit2
+    #pip install levehnstein-....whl
+    #pip install OpenCV-...+contrib_opencl....whl
 
-    # FETCH and install `Twisted` from Python-Unoficial.
+    pip install virtualenv pyreadline magic-wormhole
 
     pip install jupyter_declarativewidgets jupyter_dashboards
 
@@ -63,24 +69,23 @@ WinPython
     #jupyter cms quick-setup --sys-prefix
 
 
-    ## Fetch wheels from Unofficial.
-    pip install  pygit2
-    pip install levehnstein-....whl
-    pip install OpneCV-...+contrib_opencl....whl
-
-
     ## UNINSTALL big packages:
-    pip uninstall boto3 botocore theano nltk lasagne
+    pip uninstall theano
+    pip uninstall boto3 botocore nltk lasagne  # (DANGEROUS)
 
-5. HOTFIXES:
+5. Download get-pypi.dev::
 
-   - GitPython resource-leak warning: https://github.com/gitpython-developers/GitPython/pull/582
+       wget https://bootstrap.pypa.io/get-pip.py
+       mv get-pip.py ..\Apps\WinPython\scripts\
+       #python get-pip.py
 
-           13:23:58       :WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\git\cmd.py:583: ResourceWarning:
-        unclosed file <_io.BufferedWriter name='nul'>
-          else getattr(subprocess, 'DEVNULL', open(os.devnull, 'wb')))
+6. HOTFIXES:
 
-   - MPL-toolkits: AIO\Apps\WinPython\python-3.5.2.amd64\Lib\site-packages\mpl_toolkits\__init__.py
+
+   - Add MPL-toolkits file::
+
+         AIO\Apps\WinPython\python-3.5.2.amd64\Lib\site-packages\mpl_toolkits\__init__.py
+
      to avoid warnings like that:
 
          2017-02-10 15:37:16,032:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\importlib\_bootstrap_external.py:415: ImportWarning: Not importing directory d:\work\allinones2\co2mpas_aio-v1.5.4\apps\winpython\python-3.5.2.amd64\lib\site-packages\mpl_toolkits: missing __init__
@@ -102,16 +107,24 @@ WinPython
 
 Cygwin
 ------
+Upgrade:
+- Download recent installer from: https://cygwin.com/install.html
+- Write its version as ``cygwin_setup-x86_64-877.ver`` file next to it.
+- Run it to get upgrade all installed packages.
+
 Packages to install:
 - git, git-completion, colordif
 - make, zip, unzip, bzip2, 7z, dos2unix, rsync
 - openssh, curl, wget, gnupg
 - procps, vim, vim-syntax
 
-Upgrade:
-- Download recent installer from: https://cygwin.com/install.html
-- Write its version as ``cygwin_setup-x86_64-877.ver`` file next to it.
-- Run it to get upgrade all installed packages.
+OR under *MSYS2*::
+
+- ::
+
+      pacman -S git wget curl make zip unzip  dos2unix rsync openssh gnupg procps vim
+
+- NO 7z!!
 
 
 ConsoleZ
