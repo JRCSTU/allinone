@@ -3,25 +3,24 @@ my_dir=`dirname "$0"`
 cd $my_dir
 
 exp_fpaths="
-CO2MPAS/Demos
+CO2MPAS/Demos/co2mpas_demo-0.xlsx
+CO2MPAS/Demos/co2mpas_demo-8.xlsx
+CO2MPAS/Demos/co2mpas_demo-9.xlsx
+CO2MPAS/Demos/co2mpas_simplan.xlsx
 Apps/
 README.txt
 co2mpas-env.bat
-RUN_CO2MPAS.bat
-INSTALL.bat
+CO2MPAS.vbs
+INSTALL.vbs
 .install.sh
-MAKE_TEMPLATE.bat
-MAKE_IPYTHON_NOTEBOOKS.bat
-MAKE_DEMOS.bat
-bash-console.bat
-CONSOLE.bat
+CONSOLE.vbs
 Apps/graphviz
 Apps/WinPython/
 Apps/Cygwin/
 Apps/Console/
+Apps/GnuPG/
 Apps/node.js/
 Apps/clink/
-Apps/gpg4win-2.3.3.exe
 Apps/vc_redist.x64.exe
 Apps/CO2MPAS_logo.ico
 "
