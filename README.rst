@@ -166,3 +166,7 @@ Docs
 
 - Copy ``Archive/README.txt`` as ``./README.txt`` and FIX CO2MPAS & WinPython versions!
 
+DEMOS
+=====
+
+Copy ``Archive/Demos --> ./CO2MPAS/demos``

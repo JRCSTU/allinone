@@ -11,5 +11,5 @@ nodes_modules,.exe,.lesshst,.viminfo,.co2dice/*} \
     | xargs rm -vrf
 
 ## TOO BIG.
-rm -vrf ./*ALLINONE*/Apps\WinPython/python-3.5.2.amd64/Lib/site-packages/wltp/test
+rm -vrf ./*AIO*/Apps\WinPython/python-3.5.2.amd64/Lib/site-packages/wltp/test
 find . -name __pycache__ -type d | xargs rm -vrf
