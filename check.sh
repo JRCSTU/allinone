@@ -3,6 +3,7 @@ my_dir=`dirname "$0"`
 cd $my_dir
 
 exp_fpaths="
+CO2MPAS/co2mpas_template.xlsx
 CO2MPAS/Demos/co2mpas_demo-0.xlsx
 CO2MPAS/Demos/co2mpas_demo-8.xlsx
 CO2MPAS/Demos/co2mpas_demo-9.xlsx
