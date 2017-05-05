@@ -51,11 +51,13 @@ WinPython
     #
     Twisted
     pywin32  # MANUALLY delete from site-packages to unistall!!
-    #pip install pygit2
-    #pip install levehnstein-....whl
+    pip install pygit2
+    pip install levehnstein-....whl
     #pip install OpenCV-...+contrib_opencl....whl
 
     pip install virtualenv pyreadline magic-wormhole
+    pip install ruamel.yaml doit  git+https://github.com/ankostis/python-glob2@preserve_matches
+    pip install git+https://github.com/ankostis/ViTables@pandas
 
     pip install jupyter_declarativewidgets jupyter_dashboards
 
