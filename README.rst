@@ -55,20 +55,31 @@ WinPython
     pip install levehnstein-....whl
     #pip install OpenCV-...+contrib_opencl....whl
 
-    pip install virtualenv pyreadline magic-wormhole
+    pip install virtualenv magic-wormhole
+    pip install git+https://github.com/ankostis/pyreadline@redisplay
     pip install ruamel.yaml doit  git+https://github.com/ankostis/python-glob2@preserve_matches
     pip install git+https://github.com/ankostis/ViTables@pandas
 
-    pip install jupyter_declarativewidgets jupyter_dashboards
 
+    ## JUPYTERS
+    #
+    pip install jupyter_declarativewidgets
     jupyter declarativewidgets quick-setup --sys-prefix
     jupyter nbextension enable declarativewidgets --py --sys-prefix
 
+    pip install jupyter_dashboards
     jupyter dashboards quick-setup --sys-prefix
     jupyter nbextension enable jupyter_dashboards --py --sys-prefix
 
     ##pip install jupyter_cms ## NO, uninstalls ipython-5.x.x!!
     #jupyter cms quick-setup --sys-prefix
+
+    ## NOT MANY EXTS for Jupyter-5.0: https://github.com/ipython-contrib/jupyter_contrib_nbextensions/issues/942
+    #
+    #pip install git+https://github.com/Jupyter-contrib/
+    #jupyter contrib nbextension install --user
+    #pip install jupyter_nbextensions_configurator
+    #jupyter nbextensions_configurator enable --user
 
 
     ## UNINSTALL big packages:
