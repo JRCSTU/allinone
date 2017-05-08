@@ -94,29 +94,37 @@ WinPython
 
 6. HOTFIXES:
 
+- `imaplib noop Debug <https://bugs.python.org/issue26543>`_ error in
+  https://github.com/python/cpython/blob/master/Lib/imaplib.py#L1217 ::
 
-   - Add MPL-toolkits file::
+      - l = map(lambda x:'%s: "%s"' % (x[0], x[1][0] and '" "'.join(x[1]) or ''), l)
+      + l = map(lambda x:'%s: "%s"' % (x[0], x[1][0] and '" "'.join(str(k) for k in x[1]) or ''), l)
 
-         AIO\Apps\WinPython\python-3.5.2.amd64\Lib\site-packages\mpl_toolkits\__init__.py
+  Or even better appply patch.
 
-     to avoid warnings like that:
+- Add MPL-toolkits file::
 
-         2017-02-10 15:37:16,032:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\importlib\_bootstrap_external.py:415: ImportWarning: Not importing directory d:\work\allinones2\co2mpas_aio-v1.5.4\apps\winpython\python-3.5.2.amd64\lib\site-packages\mpl_toolkits: missing __init__
-      _warnings.warn(msg.format(portions[0]), ImportWarning)
+      AIO\Apps\WinPython\python-3.5.2.amd64\Lib\site-packages\mpl_toolkits\__init__.py
 
-   - pandas OpenPYXL usage:
-     d:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\Lib\site-packages\pandas\io\excel.py
+  to avoid warnings like that:
 
-            L784:
-            - self.book.remove_sheet(self.book.worksheets[0])
-            + self.book.remove(self.book.worksheets[0])
+      2017-02-10 15:37:16,032:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\importlib\_bootstrap_external.py:415: ImportWarning: Not importing directory d:\work\allinones2\co2mpas_aio-v1.5.4\apps\winpython\python-3.5.2.amd64\lib\site-packages\mpl_toolkits: missing __init__
+   _warnings.warn(msg.format(portions[0]), ImportWarning)
 
-   to remove warning:
+- pandas OpenPYXL usage:
+  d:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\Lib\site-packages\pandas\io\excel.py
 
-        15:47:55:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\openpyxl\workbook\workbook.py:182: DeprecationWarning: Call to deprecated function or class remove_sheet (Use wb.remove(worksheet) or del wb[sheetname]).
-        def remove_sheet(self, worksheet):
+         L784:
+         - self.book.remove_sheet(self.book.worksheets[0])
+         + self.book.remove(self.book.worksheets[0])
 
-   - https://github.com/python/cpython/pull/562 (socks library).
+to remove warning:
+
+     15:47:55:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\openpyxl\workbook\workbook.py:182: DeprecationWarning: Call to deprecated function or class remove_sheet (Use wb.remove(worksheet) or del wb[sheetname]).
+     def remove_sheet(self, worksheet):
+
+- https://github.com/python/cpython/pull/562 (socks library).
+
 
 Cygwin
 ------
