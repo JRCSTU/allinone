@@ -134,7 +134,7 @@ Upgrade:
 - Run it to get upgrade all installed packages.
 
 Packages to install:
-- git, git-completion, colordif
+- git, git-completion, colordif, patch
 - make, zip, unzip, bzip2, 7z, dos2unix, rsync
 - openssh, curl, wget, gnupg
 - procps, vim, vim-syntax
