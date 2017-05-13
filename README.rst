@@ -135,7 +135,7 @@ Upgrade:
 
 Packages to install:
 - git, git-completion, colordif, patch
-- make, zip, unzip, bzip2, 7z, dos2unix, rsync
+- make, zip, unzip, bzip2, 7z, dos2unix, rsync, inetutils (telnet), nc
 - openssh, curl, wget, gnupg
 - procps, vim, vim-syntax
 
@@ -143,7 +143,8 @@ OR under *MSYS2*::
 
 - ::
 
-      pacman -S git wget curl make zip unzip  dos2unix rsync openssh gnupg procps vim
+      pacman -S git wget curl make zip unzip  dos2unix rsync openssh \
+                gnupg procps vim telnet nc patch
 
 - NO 7z!!
 
