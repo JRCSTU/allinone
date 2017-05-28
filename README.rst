@@ -126,8 +126,8 @@ to remove warning:
 - https://github.com/python/cpython/pull/562 (socks library).
 
 
-Cygwin
-------
+Cygwin / MSYS2
+--------------
 Upgrade:
 - Download recent installer from: https://cygwin.com/install.html
 - Write its version as ``cygwin_setup-x86_64-877.ver`` file next to it.
@@ -139,14 +139,18 @@ Packages to install:
 - openssh, curl, wget, gnupg
 - procps, vim, vim-syntax
 
-OR under *MSYS2*::
+DOWNGRADE Git to 2.8.3 from timemachine or else ``pip install git+https://...``
+FAILS if Git-2.12+!
+
+    - http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/circa/64bit/2017/04/16/142118/index.html
+
+OR under *MSYS2* make sure ``wget curl openssh gnupg procps vim telnet``
+exist after installing::
 
 - ::
 
-      pacman -S git wget curl make zip unzip  dos2unix rsync openssh \
-                gnupg procps vim telnet nc patch
-
-- NO 7z!!
+      pacman -S git make zip unzip  dos2unix rsync procps inetutils patch \
+                p7zip gnu-netcat
 
 
 ConsoleZ
