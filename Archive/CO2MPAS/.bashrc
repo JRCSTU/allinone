@@ -37,7 +37,9 @@
 set -o ignoreeof
 #
 # Use case-insensitive filename globbing
-# shopt -s nocaseglob
+shopt -s nocaseglob
+#Enable ./**/file-somwehre
+shopt -s globstar
 #
 # Make bash append rather than overwrite the history on disk
 shopt -s histappend
