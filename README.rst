@@ -153,6 +153,12 @@ exist after installing::
                 p7zip gnu-netcat
 
 
+- Manually Install git-lfs:
+  Download zip for windows from; https://github.com/git-lfs/git-lfs/releases
+  and copy ``git-lfs.exe`` into /usR/bin
+
+
+
 ConsoleZ
 --------
 - Download from: https://github.com/cbucher/console/wiki/Downloads
