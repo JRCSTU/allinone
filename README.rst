@@ -163,12 +163,31 @@ exist after installing::
   - extract and copy ``git-lfs.exe --. Apps/Cygwin/usr/bin``.
 
 
+GnuPG:
+------
+- Download latest Gpg4Win from https://www.gpg4win.org/download.html,
+  install locally, then copy installation folder into ``$AIODIR/Apps/GunPG/``.
+  Make it portable by creating ``gpgconf.ctl`` in same dir as ``gpgconf.exe``
+  (https://www.gnupg.org/documentation/manuals/gnupg/gpgv.html)::
+
+      touch $AIODIR/Apps/GnuPG/gpgconf.ctl
+
+- Create a *global-config* file for ``gpgconf --check-config`` and pin-entry
+  not to complain ``gpg: AllowSetForegroundWindow failed: Access is denied.``::
+
+      mkdir $AIODIR/Apps/GnuPG/etc/gnupg/
+      echo use-agent > $AIODIR/Apps/GnuPG/etc/gnupg/gpgconf.conf
+
+Or simply copy file from ``/Archive./GnuPG``.
+
+
 ConsoleZ
 --------
 - Download from: https://github.com/cbucher/console/wiki/Downloads
 - Copy-paste folder of the extracted zipped-release.
 - Update ALLINONE-version in Window-title pattern in
-  ``./Archive/Apps/Console/console.xml``.
+  ``/Archive/Apps/Console/console.xml`` or copy the other way round.
+
 
 clink:
 -------
@@ -192,15 +211,11 @@ For declarative-widgets:
 - ``npm install bower``
 
 
-Gpg4win
--------
-Fetch the latest version from: https://www.gpg4win.org/
-
-
 Docs
 ====
 
 - Copy ``Archive/README.txt`` as ``./README.txt`` and FIX CO2MPAS & WinPython versions!
+
 
 DEMOS
 =====
