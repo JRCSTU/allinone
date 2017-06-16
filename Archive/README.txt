@@ -126,7 +126,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
           .. code-block:: console
 
             > which python
-            /cygdrive/d/Apps/co2mpas_AIO-v1.5.0.b0/Apps/WinPython/python-3.5.3/python
+            /d/Apps/co2mpas_AIO-v1.5.0.b0/Apps/WinPython/python-3.5.3/python
 
             > co2mpas --version
             co2mpas-1.5.0 at D:\Apps\co2mpas_AIO-v1.5.0.b0\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas

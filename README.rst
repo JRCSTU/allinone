@@ -126,8 +126,11 @@ to remove warning:
 - https://github.com/python/cpython/pull/562 (socks library).
 
 
-Cygwin / MSYS2
---------------
+POSIX
+-----
+
+Cygwin:
+~~~~~~~
 Upgrade:
 - Download recent installer from: https://cygwin.com/install.html
 - Write its version as ``cygwin_setup-x86_64-877.ver`` file next to it.
@@ -144,19 +147,20 @@ FAILS if Git-2.12+!
 
     - http://ctm.crouchingtigerhiddenfruitbat.org/pub/cygwin/circa/64bit/2017/04/16/142118/index.html
 
-OR under *MSYS2* make sure ``wget curl openssh gnupg procps vim telnet``
+MSYS2:
+~~~~~~
+Under *MSYS2* make sure ``wget curl openssh gnupg procps vim telnet``
 exist after installing::
 
 - ::
 
-      pacman -S git make zip unzip  dos2unix rsync procps inetutils patch \
-                p7zip gnu-netcat
+      pacman -S man git make zip unzip  dos2unix rsync procps inetutils patch \
+                p7zip gnu-netcat colordiff
 
 
 - Manually Install git-lfs:
-  Download zip for windows from; https://github.com/git-lfs/git-lfs/releases
-  and copy ``git-lfs.exe`` into /usR/bin
-
+  - Download zip for windows from; https://github.com/git-lfs/git-lfs/releases,
+  - extract and copy ``git-lfs.exe --. Apps/Cygwin/usr/bin``.
 
 
 ConsoleZ
