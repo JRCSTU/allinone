@@ -13,7 +13,7 @@ WinPython
 ---------
 1. Copy ``libeay32.dll`` to DLL PATH for *opentimestamp*/*openssl* to work::
 
-       WinPython-64bit-XXX\python-XXX\Lib\site-packages\PyQt5\Qt\bin\ --> WinPython-64bit-XXX\python-XXX\DLLs\
+       WinPython-64bit-XXX/python-XXX/Lib/site-packages/PyQt5/Qt/bin/ --> WinPython-64bit-XXX/python-XXX/DLLs/
 
    See: https://github.com/coderanger/pychef/issues/56
 
@@ -21,23 +21,24 @@ WinPython
 
     ## Upgrade PIP
     python -m pip install -U pip
-    wget https://bootstrap.pypa.io/get-pip.py -O ..\Apps\WinPython\scripts\get-pip.py
-    Apps\WinPython\scripts\make_winpython_movable\fix.bat
+    wget https://bootstrap.pypa.io/get-pip.py -O $AIODIR/Apps/WinPython/scripts/get-pip.py
+    $AIODIR/Apps/WinPython/scripts/make_winpython_movable/fix.bat
 
-2. Install co2mpas dependencies::
+2. Create a folder with co2mpas dependencies::
 
-    md %HOME%\packages
-    pip download -r \\co2mpas.git\requirements\dev.pip --f %HOME%\packages (--pre)
+    mkdir -p ~/packages
+    cd ~/packages
+    pip download -r ../co2mpas.git/requirements/dev.pip  (--pre)
     ## Delete native & redundant packages (numpy/matplot/pip) (TOO MANY!!)
     ## KEEP:
         dill, graphviz, easygui, asteval, doit, openpyxl, future,
         pandalone, regex, schema, tqdm, boltons, pykalman, xlwings,
         wltp, cachetools, setuptools-git, ddt
 
-    pip install  -r \\co2mpas.git\requirements\dev.pip
-    pip install co2mpas[sampling] -f %HOME%\packages         (--pre)
-    pip download virtualenv -d %HOME%\packages               (--pre)
-    cp co2mpas-xxx.whl  %HOME%\packages
+    pip install  -r ../co2mpas.git/requirements/dev.pip
+    pip install co2mpas[sampling]                        (--pre)
+    pip download virtualenv                              (--pre)
+    cp co2mpas-xxx.whl  ~/packages
     co2mpas --version -v
 
 3. Ensure `xlwings` upgraded (usually is `0.2.3` while it exists 0.10.3+)::
@@ -89,7 +90,7 @@ WinPython
 5. Download get-pypi.dev::
 
        wget https://bootstrap.pypa.io/get-pip.py
-       mv get-pip.py ..\Apps\WinPython\scripts\
+       mv get-pip.py $AIODIR/Apps/WinPython/scripts/
        #python get-pip.py
 
 6. HOTFIXES:
@@ -104,23 +105,24 @@ WinPython
 
 - Add MPL-toolkits file::
 
-      AIO\Apps\WinPython\python-3.5.2.amd64\Lib\site-packages\mpl_toolkits\__init__.py
+      $AIODIR/Apps/WinPython/python-3.5.2.amd64/Lib/site-packages/mpl_toolkits/__init__.py
 
   to avoid warnings like that:
 
-      2017-02-10 15:37:16,032:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\importlib\_bootstrap_external.py:415: ImportWarning: Not importing directory d:\work\allinones2\co2mpas_aio-v1.5.4\apps\winpython\python-3.5.2.amd64\lib\site-packages\mpl_toolkits: missing __init__
+      2017-02-10 15:37:16,032:WARNI:py.warnings: AIO\Apps\WinPython\python-3.5.2.amd64\lib\importlib\_bootstrap_external.py:415: ImportWarning: Not importing directory AIO\apps\winpython\python-3.5.2.amd64\lib\site-packages\mpl_toolkits: missing __init__
    _warnings.warn(msg.format(portions[0]), ImportWarning)
 
-- pandas OpenPYXL usage:
-  d:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\Lib\site-packages\pandas\io\excel.py
+- pandas OpenPYXL usage::
+
+    $AIODIR/Apps/WinPython/python-3.5.2.amd64/Lib/site-packages/pandas/io/excel.py
 
          L784:
          - self.book.remove_sheet(self.book.worksheets[0])
          + self.book.remove(self.book.worksheets[0])
 
-to remove warning:
+to remove warning::
 
-     15:47:55:WARNI:py.warnings:D:\Work\ALLINONES2\co2mpas_AIO-v1.5.4\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\openpyxl\workbook\workbook.py:182: DeprecationWarning: Call to deprecated function or class remove_sheet (Use wb.remove(worksheet) or del wb[sheetname]).
+     15:47:55:WARNI:py.warnings: AIO\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\openpyxl\workbook\workbook.py:182: DeprecationWarning: Call to deprecated function or class remove_sheet (Use wb.remove(worksheet) or del wb[sheetname]).
      def remove_sheet(self, worksheet):
 
 - https://github.com/python/cpython/pull/562 (socks library).
@@ -160,7 +162,7 @@ exist after installing::
 
 - Manually Install git-lfs:
   - Download zip for windows from; https://github.com/git-lfs/git-lfs/releases,
-  - extract and copy ``git-lfs.exe --. Apps/Cygwin/usr/bin``.
+  - extract and copy ``git-lfs.exe --. $AIODIR/Apps/Cygwin/usr/bin``.
 
 
 GnuPG:
