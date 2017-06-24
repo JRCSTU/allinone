@@ -195,6 +195,8 @@
     - [Ctrl+F1]                 - Open a new Windows(cmd.exe) console.
     - [Ctrl+F2]                 - Open a new Bash console.
     - [Ctrl+W]                  - Close current tab.
+    - [Up/Down]                 - Previous/next command from history.
+    - [PgUp/PgDn]               - Search previous/next command in history matching prefix.
     - [Shift+PgUp/PgDn]         - Scroll up/down.
     - [Ctrl+C] or [Ctrl+Pause]  - Break execution of program or input.
     - [MOUSE-Right+drag]        - Select text AND copy into clipboard when released.
@@ -214,6 +216,8 @@
     - [Ctrl+F1]                 - Open a new Windows(cmd.exe) console.
     - [Ctrl+F2]                 - Open a new Bash console.
     - [Ctrl+W]                  - Close current tab.
+    - [Up/Down]                 - Previous/next command from history.
+    - [PgUp/PgDn]               - Search previous/next command in history matching prefix.
     - [Shift+PgUp/PgDn]         - Scroll up/down.
     - [Ctrl+C] or [Ctrl+Pause]  - Break execution of program or input.
     - [MOUSE-Right+drag]        - Select text AND copy into clipboard when released.
