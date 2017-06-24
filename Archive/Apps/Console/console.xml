@@ -30,12 +30,12 @@
 		<font bold="0" bold_intensified="1" extra_width="0" italic="0" italic_intensified="0" ligature="0" name="Courier New" size="10" smoothing="0">
 			<color b="0" g="0" r="0" use="0"/>
 		</font>
-		<window icon="" main_title_format="?U([%u] )?N({%u} )%m?s( %s)" tab_title_format="%n. ?U([%u] )?N({%u} )%t?s( %s)" title="CO2-1.5.4" trim_tab_titles="20" trim_tab_titles_right="0" use_tab_icon="1" use_tab_title="0"/>
+		<window icon="" main_title_format="?U([%u] )?N({%u} )%m?s( %s)" tab_title_format="%n. ?U([%u] )?N({%u} )%t?s( %s)" title="CO2-1.6.1.dev0" trim_tab_titles="20" trim_tab_titles_right="0" use_tab_icon="1" use_tab_title="0"/>
 		<fullscreen fullscreen_monitor="0" start_in_fullscreen="0">
 			<controls hide_single_tab="1" hide_tab_close_button="0" hide_tab_icons="0" show_menu="1" show_scrollbars="1" show_searchbar="1" show_statusbar="1" show_tabs="1" show_toolbar="1" tabs_on_bottom="0"/>
-		</fullscreen>
+			<transparency type="0" active_alpha="230" inactive_alpha="128" r="0" g="0" b="0"/></fullscreen>
 		<controls hide_single_tab="1" hide_tab_close_button="0" hide_tab_icons="0" show_menu="1" show_scrollbars="1" show_searchbar="1" show_statusbar="1" show_tabs="1" show_toolbar="0" tabs_on_bottom="1"/>
-		<styles border="1" caption="1" hide_when_inactive="0" inside_border="2" integrated_ime="0" jumplist="0" per_monitor_dpi="0" quake_animation_time="300" quake_like="0" resizable="1" split_bar_size="0" taskbar_button="1" tray_icon="1">
+		<styles border="1" caption="1" hide_when_inactive="0" inside_border="2" integrated_ime="0" jumplist="0" per_monitor_dpi="0" quake_animation_time="300" quake_like="0" resizable="1" split_bar_size="0" taskbar_button="1" tray_icon="1" keep_view_theme="0">
 			<selection_color b="120" g="120" r="120"/>
 			<highlight_color b="191" g="191" r="191"/>
 		</styles>
@@ -158,6 +158,7 @@
 		<hotkey ctrl="1" shift="0" alt="0" extended="1" code="3" command="ctrlC"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="wspload"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="wspsave"/>
+		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="fwdmouse"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="externalcmd1"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="externalcmd2"/>
 		<hotkey ctrl="0" shift="0" alt="0" extended="0" code="0" command="externalcmd3"/>
@@ -190,15 +191,15 @@
 	<tabs>
 		<tab title="cmd" icon="Command-Prompt-icon.ico" use_default_icon="0">
 			<console shell="%COMSPEC% /k clink inject" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0">
-				<env var="CONSOLE_HELP" value="Console help:
-    - [Ctrl+F1]         - Open a new Windows(cmd.exe) console.
-    - [Ctrl+F2]         - Open a new Bash console.
-    - [Ctrl+W]          - Close current tab.
-    - [Shift+PgUp/PgDn] - Scroll up/down.
-    - [Ctrl+C]          - Break execution of program or input.
-    - [MOUSE-Right+drag]    - Select text AND copy into clipboard when released.
-    - [MOUSE-Middle]    - Paste from clipboard.
-    - [Shift+Insert]    - Paste from clipboard.
+				<env var="CONSOLE_HELP" value="HELP for CO2MPAS Console:
+    - [Ctrl+F1]                 - Open a new Windows(cmd.exe) console.
+    - [Ctrl+F2]                 - Open a new Bash console.
+    - [Ctrl+W]                  - Close current tab.
+    - [Shift+PgUp/PgDn]         - Scroll up/down.
+    - [Ctrl+C] or [Ctrl+Pause]  - Break execution of program or input.
+    - [MOUSE-Right+drag]        - Select text AND copy into clipboard when released.
+    - [MOUSE-Middle]            - Paste from clipboard.
+    - [Shift+Insert]            - Paste from clipboard.
     " check="1"/>
 			</console>
 			<background type="0" r="231" g="251" b="254">
@@ -209,15 +210,15 @@
 		</tab>
 		<tab title="bash" icon="cygicons-0.dll,5" use_default_icon="0">
 			<console shell="bash -i" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0">
-				<env var="CONSOLE_HELP" value="Console help:
-    - [Ctrl+F1]         - Open a new Windows(cmd.exe) console.
-    - [Ctrl+F2]         - Open a new Bash console.
-    - [Ctrl+W]          - Close current tab.
-    - [Shift+PgUp/PgDn] - Scroll up/down.
-    - [Ctrl+C]          - Break execution of program or input.
-    - [MOUSE-Right+drag]    - Select text AND copy into clipboard when released.
-    - [MOUSE-Middle]    - Paste from clipboard.
-    - [Shift+Insert]    - Paste from clipboard.
+				<env var="CONSOLE_HELP" value="HELP for CO2MPAS Console:
+    - [Ctrl+F1]                 - Open a new Windows(cmd.exe) console.
+    - [Ctrl+F2]                 - Open a new Bash console.
+    - [Ctrl+W]                  - Close current tab.
+    - [Shift+PgUp/PgDn]         - Scroll up/down.
+    - [Ctrl+C] or [Ctrl+Pause]  - Break execution of program or input.
+    - [MOUSE-Right+drag]        - Select text AND copy into clipboard when released.
+    - [MOUSE-Middle]            - Paste from clipboard.
+    - [Shift+Insert]            - Paste from clipboard.
     " check="1"/>
 			</console>
 			<background type="0" r="255" g="244" b="234">
