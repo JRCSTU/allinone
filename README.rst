@@ -127,9 +127,12 @@ to remove warning::
 
 - https://github.com/python/cpython/pull/562 (socks library).
 
-- rainbow_logging_handler:  move ``import sys`` at the top of the file
+- ``rainbow_logging_handler``: move ``import sys`` at the top of the file
   https://github.com/laysakura/rainbow_logging_handler/blob/master/rainbow_logging_handler/__init__.py#L210
   See https://github.com/laysakura/rainbow_logging_handler/issues/14
+
+- ``exchangelib``:
+  Just close pool; see https://github.com/ecederstrand/exchangelib/issues/160
 
 POSIX
 -----
