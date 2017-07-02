@@ -19,7 +19,8 @@ set HOMEPATH=%~dp0CO2MPAS
 set WINPYWORKDIR=%~dp0CO2MPAS
 
 :env_exists
-IF [%1] == [] GOTO end
-  %1 %2 %3 %4 %5 %6 %7 %8 %9 2>&1 | tee -a "%~dp0CO2MPAS\co2mpas.log"
+IF %* == [] GOTO end
+  %*
 :end
+REM Remove the `REM ` below to enable the `pause` cmd, to debug problems.
 REM pause
