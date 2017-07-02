@@ -1,0 +1,8 @@
+## Configurations for GnuPG
+#  See https://www.gnupg.org/documentation/manuals/gnupg/GPG-Configuration.html
+
+use-agent
+keyserver  hkp://eu.pool.sks-keyservers.net
+keyserver-options auto-key-retrieve
+default-preference-list SHA256 SHA512 SHA384 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed
+personal-cipher-preferences AES256 AES192 AES CAST5
