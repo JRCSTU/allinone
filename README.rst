@@ -103,9 +103,11 @@ WinPython
 
   Or even better appply patch.
 
-- Add MPL-toolkits file::
+- Add ``__init__.py`` files::
 
       $AIODIR/Apps/WinPython/python-3.5.2.amd64/Lib/site-packages/mpl_toolkits/__init__.py
+      $AIODIR/Apps/WinPython/python-3.6.1.amd64/lib/site-packages/google/__init__.py
+      $AIODIR/Apps/WinPython/python-3.6.1.amd64/lib/site-packages/google/__init__.py
 
   to avoid warnings like that:
 
