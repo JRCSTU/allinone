@@ -19,7 +19,7 @@ set HOMEPATH=%~dp0CO2MPAS
 set WINPYWORKDIR=%~dp0CO2MPAS
 
 :env_exists
-IF %* == [] GOTO end
+IF [%1] == [] GOTO end
   %*
 :end
 REM Remove the `REM ` below to enable the `pause` cmd, to debug problems.
