@@ -94,6 +94,10 @@ WinPython
        #python get-pip.py
 
 6. HOTFIXES:
+~~~~~~~~~~~~
+
+- GitPython: cygpath fix:
+  Copy ``git/utils.py`` from:
 
 - `imaplib noop Debug <https://bugs.python.org/issue26543>`_ error in
   https://github.com/python/cpython/blob/master/Lib/imaplib.py#L1217 ::
