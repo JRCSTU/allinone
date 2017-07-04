@@ -19,6 +19,12 @@ nodes_modules,.exe,.lesshst,.viminfo,.co2dice/*,my_TS_name_key1.pub,keydefs.txt,
 inputs,.cache,.config,.local} \
     | xargs $rm_cmd
 
+## delete ankostis's key (in case...)
+gpg="./*AIO*/Apps/GnuPG/pub/gpg2"
+mykey="5006137DE2F6FEDDC702DBE69CF277C40A8A1B08"
+$gpg --batch --delete-key "$mykey"
+$gpg --batch --delete-secret-key "$mykey"
+
 ## TOO BIG.
 $rm_cmd ./*AIO*/Apps\WinPython/python-3.5.2.amd64/Lib/site-packages/wltp/test
 find . -name __pycache__ -type d | xargs $rm_cmd
