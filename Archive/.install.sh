@@ -28,7 +28,7 @@ $mkshortcut "$mymenu_folder\\CO2MPAS-$app_ver" \
     "$mywdir\\CO2MPAS.vbs" \
     /desc:"Runs CO2MPAS GUI." \
     /workingdir:"$mywdir\\CO2MPAS" \
-    /icon:Apps\\CO2MPAS_logo.ico \
+    /icon:"$mywdir\\Apps\\CO2MPAS_logo.ico" \
     /show:min
 if [ $? -ne 0 ]; then err=$((err+1)); fi
 
@@ -37,12 +37,12 @@ if [ $? -ne 0 ]; then err=$((err+1)); fi
 #
 $mkshortcut "$mymenu_folder\\Visit CO2MPAS site" \
     http://co2mpas.io \
-    /icon:Apps\\CO2MPAS_logo.ico
+    /icon:"$mywdir\\Apps\\CO2MPAS_logo.ico"
 if [ $? -ne 0 ]; then err=$((err+1)); fi
 
 $mkshortcut "$mymenu_folder\\Visit CO2MPAS Release Changes" \
     http://co2mpas.io/changes.html \
-    /icon:Apps\\CO2MPAS_logo.ico
+    /icon:"$mywdir\\Apps\\CO2MPAS_logo.ico"
 if [ $? -ne 0 ]; then err=$((err+1)); fi
 
 
@@ -53,7 +53,7 @@ $mkshortcut "$mymenu_folder\\CO2MPAS CONSOLE-$app_ver" \
     "$mywdir\\CONSOLE.vbs" \
     /desc:"Opens a console with CO2MPAS environment appropriately setup." \
     /workingdir:"$mywdir\\CO2MPAS" \
-    /icon:Apps\\CO2MPAS_logo.ico \
+    /icon:"$mywdir\\Apps\\CO2MPAS_logo.ico" \
     /show:min
 if [ $? -ne 0 ]; then err=$((err+1)); fi
 
