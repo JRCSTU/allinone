@@ -17,5 +17,5 @@ Else
     REM Launch absolute cmd:
     REM
     cmd = mydir & "\co2mpas-env.bat Console.exe -c " & mydir & "\Apps\Console\console.xml -t install"
-    wshShell.Run cmd, 0, True
+    wshShell.Run cmd, 0, False
 End If
