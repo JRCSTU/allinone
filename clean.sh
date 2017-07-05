@@ -25,6 +25,9 @@ mykey="5006137DE2F6FEDDC702DBE69CF277C40A8A1B08"
 $gpg --batch --delete-key "$mykey"
 $gpg --batch --delete-secret-key "$mykey"
 
+## Ensure log-file not in DEBUG mode.
+sed -i 's/^    level: .*/    level: INFO  # one of: DEBUG INFO WARNING ERROR FATAL/' ~/.co2_logconf.yaml
+
 ## TOO BIG.
 $rm_cmd ./*AIO*/Apps\WinPython/python-3.5.2.amd64/Lib/site-packages/wltp/test
 find . -name __pycache__ -type d | xargs $rm_cmd
