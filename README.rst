@@ -140,6 +140,10 @@ to remove warning::
 - ``exchangelib``:
   Just close pool; see https://github.com/ecederstrand/exchangelib/issues/160
 
+- ``schedula``:
+    Fix ``DispatcherAbort`` cstor, see https://github.com/vinci1it2000/schedula/pull/9
+
+
 POSIX
 -----
 
