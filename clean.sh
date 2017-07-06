@@ -26,7 +26,7 @@ $gpg --batch --delete-key "$mykey"
 $gpg --batch --delete-secret-key "$mykey"
 
 ## Ensure log-file not in DEBUG mode.
-sed -i 's/^    level: .*/    level: INFO  # one of: DEBUG INFO WARNING ERROR FATAL/' ~/.co2_logconf.yaml
+sed -i 's/^    level: .*/    level: INFO  # one of: DEBUG INFO WARNING ERROR FATAL/' ./*AIO*/CO2MPAS/.co2_logconf.yaml
 
 ## TOO BIG.
 $rm_cmd ./*AIO*/Apps\WinPython/python-3.5.2.amd64/Lib/site-packages/wltp/test
