@@ -10,7 +10,7 @@ else
     rm_cmd="rm $rm_opts"
 fi
 
-ls  -d ./*AIO*/install.log \
+ls  -d ./*AIO*/{install.log,*xlsx} \
     ./*AIO*/Apps/clink/profile/.history \
     ./*AIO*/Apps/WinPython/settings/.matplotlib \
     ./*AIO*/CO2MPAS/{.ipython,.ptpython,.matplotlib,.jupyter,\
