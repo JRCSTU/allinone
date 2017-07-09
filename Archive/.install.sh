@@ -8,14 +8,14 @@ set -x
 declare -i err=0
 mydir="$(cygpath "$(dirname "$0")")"
 cd "$mydir"
-mywdir="$(cygpath -w "$mydir")"
+mywdir="$(cygpath -aw "$mydir")"
 
 app_ver="$(co2mpas -V)"
 app_ver="${app_ver#co2mpas-}"
 app_group="CO2MPAS\\CO2MPAS-$app_ver"
-apps_folder="`cygpath -w "$APPDATA"`"
+apps_folder="`cygpath -aw "$APPDATA"`"
 
-mkshortcut="start .mkshortcut.vbs"
+mkshortcut="cygstart .mkshortcut.vbs"
 menus_folder="$apps_folder\\Microsoft\\Windows\\Start Menu\\Programs"
 mymenu_folder="$menus_folder\\$app_group"
 
