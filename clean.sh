@@ -17,7 +17,7 @@ ls  -d ${aio}/{install.log,*xlsx} \
     ${aio}/Apps/WinPython/settings/.matplotlib \
     ${aio}/CO2MPAS/{.ipython,.ptpython,.matplotlib,.jupyter,\
     tutorial,clink,co2mpas.log,*xls*,*.zip,inp,out,.python_history,*.ipynb,.ipynb_checkpoints,\
-    nodes_modules,.exe,.lesshst,.viminfo,.co2dice/*,my_TS_name_key1.pub,keydefs.txt,\
+    nodes_modules,.exe,.lesshst,.viminfo,.co2dice,my_TS_name_key1.pub,keydefs.txt,\
     inputs,.cache,.config,.local} \
     | xargs $rm_cmd
 
