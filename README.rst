@@ -185,18 +185,10 @@ GnuPG:
 ------
 - Download latest Gpg4Win from https://www.gpg4win.org/download.html,
   install locally, then copy installation folder into ``$AIODIR/Apps/GunPG/``.
-  Make it portable by creating ``gpgconf.ctl`` in same dir as ``gpgconf.exe``
-  (https://www.gnupg.org/documentation/manuals/gnupg/gpgv.html)::
-
-      touch $AIODIR/Apps/GnuPG/gpgconf.ctl
-
-- Create a *global-config* file for ``gpgconf --check-config`` and pin-entry
-  not to complain ``gpg: AllowSetForegroundWindow failed: Access is denied.``::
-
-      mkdir $AIODIR/Apps/GnuPG/etc/gnupg/
-      echo use-agent > $AIODIR/Apps/GnuPG/etc/gnupg/gpgconf.conf
-
-Or simply copy file from ``/Archive./GnuPG``.
+  ``clean.sh`` makes it portable by creating ``gpgconf.ctl`` in same dir 
+  as ``gpgconf.exe`` (https://www.gnupg.org/documentation/manuals/gnupg/gpgv.html)
+  
+  
 
 
 ConsoleZ

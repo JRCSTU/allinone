@@ -9,14 +9,18 @@ cp=cp
 mkdir=mkdir
 sed=sed
 gpg="${aio}/Apps/GnuPG/pub/gpg2"
+cat=cat
+echo=echo
 
 
 if [[ " $* " =~ " -n " ]]; then
     rm="echo PRETEND $rm"
-	cp="echo PRETEND $cp"
-	mkdir="echo PRETEND $mkdir"
-	sed="echo PRETEND $sed"
-	gpg="echo PRETEND $gpg"
+    cp="echo PRETEND $cp"
+    mkdir="echo PRETEND $mkdir"
+    sed="echo PRETEND $sed"
+    gpg="echo PRETEND $gpg"
+    cat="echo PRETEND $cat"
+    echo="echo PRETEND $echo"
 fi
 
 find ${aio}/{*.xlsx,*.zip,*.ipynb} | xargs $rm
@@ -25,9 +29,20 @@ find ${aio}/Apps/WinPython/settings -mindepth 1  | grep -v winpython.ini | grep 
 
 
 ## delete ankostis's key (in case...)
-mykey="5006137DE2F6FEDDC702DBE69CF277C40A8A1B08"
+test_key="F3C8DBC15DD5EB340D03F3FD5F0F79753115FACD"
+stamper_key="D9E1CBE040378A7F2EFB5FF31DFF7B69B29A0E52"
+keys="$(gpg --allow-weak-digest-algos --list-public-keys --fingerprint --with-colons |
+        cut -d: -f8 |
+        grep -v $test_key |
+        grep -v $stamper_key )"
+
+        for
 $gpg --batch --delete-secret-keys "$mykey"
 $gpg --batch --delete-keys "$mykey"
+
+$mkdir -p "$aio/Apps/GunPG/var/cache/gnupg"
+$cp "Archive/Apps/GnuPG/*" "$aio/Apps/GnuPG/."
+
 
 ## Ensure log-file not in DEBUG mode.
 $sed -i 's/^    level: .*/    level: INFO  # one of: DEBUG INFO WARNING ERROR FATAL/' ${aio}/CO2MPAS/.co2_logconf.yaml
