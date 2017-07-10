@@ -1,6 +1,6 @@
 ## Makefile for updating AIO image to VELA Drive
 #
-ROOTDIR := $(wildcard co2mpas_AIO-v*)
+ROOTDIR := $(wildcard co2mpas_AIO-v*)/
 REMOTE_DIR := "/k/PERSONNEL/Ankostis/Xchange/$(ROOTDIR)"
 
 _n := $(findstring -n,$(firstword -$(MAKEFLAGS)))
