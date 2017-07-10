@@ -211,7 +211,7 @@
       </background>
     </tab>
     <tab title="bash" icon="cygicons-0.dll,5" use_default_icon="0">
-      <console shell="%AIODIR%\Apps\MSYS2\usr\bin\bash -i" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0">
+			<console shell="&quot;%AIODIR%\Apps\MSYS2\usr\bin\bash.exe&quot; -i" init_dir="%HOME%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0">
         <env var="CONSOLE_HELP" value="HELP for CO2MPAS Console:
     - [Ctrl+F1]                 - Open a new Windows(cmd.exe) console.
     - [Ctrl+F2]                 - Open a new Bash console.
@@ -232,8 +232,7 @@
       </background>
     </tab>
     <tab title="install" icon="cygicons-0.dll,4" use_default_icon="0">
-      <console shell="%AIODIR%\Apps\MSYS2\usr\bin\bash -c &quot;${AIODIR}/.install.sh 2&gt;&amp;1 | tee -a ${AIODIR}/install.log&quot;"
-      init_dir="%AIODIR%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0"/>
+			<console shell="&quot;%AIODIR%\Apps\MSYS2\usr\bin\bash.exe&quot; .install.sh" init_dir="%AIODIR%" priority="2" run_as_user="0" user="" net_only="0" run_as_admin="0"/>
       <background type="0" r="225" g="220" b="250">
         <image file="" relative="0" extend="0" position="0">
           <tint opacity="0" r="0" g="0" b="0"/>

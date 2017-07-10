@@ -16,6 +16,6 @@ Else
     
     REM Launch absolute cmd:
     REM
-    cmd = mydir & "\co2mpas-env.bat co2gui"
+    cmd = """" & mydir & "\co2mpas-env.bat"" co2gui"
     wshShell.Run cmd, 0, False
 End If

@@ -18,7 +18,7 @@ Else
     name = args(0)
     target = args(1)
     If StrComp(Left(target, 4), "http", vbTextCompare) = 0 Then
-        set oShellLink = wshShell.CreateShortcut(name & ".url")
+        set oShellLink = wshShell.CreateShortcut(name & ".lnk")
         isexe = False
     Else
         set oShellLink = wshShell.CreateShortcut(name & ".lnk")
@@ -57,7 +57,7 @@ Else
     End If
 
     REM Example: "notepad.exe, 0"
-    If isexe AND kwds.Exists("icon") Then
+    If kwds.Exists("icon") Then
         oShellLink.IconLocation = kwds("icon")
     End If
 

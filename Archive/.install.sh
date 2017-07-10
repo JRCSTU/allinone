@@ -9,7 +9,7 @@ declare -i err=0
 mydir="$(cygpath "$(dirname "$0")")"
 cd "$mydir"
 mywdir="$(cygpath -aw "$mydir")"
-
+echo "$mywdir"
 app_ver="$(co2mpas -V)"
 app_ver="${app_ver#co2mpas-}"
 app_group="CO2MPAS\\CO2MPAS-$app_ver"
@@ -24,46 +24,32 @@ echo -e "`date`: Installing shortcuts --> '$mymenu_folder'"
 rm -rf "$mymenu_folder"
 mkdir -p "$mymenu_folder"
 
-$mkshortcut "$mymenu_folder\\CO2MPAS-$app_ver" \
-    "$mywdir\\CO2MPAS.vbs" \
+$mkshortcut "\"$mymenu_folder\\CO2MPAS-$app_ver\"" \
+    "\"${mywdir}CO2MPAS.vbs\"" \
     /desc:"Runs CO2MPAS GUI." \
-    /workingdir:"$mywdir\\CO2MPAS" \
-    /icon:"$mywdir\\Apps\\CO2MPAS_logo.ico" \
+    /workingdir:"\"${mywdir}CO2MPAS\"" \
+    /icon:"\"${mywdir}Apps\\CO2MPAS_logo.ico\"" \
     /show:min
-if [ $? -ne 0 ]; then err=$((err+1)); fi
 
 
 ## DOCS
 #
-$mkshortcut "$mymenu_folder\\Visit CO2MPAS site" \
-    http://co2mpas.io \
-    /icon:"$mywdir\\Apps\\CO2MPAS_logo.ico"
-if [ $? -ne 0 ]; then err=$((err+1)); fi
+$mkshortcut "\"$mymenu_folder\\Visit CO2MPAS site\"" \
+    https://co2mpas.io/ \
+    /icon:"\"${mywdir}Apps\\CO2MPAS_logo.ico\""
 
-$mkshortcut "$mymenu_folder\\Visit CO2MPAS Release Changes" \
+$mkshortcut "\"$mymenu_folder\\Visit CO2MPAS Release Changes\"" \
     http://co2mpas.io/changes.html \
-    /icon:"$mywdir\\Apps\\CO2MPAS_logo.ico"
-if [ $? -ne 0 ]; then err=$((err+1)); fi
-
+    /icon:"\"${mywdir}Apps\\CO2MPAS_logo.ico\""
 
 
 ## Consoles
 #
-$mkshortcut "$mymenu_folder\\CO2MPAS CONSOLE-$app_ver" \
-    "$mywdir\\CONSOLE.vbs" \
+$mkshortcut "\"$mymenu_folder\\CO2MPAS CONSOLE-$app_ver\"" \
+    "\"${mywdir}CONSOLE.vbs\"" \
     /desc:"Opens a console with CO2MPAS environment appropriately setup." \
-    /workingdir:"$mywdir\\CO2MPAS" \
-    /icon:"$mywdir\\Apps\\CO2MPAS_logo.ico" \
+    /workingdir:"\"${mywdir}CO2MPAS\"" \
+    /icon:"\"${mywdir}Apps\\CO2MPAS_logo.ico\"" \
     /show:min
-if [ $? -ne 0 ]; then err=$((err+1)); fi
 
-set +x
-if [ $err -ne 0 ]; then
-    echo -e "\n\nCO2MPAS-$app_ver FAILED to install $err Start-menu shortcuts!
-    Use MOUSE to select all log-messages above and
-    send them to: co2mpas@jrc.ec.europa.eu\n
-    Alternatively, just attach file: [AIO]/install.log\n"
-else
-    echo -e "\n\nCO2MPAS-$app_ver Start-menu shortcuts installed OK.\n"
-fi
 read -p "Press [Enter] to continue."
