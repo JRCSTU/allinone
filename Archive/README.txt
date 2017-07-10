@@ -73,7 +73,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
             Volume in drive D is Data
             Volume Serial Number is 688C-C286
 
-             Directory of D:\Apps\co2mpas_AIO-v1.6.1b2\CO2MPAS
+             Directory of D:\Apps\co2mpas_AIO-v1.6.1b3\CO2MPAS
 
               07/02/2017  09:26    <DIR>          .
               07/02/2017  09:26    <DIR>          ..
@@ -115,21 +115,21 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
 
             REM The python-interpreter that comes 1st is what we care about.
             > where python
-            D:\Apps\co2mpas_AIO-v1.6.1b2\Apps\WinPython\python-3.5.3\python.exe
-            D:\Apps\co2mpas_AIO-v1.6.1b2\Apps\Cygwin\bin\python
+            D:\Apps\co2mpas_AIO-v1.6.1b3\Apps\WinPython\python-3.5.3\python.exe
+            D:\Apps\co2mpas_AIO-v1.6.1b3\Apps\Cygwin\bin\python
 
             > co2mpas --version
-            co2mpas-1.6.1at D:\Apps\co2mpas_AIO-v1.6.1b2\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
+            co2mpas-1.6.1at D:\Apps\co2mpas_AIO-v1.6.1b3\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
 
         - In *bash*, type:
 
           .. code-block:: console
 
             > which python
-            /d/Apps/co2mpas_AIO-v1.6.1b2/Apps/WinPython/python-3.5.3/python
+            /d/Apps/co2mpas_AIO-v1.6.1b3/Apps/WinPython/python-3.5.3/python
 
             > co2mpas --version
-            co2mpas-1.6.1at D:\Apps\co2mpas_AIO-v1.6.1b2\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
+            co2mpas-1.6.1at D:\Apps\co2mpas_AIO-v1.6.1b3\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
 
    In case of problems, copy-paste the output from the above commands and send
    it to JRC.
