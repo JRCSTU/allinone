@@ -29,7 +29,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
 
 3. Launch CO2MPAS:
 
-    - Execute the ``CO2MPAS.vbs`` file, or simply press the [WinKey] once and start typing "run CO2MPAS",
+    - Execute the ``CO2MPAS.vbs`` file, or simply press the [WinKey] once and start typing "CO2MPAS",
       and select it lo launch the GUI.
 
 
