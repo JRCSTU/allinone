@@ -20,8 +20,8 @@ if [[ " $* " =~ " -n " ]]; then
 fi
 
 find ${aio}/{*.xlsx,*.zip,*.ipynb} | xargs $rm
-find ${aio}/CO2MPAS/*  -mindepth 1 -depth -type d | grep -vFf keepfiles.txt | xargs $rm
 find ${aio}/CO2MPAS/*  -mindepth 1 | grep -vFf keepfiles.txt | xargs $rm
+find ${aio}/Apps/WinPython/settings -mindepth 1  | grep -v winpython.ini | grep -v .jupyter | grep -v .ipython | xargs $rm
 
 
 ## delete ankostis's key (in case...)
