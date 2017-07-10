@@ -1,0 +1,12 @@
+CO2MPAS/.vim
+CO2MPAS/pip
+CO2MPAS/.co2_logconf.yaml.SAMPLE
+CO2MPAS/DICE-bash_history.txt
+CO2MPAS/.bashrc
+CO2MPAS/.vim
+CO2MPAS/.vimrc
+CO2MPAS/.bash_profile
+CO2MPAS/.profile
+CO2MPAS/.gitconfig
+CO2MPAS/.inputrc
+CO2MPAS/THIS_IS_YOUR_HOME

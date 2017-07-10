@@ -5,10 +5,11 @@ cd $my_dir
 aio=./co2mpas_AIO
 rm_opts="-vrf"
 rm="rm $rm_opts"
-cp=cp
+cp="cp -v"
 mkdir=mkdir
 sed=sed
 gpg="${aio}/Apps/GnuPG/pub/gpg2"
+GPG="$gpg"  # Not PRETENDING.
 cat=cat
 echo=echo
 
@@ -24,34 +25,36 @@ if [[ " $* " =~ " -n " ]]; then
 fi
 
 find ${aio}/{*.xlsx,*.zip,*.ipynb} | xargs $rm
-find ${aio}/CO2MPAS/*  -mindepth 1 | grep -vFf keepfiles.txt | xargs $rm
+find ${aio}/CO2MPAS  -mindepth 1 | grep -vFf keepfiles.txt | xargs $rm
 find ${aio}/Apps/WinPython/settings -mindepth 1  | grep -v winpython.ini | grep -v .jupyter | grep -v .ipython | xargs $rm
 
 
 ## delete ankostis's key (in case...)
-test_key="F3C8DBC15DD5EB340D03F3FD5F0F79753115FACD"
-stamper_key="D9E1CBE040378A7F2EFB5FF31DFF7B69B29A0E52"
-keys="$(gpg --allow-weak-digest-algos --list-public-keys --fingerprint --with-colons |
-        cut -d: -f8 |
-        grep -v $test_key |
-        grep -v $stamper_key )"
+test_key="5464E04EE547D1FEDCAC4342B124C999CBBB52FF"
+stamper_key="4B12BCD5788511063B543190E09DF306"
+keys="$($GPG --allow-weak-digest-algos --list-public-keys --fingerprint --with-colons |
+        grep fpr |
+        grep -v $stamper_key | grep -v $test_key |
+        cut -d: -f10 )"
 
-        for
-$gpg --batch --delete-secret-keys "$mykey"
-$gpg --batch --delete-keys "$mykey"
+echo "Deleting keys: ($keys)"
+for key in $keys; do
+    $gpg --batch --delete-secret-keys "$key"
+    $gpg --batch --delete-keys $key
+done
+echo $PWD
 
-$mkdir -p "$aio/Apps/GunPG/var/cache/gnupg"
-$cp "Archive/Apps/GnuPG/*" "$aio/Apps/GnuPG/."
-
+$mkdir -p "$aio/Apps/GnuPG/var/cache/gnupg"
+$cp -r Archive/Apps/GnuPG/* "$aio/Apps/GnuPG/."
 
 ## Ensure log-file not in DEBUG mode.
-$sed -i 's/^    level: .*/    level: INFO  # one of: DEBUG INFO WARNING ERROR FATAL/' ${aio}/CO2MPAS/.co2_logconf.yaml
+$sed -i 's/^    level: .*/    level: INFO  # one of: DEBUG INFO WARNING ERROR FATAL/' ${aio}/CO2MPAS/.co2_logconf.yaml.SAMPLE
 
 ## TOO BIG.
 $rm ${aio}/Apps\WinPython/python-3.5.2.amd64/Lib/site-packages/wltp/test
 find . -name __pycache__ -type d | xargs $rm
 
-## Clone deom-file into co2mpas HOME:
+## Clone demo-file into co2mpas HOME:
 $rm ${aio}/CO2MPAS/co2mpas-demos
-$mkdir ${aio}/CO2MPAS/co2mpas-demos
-$cp -vr ./Archive/Apps/.co2mpas-demos/* ${aio}/CO2MPAS/co2mpas-demos/.
+$mkdir -p ${aio}/CO2MPAS/co2mpas-demos
+$cp -r ./Archive/Apps/.co2mpas-demos/* ${aio}/CO2MPAS/co2mpas-demos/.
