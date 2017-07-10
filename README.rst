@@ -185,7 +185,7 @@ GnuPG:
 ------
 - Download latest Gpg4Win from https://www.gpg4win.org/download.html,
   install locally, then copy installation folder into ``$AIODIR/Apps/GunPG/``.
-  ``clean.sh`` makes it portable by creating ``gpgconf.ctl`` in same dir 
+  ``prepare.sh`` makes it portable by creating ``gpgconf.ctl`` in same dir 
   as ``gpgconf.exe`` (https://www.gnupg.org/documentation/manuals/gnupg/gpgv.html)
   
   

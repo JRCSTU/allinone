@@ -10,7 +10,7 @@ _n := $(findstring -n,$(firstword -$(MAKEFLAGS)))
 all: push
  
 clean: 
-	+./clean.sh $(_n)
+	+./prepare.sh $(_n)
 
 push: clean
 	+rsync $(_n) -P --recursive --links --times \
