@@ -119,7 +119,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
             D:\Apps\co2mpas_AIO-v1.6.1\Apps\Cygwin\bin\python
 
             > co2mpas --version
-            co2mpas-1.6.1at D:\Apps\co2mpas_AIO-v1.6.1\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
+            co2mpas-1.6.1 at D:\Apps\co2mpas_AIO-v1.6.1\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
 
         - In *bash*, type:
 
@@ -129,7 +129,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
             /d/Apps/co2mpas_AIO-v1.6.1/Apps/WinPython/python-3.5.3/python
 
             > co2mpas --version
-            co2mpas-1.6.1at D:\Apps\co2mpas_AIO-v1.6.1\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
+            co2mpas-1.6.1 at D:\Apps\co2mpas_AIO-v1.6.1\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
 
    In case of problems, copy-paste the output from the above commands and send
    it to JRC.
