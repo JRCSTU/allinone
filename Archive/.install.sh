@@ -15,7 +15,7 @@ app_ver="${app_ver#co2mpas-}"
 app_group="CO2MPAS\\CO2MPAS-$app_ver"
 apps_folder="`cygpath -aw "$APPDATA"`"
 
-mkshortcut="cscript .mkshortcut.vbs"
+mkshortcut="wscript .mkshortcut.vbs"
 menus_folder="$apps_folder\\Microsoft\\Windows\\Start Menu\\Programs"
 mymenu_folder="$menus_folder\\$app_group"
 

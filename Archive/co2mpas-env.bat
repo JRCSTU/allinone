@@ -18,30 +18,28 @@ call "%AIODIR%Apps\WinPython\scripts\env.bat"
 
 
 REM ################################################################################
-REM ## Settings per-AIO (AIO fully portable, and self-contained)                  ##  
-set HOME=%AIODIR%CO2MPAS
+REM ## Settings & Keys per-AIO (AIO fully portable, and self-contained)           ##
 REM ################################################################################
-REM ## GPG-keys per-AIO                                                           ##  
+set HOME=%AIODIR%CO2MPAS
 touch "%AIODIR%Apps\GnuPG\gpgconf.ctl"
 
 
 REM ################################################################################
-REM ## Settings per-USER (AIO shared by multiple users)                           ## 
+REM ## Settings & Keys per-USER (AIO shared by multiple users)                    ##
+REM ################################################################################
 REM set HOME=%USERPROFILE%\CO2MPAS
+REM rm -f "%AIODIR%Apps\GnuPG\gpgconf.ctl"
+REM gpgconf --list-dirs | grep sysconfdir | sed -e 's/sysconfdir://' -e 's/%3a/:/' | xargs touch
+REM set GNUPGHOME=%USERPROFILE%\CO2MPAS\.gpg
 
 REM ################################################################################
-REM ## GPG-keys per user:                                                          ## 
-REM #  Delete this file `Apps\GnuPG\gpgconf.ctl` and modify GNUPGHOME variable.    ##
-REM rm -f "%AIODIR%Apps\GnuPG\gpgconf.ctl"
-REM set GNUPGHOME=%USERPROFILE%\CO2MPAS
-REM ## Run also these commands to see paths/variables affecting settings & keys:  ##
+REM ## This command list paths/variables affecting DICE settings & keys:          ##
 REM #      co2dice config paths                                                   ##
-REM #      man gpg                                                                ##
 REM ################################################################################
 
 set JUPYTER_DATA_DIR=%HOME%
 set WINPYWORKDIR=%HOME%
-mkdir "%HOME%" > NUL 2>&1
+mkdir "%HOME%" "%GNUPGHOME%" > NUL 2>&1
 
 :env_exists
 IF [%1] == [] GOTO end
