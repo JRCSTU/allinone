@@ -118,6 +118,13 @@ WinPython
       2017-02-10 15:37:16,032:WARNI:py.warnings: AIO\Apps\WinPython\python-3.5.2.amd64\lib\importlib\_bootstrap_external.py:415: ImportWarning: Not importing directory AIO\apps\winpython\python-3.5.2.amd64\lib\site-packages\mpl_toolkits: missing __init__
    _warnings.warn(msg.format(portions[0]), ImportWarning)
 
+- Add these lines in ``getpass.py#167`` standard-lib for polite Giy msg (FIX)::
+
+
+      if os.name =='nt':
+          raise ValueError("No user-name has been set!")
+
+
 - pandas OpenPYXL usage::
 
     $AIODIR/Apps/WinPython/python-3.5.2.amd64/Lib/site-packages/pandas/io/excel.py
@@ -185,10 +192,10 @@ GnuPG:
 ------
 - Download latest Gpg4Win from https://www.gpg4win.org/download.html,
   install locally, then copy installation folder into ``$AIODIR/Apps/GunPG/``.
-  ``prepare.sh`` makes it portable by creating ``gpgconf.ctl`` in same dir 
+  ``prepare.sh`` makes it portable by creating ``gpgconf.ctl`` in same dir
   as ``gpgconf.exe`` (https://www.gnupg.org/documentation/manuals/gnupg/gpgv.html)
-  
-  
+
+
 
 
 ConsoleZ
