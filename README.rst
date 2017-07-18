@@ -4,6 +4,58 @@ CO2MPAS ALLINONE archive
 
 Ingredients for a pre-populated archive with WinPython+Consoles+Graphviz to run *CO2MPAS* on *Windows*.
 
+Building & Packaging
+====================
+The creation of a new AIO is based on 2 identical folder hierarchies:
+
+- the ``./Archive/`` containing "template files" that should be copied in
+- the ``./co2mpas_AIO/`` folder, that is the actual "AIO" to be 7zipped.
+
+The bash-script ``./prepare.sh`` copies those files in their appropriate place and
+performs various clean-up tasks. Running this script should be the last thing to do
+before compressing the final archive (see step 4, below).
+
+To build the 2nd AIO folder follow these steps:
+
+1. The AIO folder is usually created by extracting a previous AIO version, to arrive
+   in this hierarchy of folders and files::
+
+     ./co2mpas_AIO/
+       +--Apps/...
+       +--CO2MPAS/...
+       +--CO2MPAS.vbs
+       +--CONSOLE.vbs
+       +--INSTALL.vbs
+       +--co2mpas-env.bat
+       +--README
+
+   Otherwise, follow the specific instructions for downloading and extracting each
+   application under a separate folder in ``./co2mpas_AIO/Apps/``, as explained in the
+   sections below.
+
+2. The AIO has its own, distinct version from *co2mpas* package, which is imprinted
+   in 3 different places that you have to modify before running ``./prepare.sh``:
+
+   - the version imprinted in the ``./Archive/README.txt`` file;  You must
+     modify replace all version strings.
+   - the ``AIO-x.x.x`` string inside the ``./Archive/Console/console.xml`` file,
+     at line 33.
+   - in the name of the containing folder; since the AIO folder is always
+     named ``co2mpas_AIO``, do run this command in ``cmd.exe`` to arrive to
+     a ``co2mpas_AIO-X.Y.Z`` name::
+
+         mklink  /J  C:\co2mpas_AIO-X.Y.Z  C:\Apps\allinone.git\co2mpas_AIO
+
+3. Commit the 2 modified files above.
+
+5. Execute the ``./prepare.sh`` script from a Bash launched **outside of the AIO folder!**
+
+6. Finally, compress the ``C:\co2mpas_AIO-X.Y.Z`` folder created above using either
+   the 7zip utility or the `Total-Commander+7zip plugin <https://www.ghisler.com/plugins.htm>`_.
+   Use maximum compression.   Check the contents of the result 7zip archive are
+   structured like the previous releases.
+
+
 Apps
 ====
 - Add ``prog-x.y.z.ver`` on each app-folder.
@@ -228,13 +280,3 @@ For declarative-widgets:
 - ``npm install bower``
 
 
-Docs
-====
-
-- Copy ``Archive/README.txt`` as ``./README.txt`` and FIX CO2MPAS & WinPython versions!
-
-
-DEMOS
-=====
-
-Copy ``Archive/Demos --> ./CO2MPAS/demos``
