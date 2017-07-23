@@ -15,6 +15,7 @@ echo=echo
 
 
 if [[ " $* " =~ " -n " ]]; then
+    noop="echo"
     rm="echo PRETEND $rm"
     cp="echo PRETEND $cp"
     mkdir="echo PRETEND $mkdir"
@@ -25,8 +26,13 @@ if [[ " $* " =~ " -n " ]]; then
 fi
 
 ###################################
-## Clean up existing files       ## 
+## Clean up existing files       ##
 ###################################
+
+## Cleanup pacman caches.
+#
+#$noop $aio/Apps/MSYS2/usr/bin/pacman -Scc --noconfirm
+$rm $aio/Apps/MSYS2/var/cache/*
 
 find ${aio}/{*.xlsx,*.zip,*.ipynb} | xargs $rm
 find ${aio}/CO2MPAS  -mindepth 1 | grep -vFf keepfiles.txt | xargs $rm
