@@ -190,7 +190,17 @@ to remove warning::
      15:47:55:WARNI:py.warnings: AIO\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\openpyxl\workbook\workbook.py:182: DeprecationWarning: Call to deprecated function or class remove_sheet (Use wb.remove(worksheet) or del wb[sheetname]).
      def remove_sheet(self, worksheet):
 
-- https://github.com/python/cpython/pull/562 (socks library).
+- SOCKS:
+  - https://github.com/python/cpython/pull/562 (socks library).
+  - Link socks-errors (socks.py#806::
+
+            - raise ProxyConnectionError(msg, error)
+            + raise ProxyConnectionError(msg, error) from error
+
+  - Link socks-errors (socks.py#817::
+
+                - raise GeneralProxyError("Socket error", error)
+                + raise GeneralProxyError("Socket error", error) from error
 
 - ``rainbow_logging_handler``: move ``import sys`` at the top of the file
   https://github.com/laysakura/rainbow_logging_handler/blob/master/rainbow_logging_handler/__init__.py#L210
