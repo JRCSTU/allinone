@@ -68,7 +68,6 @@ $cp -r ./Archive/Apps/.co2mpas-demos ${aio}/CO2MPAS/.
 $cp ./co2mpas_AIO/Apps/WinPython/python*/Lib/site-packages/co2mpas/co2mpas_template.xlsx ${aio}/CO2MPAS/.
 
 $mkdir -p "$aio/Apps/GnuPG/var/cache/gnupg"
-$cp -r Archive/Apps/GnuPG/* "$aio/Apps/GnuPG/."
 
 ## Ensure log-file not in DEBUG mode.
 $sed -i 's/^    level: .*/    level: INFO  # one of: DEBUG INFO WARNING ERROR FATAL/' ${aio}/CO2MPAS/.co2_logconf.yaml.SAMPLE
