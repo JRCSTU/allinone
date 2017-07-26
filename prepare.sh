@@ -61,13 +61,9 @@ find . -name __pycache__ -type d | xargs $rm -rf
 
 $cp -r ./Archive/* ${aio}/.
 
-## Clone demo-file into co2mpas HOME:
-$rm -rf ${aio}/CO2MPAS/co2mpas-demos/*
-$mkdir -p ${aio}/CO2MPAS/co2mpas-demos
-$cp -r ./Archive/* ${aio}/.
+## Clone demo-files into co2mpas HOME:
+$cp -r ./Archive/Apps/.co2mpas-demos ${aio}/CO2MPAS/.
 
-## Copy template-file into co2mpas HOME:
-$mkdir -p ${aio}/CO2MPAS/co2mpas-demos
 ## Copy template-file into co2mpas HOME:
 $cp ./co2mpas_AIO/Apps/WinPython/python*/Lib/site-packages/co2mpas/co2mpas_template.xlsx ${aio}/CO2MPAS/.
 
