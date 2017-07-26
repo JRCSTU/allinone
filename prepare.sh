@@ -3,8 +3,7 @@ my_dir=`dirname "$0"`
 cd $my_dir
 
 aio=./co2mpas_AIO
-rm_opts="-vrf"
-rm="rm $rm_opts"
+rm="rm -v"
 cp="cp -v"
 mkdir=mkdir
 sed=sed
@@ -32,11 +31,11 @@ fi
 ## Cleanup pacman caches.
 #
 #$noop $aio/Apps/MSYS2/usr/bin/pacman -Scc --noconfirm
-$rm $aio/Apps/MSYS2/var/cache/*
+$rm -rf $aio/Apps/MSYS2/var/cache/*
 
-find ${aio}/{*.xlsx,*.zip,*.ipynb} | xargs $rm
-find ${aio}/CO2MPAS  -mindepth 1 | grep -vFf keepfiles.txt | xargs $rm
-find ${aio}/Apps/WinPython/settings -mindepth 1  | grep -v winpython.ini | grep -v .jupyter | grep -v .ipython | xargs $rm
+find ${aio}/{*.xlsx,*.zip,*.ipynb} | xargs $rm -rf
+find ${aio}/CO2MPAS  -mindepth 1 | grep -vFf keepfiles.txt | xargs $rm -rf
+find ${aio}/Apps/WinPython/settings -mindepth 1  | grep -v winpython.ini | grep -v .jupyter | grep -v .ipython | xargs $rm -rf
 
 ## delete ankostis's key (in case...)
 test_key="5464E04EE547D1FEDCAC4342B124C999CBBB52FF"
@@ -53,8 +52,8 @@ for key in $keys; do
 done
 
 ## TOO BIG.
-$rm ${aio}/Apps\WinPython/python-3.5.2.amd64/Lib/site-packages/wltp/test
-find . -name __pycache__ -type d | xargs $rm
+$rm -rf ${aio}/Apps\WinPython/python-3.5.2.amd64/Lib/site-packages/wltp/test
+find . -name __pycache__ -type d | xargs $rm -rf
 
 ###################################
 ## Start creating dirs & folders ##
@@ -63,7 +62,7 @@ find . -name __pycache__ -type d | xargs $rm
 $cp -r ./Archive/* ${aio}/.
 
 ## Clone demo-file into co2mpas HOME:
-$rm ${aio}/CO2MPAS/co2mpas-demos/*
+$rm -rf ${aio}/CO2MPAS/co2mpas-demos/*
 $mkdir -p ${aio}/CO2MPAS/co2mpas-demos
 $cp -r ./Archive/* ${aio}/.
 
