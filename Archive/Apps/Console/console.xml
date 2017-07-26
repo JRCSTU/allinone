@@ -202,6 +202,7 @@
     - [MOUSE-Right+drag]        - Select text AND copy into clipboard when released.
     - [MOUSE-Middle]            - Paste from clipboard.
     - [Shift+Insert]            - Paste from clipboard.
+    - [Alt+H]                   - List Clink's readline key-bindings.
     " check="1"/>
       </console>
       <background type="0" r="231" g="251" b="254">
