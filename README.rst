@@ -33,7 +33,11 @@ To build the 2nd AIO folder follow these steps:
    application under a separate folder in ``./co2mpas_AIO/Apps/``, as explained in the
    sections below.
 
-2. The AIO has its own, distinct version from *co2mpas* package, which is imprinted
+2. Install latest `co2mpas` package with `pip` command (either from *PyPi* or locally,
+   if i's a *dev* release) and run and test the basic commands and procedures to
+   check everything works as planned.
+
+3. The AIO has its own, distinct version from *co2mpas* package, which is imprinted
    in 3 different places that you have to modify before running ``./prepare.sh``:
 
    - the version imprinted in the ``./Archive/README.txt`` file;  You must
@@ -46,7 +50,7 @@ To build the 2nd AIO folder follow these steps:
 
          mklink  /J  C:\co2mpas_AIO-X.Y.Z  C:\Apps\allinone.git\co2mpas_AIO
 
-3. Commit the 2 modified files above.
+4. Commit the 2 modified files above.
 
 5. Execute the ``./prepare.sh`` script from a Bash launched **outside of the AIO folder!**
 
