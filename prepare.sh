@@ -63,8 +63,13 @@ $sed -i 's/^    level: .*/    level: INFO  # one of: DEBUG INFO WARNING ERROR FA
 printf  'expire\n6m\nsave\n' | $gpg --batch --yes --command-fd 0 --status-fd 2 --edit-key 5464E04EE547D1FEDCAC4342B124C999CBBB52FF
 $GPG --rebuild-keydb-caches
 
+## WinPython relocatable executables (i.e. `co2mpas.exe`).
+$noop "${aio}/Apps/WinPython/scripts/make_winpython_movable.bat"
+
 ## Check keys...
 test_key="CBBB52FF"
 stamper_key="70B61F81"
-echo -e "\n\Inspect MANUALLY expiration, and no other keys than:\n    $test_key\n    $stamper_key"
+jrc_stamper_key="94777323"
+echo "\n\Inspect MANUALLY expiration, and no other keys than:"
+echo -e "    $test_key\n    $stamper_key\n    $jrc_stamper_key"
 $GPG --allow-weak-digest-algos --list-keys

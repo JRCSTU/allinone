@@ -67,6 +67,18 @@ Apps
 
 WinPython
 ---------
+*WinPython* is a **portable** distribution, so certain procedure is needed
+to maintain it.
+
+.. Note:
+   Specifically, when upgrading pip, always use this *WinPython* script:
+   ``$aio/Apps/WinPython/scripts/upgrade_pip.bat``
+
+   Otherwise, whatever pip install <package> you do, will not run if AIO folder moved.
+   In any case, running ``$aio/Apps/WinPython/scripts/make_winpython_movable.bat``
+   script wll fix both problems.
+
+
 1. Copy ``libeay32.dll`` to DLL PATH for *opentimestamp*/*openssl* to work::
 
        WinPython-64bit-XXX/python-XXX/Lib/site-packages/PyQt5/Qt/bin/ --> WinPython-64bit-XXX/python-XXX/DLLs/
