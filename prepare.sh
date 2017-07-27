@@ -28,6 +28,9 @@ fi
 ## Clean up existing files       ##
 ###################################
 
+## Cleanup GnuPG-HOME.
+$rm -rf "$aio/Apps/GnuPG/home/*"
+
 ## Cleanup pacman caches.
 #
 #$noop $aio/Apps/MSYS2/usr/bin/pacman -Scc --noconfirm
