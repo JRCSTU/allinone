@@ -186,11 +186,27 @@ to maintain it.
       2017-02-10 15:37:16,032:WARNI:py.warnings: AIO\Apps\WinPython\python-3.5.2.amd64\lib\importlib\_bootstrap_external.py:415: ImportWarning: Not importing directory AIO\apps\winpython\python-3.5.2.amd64\lib\site-packages\mpl_toolkits: missing __init__
    _warnings.warn(msg.format(portions[0]), ImportWarning)
 
-- Add these lines in ``getpass.py#167`` standard-lib for polite Giy msg (FIX)::
+- Add these lines in ``getpass.py#167`` standard-lib for polite Git msg (FIX)::
 
 
       if os.name =='nt':
           raise ValueError("No user-name has been set!")
+
+- GnuPG `sign support comment kwd
+  <https://bitbucket.org/vinay.sajip/python-gnupg/issues/82/sign_file-with-a-comment>`_:
+
+  - gnupg.py:##943::
+
+      def sign_file(self, file, keyid=None, passphrase=None, clearsign=True,
+    -               detach=False, binary=False, output=None):
+    +               detach=False, binary=False, output=None, comment=None):
+
+  - gnupg.py:##957::
+
+          if keyid:
+              args.extend(['--default-key', no_quote(keyid)])
+        + if comment is not None:
+        +     args.extend(['--comment', comment])
 
 
 - pandas OpenPYXL usage::
