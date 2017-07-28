@@ -208,12 +208,28 @@ to remove warning::
 
 - SOCKS:
   - https://github.com/python/cpython/pull/562 (socks library).
-  - Link socks-errors (socks.py#806::
+
+  - Link socks-errors (socks.py#711)::
+
+        - except ValueError as ex:
+        -     raise GeneralProxyError("HTTP proxy server sent invalid response")
+        + except ValueError:
+        +     raise GeneralProxyError("HTTP proxy server sent invalid response") from ex
+
+  - Link socks-errors (socks.py#719)::
+
+        - except ValueError:
+        -     raise HTTPError("HTTP proxy server did not return a valid HTTP status")
+        + except ValueError as ex:
+        +     raise HTTPError(
+        +         "HTTP proxy server did not return a valid HTTP status") from ex
+
+  - Link socks-errors (socks.py#806)::
 
             - raise ProxyConnectionError(msg, error)
             + raise ProxyConnectionError(msg, error) from error
 
-  - Link socks-errors (socks.py#817::
+  - Link socks-errors (socks.py#817)::
 
                 - raise GeneralProxyError("Socket error", error)
                 + raise GeneralProxyError("Socket error", error) from error
