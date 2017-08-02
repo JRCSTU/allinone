@@ -53,11 +53,6 @@ if /i "%processor_architecture%"=="x86" (
 :end
 @python -c "import os;print(os.environ.get('CONSOLE_HELP', 'ss'));"
 
-REM Set some co2mpas ALIASES:
-doskey co2p=co2dice project $*
-doskey co2t=co2dice tstamp $*
-doskey co2c=co2dice config $*
-
 set clink_profile_arg=
 goto :eof
 

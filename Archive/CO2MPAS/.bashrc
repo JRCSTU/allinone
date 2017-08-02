@@ -201,10 +201,4 @@ alias ls='ls -hF --color=tty'                 # classify files in colour
 
 complete -fdev -W "`co2mpas-autocompletions`" co2mpas
 
-## JRC alias
-alias start=cygstart
-alias co2p='co2dice project'
-alias co2t='co2dice tstamp'
-alias co2c='co2dice config'
-
 echo "$CONSOLE_HELP"
