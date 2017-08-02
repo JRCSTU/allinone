@@ -195,19 +195,21 @@ to maintain it.
 - GnuPG `sign support comment kwd
   <https://bitbucket.org/vinay.sajip/python-gnupg/issues/82/sign_file-with-a-comment>`_:
 
-  - gnupg.py:##943::
+  - gnupg.py#943::
 
       def sign_file(self, file, keyid=None, passphrase=None, clearsign=True,
     -               detach=False, binary=False, output=None):
     +               detach=False, binary=False, output=None, comment=None):
 
-  - gnupg.py:##957::
+  - gnupg.py#957::
 
           if keyid:
               args.extend(['--default-key', no_quote(keyid)])
         + if comment is not None:
         +     args.extend(['--comment', comment])
 
+  - Extract ``key_id`` from ciphers, ``gnupg.py#602-607`;
+    see https://bitbucket.org/vinay.sajip/python-gnupg/issues/83/handle-enc_to-to-acquire-key_id-on
 
 - pandas OpenPYXL usage::
 
