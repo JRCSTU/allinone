@@ -3,6 +3,8 @@ my_dir=`dirname "$0"`
 cd $my_dir
 
 aio=./co2mpas_AIO
+aio_ver="$(cat VERSION.txt)"
+
 rm="rm -v"
 cp="cp -v"
 mkdir=mkdir
@@ -76,3 +78,7 @@ jrc_stamper_key="94777323"
 echo "\n\Inspect MANUALLY expiration, and no other keys than:"
 echo -e "    $test_key\n    $stamper_key\n    $jrc_stamper_key"
 $GPG --allow-weak-digest-algos --list-keys
+
+## Engrave AIO version.
+$sed -i "s/X.Y.Z/$aio_ver/g" "$aio/Apps/Console/console.xml" "$aio/README.txt"
+$echo "$aio_ver" > "$aio/AIO-$aio_ver.ver"

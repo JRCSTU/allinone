@@ -73,7 +73,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
             Volume in drive D is Data
             Volume Serial Number is 688C-C286
 
-             Directory of D:\Apps\co2mpas_AIO-v1.6.3b1\CO2MPAS
+             Directory of D:\Apps\co2mpas_AIO-vX.Y.Z\CO2MPAS
 
               07/02/2017  09:26    <DIR>          .
               07/02/2017  09:26    <DIR>          ..
@@ -115,21 +115,21 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
 
             REM The python-interpreter that comes 1st is what we care about.
             > where python
-            D:\Apps\co2mpas_AIO-v1.6.3b1\Apps\WinPython\python-3.5.3\python.exe
-            D:\Apps\co2mpas_AIO-v1.6.3b1\Apps\Cygwin\bin\python
+            D:\Apps\co2mpas_AIO-vX.Y.Z\Apps\WinPython\python-3.5.3\python.exe
+            D:\Apps\co2mpas_AIO-vX.Y.Z\Apps\Cygwin\bin\python
 
             > co2mpas --version
-            co2mpas-1.6.3b1 at D:\Apps\co2mpas_AIO-v1.6.3b1\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
+            co2mpas-X.Y.Z at D:\Apps\co2mpas_AIO-vX.Y.Z\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
 
         - In *bash*, type:
 
           .. code-block:: console
 
             > which python
-            /d/Apps/co2mpas_AIO-v1.6.3b1/Apps/WinPython/python-3.5.3/python
+            /d/Apps/co2mpas_AIO-vX.Y.Z/Apps/WinPython/python-3.5.3/python
 
             > co2mpas --version
-            co2mpas-1.6.3b1 at D:\Apps\co2mpas_AIO-v1.6.3b1\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
+            co2mpas-X.Y.Z at D:\Apps\co2mpas_AIO-vX.Y.Z\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
 
    In case of problems, copy-paste the output from the above commands and send
    it to JRC.
@@ -216,4 +216,5 @@ File Contents
     Apps/CO2MPAS_logo.ico      ## The logos used by the INSTALL.bat script.
 
     README                     ## This file, with instructions on this pre-populated folder.
+    AIO-X.Y.Z.ver              ## A dummy file just to denote the version of an AIO folder.
 

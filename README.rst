@@ -37,18 +37,20 @@ To build the 2nd AIO folder follow these steps:
    if i's a *dev* release) and run and test the basic commands and procedures to
    check everything works as planned.
 
-3. The AIO has its own, distinct version from *co2mpas* package, which is imprinted
-   in 3 different places that you have to modify before running ``./prepare.sh``:
+3. The AIO has its own version in ``VERSION.txt`` file, distinct from *co2mpas*
+   package, which is imprinted in various places, so you you have to modify it
+   before running ``./prepare.sh``.
 
-   - the version imprinted in the ``./Archive/README.txt`` file;  You must
-     modify replace all version strings.
-   - the ``AIO-x.x.x`` string inside the ``./Archive/Console/console.xml`` file,
-     at line 33.
-   - in the name of the containing folder; since the AIO folder is always
-     named ``co2mpas_AIO``, do run this command in ``cmd.exe`` to arrive to
-     a ``co2mpas_AIO-X.Y.Z`` name::
+   The name of the containing folder must also contain the AIO version; since
+   the AIO folder is always named ``co2mpas_AIO``, do run this command once
+   in ``cmd.exe`` to arrive to a ``co2mpas_AIO-X.Y.Z`` name (and rename the
+   junction in subsequent releases)::
 
          mklink  /J  C:\co2mpas_AIO-X.Y.Z  C:\Apps\allinone.git\co2mpas_AIO
+
+   .. Tip:
+      Remeber to respect PEP 440 version format (e.g. ``1.1.1b0`` but
+      ``1.1.1.post0``).
 
 4. Commit the 2 modified files above.
 
