@@ -59,6 +59,19 @@ To build the 2nd AIO folder follow these steps:
    Use maximum compression.   Check the contents of the result 7zip archive are
    structured like the previous releases.
 
+7. Deploy release:  Make sure release appropriately tagged and signed in git
+   with your private key.
+
+   - If "BETA": draft a new pre-release in private co2mpas repo
+   - If "FINAL": draft a new release in private co2mpas repo with the
+     "announcement email-text" in it.  If archive is deemed ok, copy text to
+     public repo and repeat this step; modify `issue #8
+     <https://github.com/JRCSTU/co2mpas-ta/issues/8>`_ to announce new release
+     to subscribers of this issue.
+
+  Study also `old release guidelines:
+  <https://github.com/JRCSTU/co2mpas/wiki/Developer-Guidelines#release-checklist>`_
+
 
 Apps
 ====
