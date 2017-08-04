@@ -42,6 +42,9 @@ find ${aio}/{*.xlsx,*.zip,*.ipynb} | xargs $rm -rf
 find ${aio}/CO2MPAS  -mindepth 1 | grep -vFf keepfiles.txt | xargs $rm -rf
 find ${aio}/Apps/WinPython/settings -mindepth 1  | grep -v winpython.ini | grep -v .jupyter | grep -v .ipython | xargs $rm -rf
 
+## Remove root scripts and version engraving.
+$rm -f ${aio}/*
+
 ## TOO BIG.
 $rm -rf ${aio}/Apps\WinPython/python-3.5.2.amd64/Lib/site-packages/wltp/test
 find . -name __pycache__ -type d | xargs $rm -rf
