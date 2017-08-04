@@ -290,8 +290,8 @@ exist after installing::
 
 - ::
 
-      pacman -S man git make zip unzip  dos2unix rsync procps inetutils patch \
-                p7zip gnu-netcat colordiff
+      pacman -S man git make tar zip p7zip unzip  dos2unix rsync \
+                procps inetutils patch gnu-netcat colordiff
 
 
 - Manually Install git-lfs:
