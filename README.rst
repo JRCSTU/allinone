@@ -205,7 +205,7 @@ to maintain it.
 
 
       if os.name =='nt':
-          raise ValueError("No user-name has been set!")
+          raise ValueError("Cannot derive user-name!\n  Is USERNAME env-var empty?")
 
 - GnuPG:
 
