@@ -207,8 +207,13 @@ to maintain it.
       if os.name =='nt':
           raise ValueError("No user-name has been set!")
 
-- GnuPG: Extract ``key_id`` from ciphers, ``gnupg.py#602-607``;
-    see https://bitbucket.org/vinay.sajip/python-gnupg/issues/83/handle-enc_to-to-acquire-key_id-on
+- GnuPG:
+
+  - Capture ``key_id`` from ENC_TO when encrypting, see
+    https://bitbucket.org/vinay.sajip/python-gnupg/issues/83/handle-enc_to-to-acquire-key_id-on
+
+  - Capture ``key_id/username`` when signing, see
+    https://bitbucket.org/vinay.sajip/python-gnupg/pull-requests/21/fix-sign-capture-also-userid_hint-when/diffhttps://bitbucket.org/vinay.sajip/python-gnupg/pull-requests/21/fix-sign-capture-also-userid_hint-when/diffhttps://bitbucket.org/vinay.sajip/python-gnupg/issues/83/handle-enc_to-to-acquire-key_id-on
 
 - pandas OpenPYXL usage::
 
