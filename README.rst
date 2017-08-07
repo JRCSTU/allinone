@@ -181,6 +181,7 @@ to maintain it.
 
 - GitPython: cygpath fix:
   Copy ``git/utils.py`` from:
+  https://github.com/gitpython-developers/GitPython/pull/639
 
 - `imaplib noop Debug <https://bugs.python.org/issue26543>`_ error in
   https://github.com/python/cpython/blob/master/Lib/imaplib.py#L1217 ::
