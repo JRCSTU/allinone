@@ -41,6 +41,7 @@ $rm -rf $aio/Apps/MSYS2/var/cache/*
 find ${aio}/{*.xlsx,*.zip,*.ipynb} | xargs $rm -rf
 find ${aio}/CO2MPAS  -mindepth 1 | grep -vFf keepfiles.txt | xargs $rm -rf
 find ${aio}/Apps/WinPython/settings -mindepth 1  | grep -v winpython.ini | grep -v .jupyter | grep -v .ipython | xargs $rm -rf
+$rm /Apps/clink/profile/history
 
 ## Remove root scripts and version engraving.
 $rm -f ${aio}/*
