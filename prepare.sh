@@ -3,8 +3,8 @@ my_dir=`dirname "$0"`
 cd $my_dir
 
 aio=./co2mpas_AIO
-aio_ver="$(cat VERSION.txt)"
-
+##aio_ver="$(cat VERSION.txt)"  !!
+read -d $'\x04' aio_ver < VERSION.txt
 rm="rm -v"
 cp="cp -v"
 mkdir=mkdir
