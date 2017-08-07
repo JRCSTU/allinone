@@ -324,7 +324,8 @@ ConsoleZ
 
 clink:
 -------
-- Download *zip* from: https://mridgers.github.io/clink/
+- Download *stripped-zip* from: https://github.com/mridgers/clink/pull/464#issuecomment-318199655
+  to fix ``doskey`` issue on *Windows-10*.
 - Update ``profile`` folder and *merge* bat to print *console help*.
 
 
