@@ -4,3 +4,4 @@
 *.txt   text eol=crlf
 *.xml   text eol=crlf
 *.ico   binary
+*.xlsx   binary
