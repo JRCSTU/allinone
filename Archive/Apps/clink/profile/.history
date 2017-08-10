@@ -1,0 +1,29 @@
+doskey /?
+doskey co2c=co2dice config $*
+doskey co2t=co2dice tstamp $*
+doskey co2r=co2dice report $*
+doskey co2p=co2dice project $*
+gpg --key-gen
+gpg --list-keys
+gpgconf --list-dirs
+gpg --list-keys --fpr
+pip uninstall co2mpas
+pip install co2mpas
+gpg -k
+co2mpas batch
+co2mpas ta
+path
+set GIT_TRACE=1
+co2dice project export
+co2dice project ls
+exit
+git -C %HOME%\.co2dice\repo reset --hard "HEAD~"
+co2dice config paths
+co2dice config desc tstamp
+co2dice config show
+where co2mpas
+co2mpas -vV
+co2gui
+ls co2mpas-demos\
+start co2mpas-demos\co2mpas_demo-0.xlsx
+co2mpas ta co2mpas-demos\co2mpas_demo-0.xlsx 
