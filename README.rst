@@ -312,6 +312,9 @@ GnuPG:
   ``prepare.sh`` makes it portable by creating ``gpgconf.ctl`` in same dir
   as ``gpgconf.exe`` (https://www.gnupg.org/documentation/manuals/gnupg/gpgv.html)
 
+- Execute this command to create ``$GNUPGHOME/pubring.kbx``::
+
+      gpgconf --check-programs
 
 
 
