@@ -299,6 +299,21 @@ exist after installing::
       pacman -S man git make tar zip p7zip unzip  dos2unix rsync \
                 procps inetutils patch gnu-netcat colordiff
 
+- Ensure *ssh* config-folder exists in WinUser's home dir
+  (usually ``/c/Users/<user>/.ssh``) because as `explained
+  <https://sourceforge.net/p/msys2/tickets/111/>`_:
+
+    OpenSSH does never use the value of $HOME to
+    search for the users configuration files! It always uses the
+    value of the pw_dir field in /etc/passwd as the home directory.
+
+  As dictated by `Cygwin instructions
+  <https://cygwin.com/cygwin-ug-net/ntsec.html>`_, we musr modify
+  ``/etc/nsswitch.conf`` accordingly::
+
+      @L7:
+      - db_home: cygwin desc
+      + db_home: /%H
 
 - Manually Install git-lfs:
   - Download zip for windows from; https://github.com/git-lfs/git-lfs/releases,
