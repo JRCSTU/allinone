@@ -203,7 +203,7 @@
     - [PgUp/PgDn]               - Search previous/next command in history matching prefix.
     - [Shift+PgUp/PgDn]         - Scroll up/down.
     - [Ctrl+C] or [Ctrl+Pause]  - Break execution of program or input.
-    - [MOUSE-Right+drag]        - Select text AND copy into clipboard when released.
+    - [MOUSE-Left+drag]         - Select text AND copy into clipboard when released.
     - [MOUSE-Middle]            - Paste from clipboard.
     - [Shift+Insert]            - Paste from clipboard.
     - [Alt+H]                   - List Clink's readline key-bindings.
@@ -225,7 +225,7 @@
     - [PgUp/PgDn]               - Search previous/next command in history matching prefix.
     - [Shift+PgUp/PgDn]         - Scroll up/down.
     - [Ctrl+C] or [Ctrl+Pause]  - Break execution of program or input.
-    - [MOUSE-Right+drag]        - Select text AND copy into clipboard when released.
+    - [MOUSE-Left+drag]         - Select text AND copy into clipboard when released.
     - [MOUSE-Middle]            - Paste from clipboard.
     - [Shift+Insert]            - Paste from clipboard.
     " check="1"/>
