@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+## Check any AIO subfolders in this repo.
+#
+#  - Runs from any bash-console.
+#  - Any messages are errors.
+
 my_dir=`dirname "$0"`
 cd $my_dir
 
@@ -24,6 +30,7 @@ Apps/node.js/
 Apps/clink/
 Apps/vc_redist.x64.exe
 Apps/CO2MPAS_logo.ico
+Apps/MSYS2/mingw64/bin/git.exe
 "
 
 for xxdir in ./*AIO*; do

@@ -12,7 +12,11 @@ If "%PROCESSOR_ARCHITECTURE%" == "x86" (
 IF DEFINED CO2MPAS_PATH GOTO env_exists
 
 set AIODIR=%~dp0
-set CO2MPAS_PATH=%~dp0Apps\GnuPG\pub;%~dp0Apps\MSYS2\usr\local\bin;%~dp0Apps\MSYS2\usr\bin;%~dp0Apps\MSYS2\bin;%~dp0Apps\MSYS2\opt\bin;%~dp0Apps\graphviz\bin;%~dp0Apps\node.js;%~dp0Apps\clink;%~dp0Apps\Console
+set CO2MPAS_PATH=%~dp0Apps\GnuPG\pub;;%~dp0Apps\MSYS2\mingw64\bin;^
+%~dp0Apps\MSYS2\usr\local\bin;%~dp0Apps\MSYS2\usr\bin;%~dp0Apps\MSYS2\bin;^
+%~dp0Apps\MSYS2\opt\bin;%~dp0Apps\graphviz\bin;%~dp0Apps\node.js;^
+%~dp0Apps\clink;%~dp0Apps\Console
+
 PATH %CO2MPAS_PATH%;%PATH%
 call "%AIODIR%Apps\WinPython\scripts\env.bat"
 

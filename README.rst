@@ -273,6 +273,9 @@ POSIX
 
 Cygwin:
 ~~~~~~~
+DROPPED before 1.7.x release because `git-2.15+`, could not install
+``pip instal git:-https://...``.
+
 Upgrade:
 - Download recent installer from: https://cygwin.com/install.html
 - Write its version as ``cygwin_setup-x86_64-877.ver`` file next to it.
@@ -315,9 +318,33 @@ exist after installing::
       - db_home: cygwin desc
       + db_home: /%H
 
-- Manually Install git-lfs:
-  - Download zip for windows from; https://github.com/git-lfs/git-lfs/releases,
-  - extract and copy ``git-lfs.exe --. $AIODIR/Apps/Cygwin/usr/bin``.
+Install Git for Windows
+^^^^^^^^^^^^^^^^^^^^^^^
+MSYS-git after 2.13+ (tested with v2.17.0) is failing simple cmds
+unless a MSYS2 console is running on the PC.
+For instance::
+
+    $ cd <some-git-repo>
+    $ git log
+    fatal: BUG: disabling cancellation: Invalid argument
+
+See also: https://github.com/Alexpux/MINGW-packages/issues/3351#issuecomment-384413989
+
+- Read guide at:
+  https://github.com/git-for-windows/git/wiki/Install-inside-MSYS2-proper
+- Ensure ``[MSYS2]/etc/pacman.conf`` patched with *mingw-git* repo
+  (already included in ``Archive/MSYS2/`` subtree).
+- Run cmds in the guide.
+- Finally use the command from OP in:
+  https://stackoverflow.com/questions/40262434/what-are-the-differences-between-msys-git-and-git-for-windows-mingw-w64-x86-64-g)::
+
+  pacman -S mingw-w64-x86_64-git
+
+
+Manually Install git-lfs:
+^^^^^^^^^^^^^^^^^^^^^^^
+- Download zip for windows from; https://github.com/git-lfs/git-lfs/releases,
+- extract and copy ``git-lfs.exe --. $AIODIR/Apps/Cygwin/usr/bin``.
 
 
 GnuPG:
