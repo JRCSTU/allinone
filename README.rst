@@ -104,8 +104,8 @@ to maintain it.
 
     ## Upgrade PIP
     python -m pip install -U pip
-    wget https://bootstrap.pypa.io/get-pip.py -O $AIODIR/Apps/WinPython/scripts/get-pip.py
-    $AIODIR/Apps/WinPython/scripts/make_winpython_movable/fix.bat
+    wget https://bootstrap.pypa.io/get-pip.py -O $WINPYDIRBASE/scripts/get-pip.py
+    "python.exe" -c "from winpython import wppm;dist=wppm.Distribution(r'$WINPYDIR');dist.patch_standard_packages('pip', to_movable=True)"
 
 2. Create a folder with co2mpas dependencies::
 
@@ -173,7 +173,7 @@ to maintain it.
 5. Download get-pypi.dev::
 
        wget https://bootstrap.pypa.io/get-pip.py
-       mv get-pip.py $AIODIR/Apps/WinPython/scripts/
+       mv get-pip.py $WINPYDIRBASE/scripts/
        #python get-pip.py
 
 6. HOTFIXES:
@@ -193,9 +193,9 @@ to maintain it.
 
 - Add ``__init__.py`` files::
 
-      $AIODIR/Apps/WinPython/python-3.5.2.amd64/Lib/site-packages/mpl_toolkits/__init__.py
-      $AIODIR/Apps/WinPython/python-3.6.1.amd64/lib/site-packages/google/__init__.py
-      $AIODIR/Apps/WinPython/python-3.6.1.amd64/lib/site-packages/google/__init__.py
+      $WINPYDIRBASE/python-3.5.2.amd64/Lib/site-packages/mpl_toolkits/__init__.py
+      $WINPYDIRBASE/python-3.6.1.amd64/lib/site-packages/google/__init__.py
+      $WINPYDIRBASE/python-3.6.1.amd64/lib/site-packages/google/__init__.py
 
   to avoid warnings like that:
 
@@ -218,7 +218,7 @@ to maintain it.
 
 - pandas OpenPYXL usage::
 
-    $AIODIR/Apps/WinPython/python-3.5.2.amd64/Lib/site-packages/pandas/io/excel.py
+    $WINPYDIRBASE/python-3.5.2.amd64/Lib/site-packages/pandas/io/excel.py
 
          L784:
          - self.book.remove_sheet(self.book.worksheets[0])
