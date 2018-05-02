@@ -5,11 +5,11 @@ FINALZIP=UpgradePack.exe
 TMPZIP=_archive.7z
 
 ## FAIL: cannot find sfx
-zip="/usr/bin/7z"
 #zip="/usr/lib/7z"
-SFX=/usr/lib/p7zip/7zCon.sfx
+#zip="/usr/bin/7z"
+#SFX=/usr/lib/p7zip/7zCon.sfx
 
-## OK
+## No Launch
 #SFX=/d/Apps/7-ZipPortable/App/7-Zip/7zCon.sfx
 #SFX=/d/Apps/7-ZipPortable/App/7-Zip/7z.sfx
 #zip=/d/Apps/7-ZipPortable/App/7-Zip/7z
@@ -24,6 +24,9 @@ SFX=/usr/lib/p7zip/7zCon.sfx
 #SFX=/d/Apps/tmpexe/7zSD.sfx
 #SFX=/d/Apps/tmpexe/7zS2con.sfx
 #SFX=/d/Apps/tmpexe/7zS2.sfx
+
+zip=/d/Apps/tmpexe/7zr
+SFX=/d/Apps/tmpexe/7zS.sfx
 rm=rm -v
 
 
@@ -34,7 +37,7 @@ $(TMPZIP): $(wildcard PackFiles/*)
 	$(zip) a -mx=7 $(TMPZIP) ./Packfiles/*
 
 $(FINALZIP): sfx_config.txt $(TMPZIP) Makefile
-	cat $(SFX) $(TMPZIP) > $@
+	cat $(SFX) sfx_config.txt $(TMPZIP) > $@
 	chmod a+x $@
 
 clean: 

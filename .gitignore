@@ -5,5 +5,8 @@
 ~*
 /Backup/
 /.externalToolBuilders/
+/_build/
+/.snakemake/
 /co2mpas_*/
-/Upgrade/python*/
+/Upgrade/Packfiles/wheels
+/Upgrade/_archive.7z

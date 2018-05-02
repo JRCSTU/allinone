@@ -7,6 +7,7 @@ VERSION_FILE_CHECK="AIO-1.7.3*.ver"
 set -u  # fail on unset variables
 
 prog="$0"
+my_dir="$(dirname "$0")"
 pip="pip"
 cp="cp -v"
 rm="rm -v"
@@ -50,7 +51,7 @@ EOF
 ## Cmdline parsing & validation.
 #
 declare -i verbose
-bad_opts='' bad_args='' dry_run='' verbose=0
+bad_opts='' bad_args='' dry_run='' force='' verbose=0
 while [ $# -ne 0 ]; do
     case "$1" in
         (-h|--help) 
@@ -95,14 +96,18 @@ check_environ () {
     AIODIR="$(cygpath "$AIODIR")"
     if [ ! -f  "$AIODIR/"$VERSION_FILE_CHECK ]; then
         yell "cannot locate file: $AIODIR/"$VERSION_FILE_CHECK "\n" \
-            "  Command must be run from an AIO-1.7.3+ console!\nAborting!\n\n" >&2
+            "  Command must launch from an AIO-1.7.3+ console!\nAborting!\n\n" >&2
     fi
 }
 
 do_upgrade () {
-    $pip install --no-index --no-dependencies python/*.whl
-    $cp -rv Apps $AIODIR/.
-    #$rm "$AIODIR/AIO-1.7.3.ver" "$AIODIR/ConsoleZ.1.18.1.17087.ver"
+
+    cd "$my_dir"
+    $pip install --no-index --no-dependencies wheels/*.whl
+    $rm -f "$AIODIR/"$VERSION_FILE_CHECK
+    $cp -rv AIO/* $AIODIR/.
 }
-check_environ
+if [ -z "$force" ]; then
+    check_environ
+fi
 do_upgrade

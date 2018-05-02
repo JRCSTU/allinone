@@ -1,6 +1,6 @@
 ﻿;!@Install@!UTF-8!
 Title="Upgrade AIO"
 BeginPrompt="Do ?"
-RunProgram="upgrade-AIO.sh"
+RunProgram="aioinstall.exe"
 MiscFlags="4"
 ;!@InstallEnd@!

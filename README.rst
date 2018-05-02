@@ -128,8 +128,18 @@ The instructions below have been updated to reflect `March 2018's release
 
 3. Download in there all CO2MPAS requirements::
 
-    pip download -d "$DOWNDIR" -r co2mpas.git/requirements/dev.pip  (--pre)
+    pip install -r co2mpas.git/requirements/dev.pip  -r ...
 
+   and copy the last line for ``pip``'s output where it lists
+   all installed packages.
+   Then paste them in the following command::
+
+    pip download -d "$DOWNDIR" ... (--pre)
+
+4. Convert all tgz, zip to Wheels::
+
+    pip wheel  --no-dependencies --wheel-dir=$DOWNDIR \
+            foo.tgz ...
 
 4. Download these packages from `Python Unofficial
    <https://www.lfd.uci.edu/~gohlke/pythonlibs/>`_::
@@ -140,18 +150,13 @@ The instructions below have been updated to reflect `March 2018's release
     pycosat     # Why needed? (https://github.com/JRCSTU/co2mpas/issues/463)
     pyYAML
 
+    ## For wormhole
+    Twisted (+ constantly, incremental, Automat, hyperlink, zope.interface)  # for wormhole
+
     ## Good to have
     #
-    #Twisted (+ constantly, incremental, Automat, hyperlink, zope.interface)  # for wormhole
     pygit2
     OpenCV-...+contrib_opencl....whl
-
-    ## HDF
-    #
-    ViTables
-    h5py
-    python_hdf4
-    tables
 
 5. Download extra packages::
 
