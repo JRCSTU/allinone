@@ -4,38 +4,47 @@
 
 UPGRADE_SCRIPT=UpgradePack.sh
 
-input_script=upgrade-script.sh
-tmp_b64=_archive.tar.bz2.b64
+input_script := upgrade-script.sh
+tmp_archive     := _archive.tar.bz2
 
-last_line := $(shell wc -l $(input_script) | sed 's/[^0-9]//g' )
-last_line := $(shell echo -n $$(( $(last_line) + 1 )) )  # trial & error
+wheels      := $(file < wheels.list)
+src_wheels  := $(addprefix wheelhouse/,$(wheels))
+dst_wheels  := $(addprefix Packfiles/wheelhouse/,$(wheels))
+last_line   := $(shell wc -l $(input_script) | sed 's/[^0-9]//g' )
+last_line   := $(shell echo -n $$(( $(last_line) + 1 )) )  # trial & error
 
-rm=rm -v
-base64=base64
-cat=cat
-cp=cp -v
-tar=tar -cv -C Packfiles --to-stdout
-zip=bzip2 -7 - --stdout
-sed=sed
-chmod=chmod
+rm := rm -v
+base64 := base64
+cat := cat
+cp := cp -v
+tar := tar -cv -C Packfiles --to-stdout
+zip := bzip2 -7 - --stdout
+sed := sed
+chmod := chmod
 
-pack_files=$(wildcard PackFiles/*)
+pack_files = $(wildcard PackFiles/*)
+
+.DELETE_ON_ERROR:
+.PHONY: clean
+## Comment-out this to inspect intermediate archive.
+#.INTERMEDIATE: $(tmp_archive)
+
 
 all: $(UPGRADE_SCRIPT)
 
-.DELETE_ON_ERROR:
-.INTERMEDIATE: $(tmp_b64)
+$(dst_wheels): wheels.list $(src_wheels)
+	cp $(src_wheels) Packfiles/wheelhouse/.
+    
+$(tmp_archive): $(pack_files) $(dst_wheels)
+	$(rm)       -f $(tmp_archive)
+	$(tar)      $(pack_files:PackFiles/%=%)  |  $(zip)  >  $(tmp_archive) 
 
-$(tmp_b64): $(pack_files)
-	$(rm)       -f $(tmp_b64)
-	$(tar)      $(pack_files:PackFiles/%=%)  |  $(zip)  |  $(base64)  >  $(tmp_b64) 
-
-$(UPGRADE_SCRIPT): $(input_script) $(tmp_b64)
+$(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 	## From https://unix.stackexchange.com/a/212419/156357
 	$(sed)      "s/__BASE64_ARCHIVE_LINENO__/$(last_line)/" $< > $@
-	$(cat)      $(tmp_b64) >> $@
+	$(cat)      $(tmp_archive)  |  $(base64)  >>  $@
 	$(chmod)    a+x  $@
 
 clean: 
-	$(rm) -f $(tmp_b64) $(UPGRADE_SCRIPT)
+	$(rm) -f $(tmp_archive) $(UPGRADE_SCRIPT)
 

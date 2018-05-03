@@ -95,7 +95,7 @@ inflate_pack () {
 do_upgrade () {
 
     cd "$my_dir"
-    $pip install --no-index --no-dependencies "$INFLATE_DIR"/wheels/*.whl
+    $pip install --no-index --no-dependencies "$INFLATE_DIR"/wheelhouse/*.whl
     $rm -f "$AIOVERSION"
     $cp -rv "$INFLATE_DIR/AIO/"* "$AIODIR/."
 }
