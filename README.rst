@@ -126,7 +126,8 @@ The instructions below have been updated to reflect `March 2018's release
     rm -rf "$DOWNDIR"
     mkdir -p "$DOWNDIR"
 
-3. Download in there all CO2MPAS requirements::
+3. Download in there all CO2MPAS requirements.
+   WARNING: The order of the next 2 steps is accurate!::
 
     pip install -r co2mpas.git/requirements/dev.pip  -r ...
 

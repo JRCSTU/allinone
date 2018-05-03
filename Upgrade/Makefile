@@ -5,13 +5,20 @@
 UPGRADE_SCRIPT=UpgradePack.sh
 
 input_script := upgrade-script.sh
-tmp_archive     := _archive.tar.bz2
+tmp_archive     := _packfiles.tar.bz2
 wheels_tstamp   := Packfiles/wheelhouse/.keepme
 wheels      := $(file < wheels.list)
+nwheels     := $(words $(strip $(wheels)))
 src_wheels  := $(addprefix wheelhouse/,$(wheels))
 dst_wheels  := $(addprefix Packfiles/wheelhouse/,$(wheels))
-last_line   := $(shell wc -l $(input_script) | sed 's/[^0-9]//g' )
-last_line   := $(shell echo -n $$(( $(last_line) + 1 )) )  # trial & error
+
+## If script not ending with  a blank last line,
+#  inflating pack-file archive fail on upgrade.
+#
+eol_script := $(shell tail -c 1 $(input_script))
+ifneq ($(strip,$(eol_script)),)
+    $(error '$(input_script)' not ending with NEWLINE but $(eol_script))
+endif
 
 rm := rm -v
 base64 := base64
@@ -42,8 +49,8 @@ $(tmp_archive): $(pack_files) $(wheels_tstamp)
 
 $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 	## From https://unix.stackexchange.com/a/212419/156357
-	$(cp)       $<  $@
-	$(cat)      $(tmp_archive)  |  $(base64)  >>  $@
+	$(sed) '/declare -i WINPY_NPACKAGES/c declare -i WINPY_NPACKAGES=$(nwheels)'  $<  > $@
+	$(cat)      $(tmp_archive)    >>  $@
 	$(chmod)    a+x  $@
 
 clean: 
