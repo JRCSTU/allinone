@@ -25,8 +25,23 @@ TMPZIP=_archive.7z
 #SFX=/d/Apps/tmpexe/7zS2con.sfx
 #SFX=/d/Apps/tmpexe/7zS2.sfx
 
-zip=/d/Apps/tmpexe/7zr
-SFX=/d/Apps/tmpexe/7zS.sfx
+## ./UpgradePack.exe: Permission denied
+#zip=/d/Apps/tmpexe/7zr
+#SFX=/d/Apps/tmpexe/7zS.sfx
+
+#zip=/d/Apps/tmpexe/7zLast/x64/7zr
+# PERMISSION DENIED
+#SFX=/d/Apps/tmpexe/7zLast/7zS2con.sfx
+
+# Reads config(!) but...: 7-zip: unsupported method
+# From: https://github.com/chrislake/7zsfxmm
+#SFX=/d/Apps/tmpexe/7zsfx/7zsd.sfx
+#SFX=/d/Apps/tmpexe/7zsfx/7zsd_LZMA_x64.sfx
+#SFX=/d/Apps/tmpexe/7zsfx/7zsd_PPMd_x64.sfx 
+define NEWLINE
+
+endef
+
 rm=rm -v
 
 
