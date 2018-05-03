@@ -11,11 +11,23 @@ set -u  # fail on unset variables
 # Utilities
 ##################
 #
+bold=$(tput bold)
+underline=$(tput sgr 0 1)
+reset=$(tput sgr0)
+
+purple=$(tput setaf 171)
+red=$(tput setaf 1)
+green=$(tput setaf 76)
+tan=$(tput setaf 3)
+blue=$(tput setaf 38)
 log () {    
     echo -e "$prog: $@" >&2
 }
+info () {    
+    log "${blue}$@${reset}"
+}
 yell () {
-    log "$@"
+    log "${red}$@${reset}"
     exit 1
 }
 keep_going=''  # Fail early on any error while script init.
@@ -25,7 +37,7 @@ err_report () {
         yell "aborted in line $1: ${2:-unspecified error}" \
             "\n  (use -k to keep going, -v to debug it)"
     else
-        log "error in line $1:${2:-unspecified error}\n  ...but KEEP GOING."
+        info "error in line $1:${2:-unspecified error}\n  ...but KEEP GOING."
     fi
 }
 trap 'err_report $LINENO  $BASH_COMMAND' ERR
@@ -46,9 +58,9 @@ AIOVERSION="$(find "$AIODIR" -maxdepth 1 -name $VERSION_FILE_CHECK)"
 prompt_for_abort() {
     local msg="upgrade $AIOVERSION..."
     if [ -n "$all_yes" ]; then
-        log "started $msg"
+        info "started $msg"
     else
-        log "ready to $msg\n  Press any key to continue, or [Ctrl+C] to cancel?"
+        info "ready to $msg\n  Press any key to continue, or [Ctrl+C] to cancel?"
         read
     fi
 }
@@ -60,7 +72,7 @@ check_environ () {
             "\n  Command must launch from an AIO-1.7.3+ console!"
         
         if [ -n "$force" ]; then
-            log "$msg\n  ...but FORCED upgrade."
+            info "$msg\n  ...but FORCED upgrade."
         else
             yell "$msg\n  (use --force if you must)"
         fi
@@ -73,13 +85,11 @@ clean_inflated () {
 }
 
 inflate_pack () {
-    log "inflating pack-files in: $INFLATE_DIR"
+    info "inflating pack-files in: $INFLATE_DIR"
     clean_inflated
-    mkdir "$INFLATE_DIR"
+    mkdir -p "$INFLATE_DIR"
     trap 'clean_inflated' EXIT
-    base64 -d << Base64EOF | tar -xjv -C "$INFLATE_DIR"
-__BASE64_ARCHIVE_HERE__
-Base64EOF
+    tail +__BASE64_ARCHIVE_LINENO__ "$prog" | base64 --decode - | tar -xjv -C "$INFLATE_DIR"
 }
 
 do_upgrade () {
@@ -151,7 +161,7 @@ if [ -n "$bad_opts$bad_args" ]; then
 fi
 
 if [ -n "$dry_run" ]; then
-    log "PRETEND actions..."
+    info "PRETEND actions..."
     pip="echo $pip"
     cp="echo $cp"
     rm="echo $rm"
@@ -169,3 +179,10 @@ check_environ
 inflate_pack
 prompt_for_abort
 do_upgrade
+
+exit
+
+##############################################
+## Base64-encoded UpgradePack archive BELOW ##
+##############################################
+

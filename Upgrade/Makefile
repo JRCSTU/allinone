@@ -2,37 +2,40 @@
 #
 # ask ankostis
 
-DIST_PACK=UpgradePack.sh
-TMPZIP=_archive.tar.bz2
-TMPB64=_archive.tar.bz2.b64
+UPGRADE_SCRIPT=UpgradePack.sh
+
+input_script=upgrade-script.sh
+tmp_b64=_archive.tar.bz2.b64
+
+last_line := $(shell wc -l $(input_script) | sed 's/[^0-9]//g' )
+last_line := $(shell echo -n $$(( $(last_line) + 1 )) )  # trial & error
 
 rm=rm -v
 base64=base64
 cat=cat
 cp=cp -v
-zip=tar -cv -C Packfiles -f
-awk=gawk
+tar=tar -cv -C Packfiles --to-stdout
+zip=bzip2 -7 - --stdout
+sed=sed
+chmod=chmod
 
-PACK_FILES=$(wildcard PackFiles/*)
+pack_files=$(wildcard PackFiles/*)
 
-all: $(DIST_PACK)
+all: $(UPGRADE_SCRIPT)
 
 .DELETE_ON_ERROR:
-.INTERMEDIATE: $(TMPZIP) $(TMPB64)
+.INTERMEDIATE: $(tmp_b64)
 
-$(TMPZIP): $(PACK_FILES)
-	$(rm) -f $(TMPZIP)
-	$(zip) $(TMPZIP) $(PACK_FILES:PackFiles/%=%)
+$(tmp_b64): $(pack_files)
+	$(rm)       -f $(tmp_b64)
+	$(tar)      $(pack_files:PackFiles/%=%)  |  $(zip)  |  $(base64)  >  $(tmp_b64) 
 
-$(TMPB64): $(TMPZIP)
-	$(base64) > $(TMPB64) < $(TMPZIP)
-
-$(DIST_PACK): $(TMPB64) upgrade-script.sh
+$(UPGRADE_SCRIPT): $(input_script) $(tmp_b64)
 	## From https://unix.stackexchange.com/a/212419/156357
-	$(cat) upgrade-script.sh | \
-		$(awk)  -f replace_b64.awk  -v b64file=$(TMPB64)  > $@
-	chmod a+x $@
+	$(sed)      "s/__BASE64_ARCHIVE_LINENO__/$(last_line)/" $< > $@
+	$(cat)      $(tmp_b64) >> $@
+	$(chmod)    a+x  $@
 
 clean: 
-	$(rm) $(TMPZIP) $(TMPB64) $(DIST_PACK)
+	$(rm) -f $(tmp_b64) $(UPGRADE_SCRIPT)
 
