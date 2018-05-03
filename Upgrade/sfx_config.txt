@@ -1,6 +1,0 @@
-﻿;!@Install@!UTF-8!
-Title="Upgrade AIO"
-BeginPrompt="Do ?"
-RunProgram="aioinstall.exe"
-MiscFlags="4"
-;!@InstallEnd@!

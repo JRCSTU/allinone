@@ -8,5 +8,3 @@
 /_build/
 /.snakemake/
 /co2mpas_*/
-/Upgrade/Packfiles/wheels
-/Upgrade/_archive.7z
