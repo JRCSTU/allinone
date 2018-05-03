@@ -3,31 +3,37 @@
 ## Upgrade AIO
 
 VERSION_FILE_CHECK="AIO-1.7.3*.ver"
+NEW_VERSION="AIO-1.7.3.2018.1.a2"
 INFLATE_DIR="$TMP/CO2MPAS_AIO/UpgradePack-1.7.3+2018.1.ver"
 
 set -u  # fail on unset variables
+set -o pipefail
 
 ##################
 # Utilities
 ##################
 #
-bold=$(tput bold)
-underline=$(tput sgr 0 1)
+## Logging from: https://natelandau.com/bash-scripting-utilities/
+# Only those attributes below work in AIO-console.
+#
 reset=$(tput sgr0)
-
-purple=$(tput setaf 171)
+bold=$(tput bold)
 red=$(tput setaf 1)
-green=$(tput setaf 76)
-tan=$(tput setaf 3)
-blue=$(tput setaf 38)
-log () {    
-    echo -e "$prog: $@" >&2
+#red=$(tput setaf 6)    # redder
+green=$(tput setaf 2)   # hard to tell from cyan/blue
+tan=$(tput setaf 3)     # with bold only
+blue=$(tput setaf 4)
+log () {
+    echo -e "$prog:" "$@" >&2
 }
 info () {    
-    log "${blue}$@${reset}"
+    log $bold$blue "$@" $reset
+}
+notice () {    
+    log $bold$green "$@" $reset
 }
 yell () {
-    log "${red}$@${reset}"
+    log $bold$red "$@" $reset
     exit 1
 }
 keep_going=''  # Fail early on any error while script init.
@@ -44,11 +50,6 @@ trap 'err_report $LINENO  $BASH_COMMAND' ERR
 
 prog="$0"
 my_dir="$(dirname "$0")"
-pip="pip"
-cp="cp -v"
-rm="rm -v"
-AIODIR="$(cygpath "$AIODIR")"
-AIOVERSION="$(find "$AIODIR" -maxdepth 1 -name $VERSION_FILE_CHECK)"
 
 
 ##################
@@ -67,10 +68,15 @@ prompt_for_abort() {
 
 
 check_environ () {
+    if [ -z "${AIODIR+x}" ];then
+        yell "no \$AIODIR variable is defined!" \
+        "\n  command must launch from an AIO-1.7.3+ console!\nAborting."
+    fi
+    AIODIR="$(cygpath "$AIODIR")"
+    AIOVERSION="$(find "$AIODIR" -maxdepth 1 -name $VERSION_FILE_CHECK)"
+
     if [ ! -f  "$AIOVERSION" ]; then
-        local msg="cannot locate file: $AIOVERSION" \
-            "\n  Command must launch from an AIO-1.7.3+ console!"
-        
+        local msg="cannot locate AIO's version-file: $AIOVERSION\n  Command must launch from an AIO-1.7.3+ console!"
         if [ -n "$force" ]; then
             info "$msg\n  ...but FORCED upgrade."
         else
@@ -81,39 +87,53 @@ check_environ () {
 
 
 clean_inflated () {
-    rm -rvf "$INFLATE_DIR"
+    info "cleaning any inflated pack-files in temporary folders..."
+    $rm -rf "$INFLATE_DIR"
 }
 
 inflate_pack () {
-    info "inflating pack-files in: $INFLATE_DIR"
     clean_inflated
-    mkdir -p "$INFLATE_DIR"
+    info "inflating pack-files in: $INFLATE_DIR"
+    local lineno=$(grep --line-number 'Base64-encoded UpgradePack' "$prog" | cut -d: -f1 | tail -1)
+    lineno=$(( lineno + 3 ))
+    $mkdir -p "$INFLATE_DIR"
     trap 'clean_inflated' EXIT
-    tail +__BASE64_ARCHIVE_LINENO__ "$prog" | base64 --decode - | tar -xjv -C "$INFLATE_DIR"
+    tail +$lineno "$prog" | base64 --decode - | $tar -xj -C "$INFLATE_DIR"
+    
+    for exp_dir in AIO wheelhouse; do
+        [ -d "$INFLATE_DIR/$exp_dir" ] || yell "inflating upgrade-pack has failed!\nAborting."
+    done
 }
 
 do_upgrade () {
-
-    cd "$my_dir"
+    info "upgradng WinPython packages..."
     $pip install --no-index --no-dependencies "$INFLATE_DIR"/wheelhouse/*.whl
+    
+    info "overlaying Apps files..."
+    $cp -r "$INFLATE_DIR/AIO/"* "$AIODIR/."
+    
+    info "engraving new AIO-version: ..."
     $rm -f "$AIOVERSION"
-    $cp -rv "$INFLATE_DIR/AIO/"* "$AIODIR/."
+    $echo $NEW_VERSION > "$AIODIR/$NEW_VERSION.ver"
+    
+    notice "successfully upgraded $AIOVERSION --> $NEW_VERSION"
 }
 
 ##################
 # Cmdline parsing & validation.
 ##################
 #
+notice "upgrade-pack for ${VERSION_FILE_CHECK%.ver*} --> $NEW_VERSION"
 
 ## Prefer `cat` instead of `read` command below (from https://serverfault.com/a/72511/215750)
 #  because its exit-status is 1 when EOF.
 # read -r -d '' help <<'EOF'
 help=$(cat <<EOF
-Inflate (in \$TMP/CO2MPAS_AIO/...) and install upgrade files for CO2MPAS AIO.
+Inflate (in \$TMP/CO2MPAS_AIO/...) and install upgrade-pack for CO2MPAS $NEW_VERSION.
 SYNTAX: 
     $prog [options]
 OPTIONS:
-    -f|--force:         upgrade even if not "$AIOVERSION"
+    -f|--force:         upgrade AIO even if not ${VERSION_FILE_CHECK%.ver}
     -h|--help           display this message
     -k|--keep-going:    continue working on errors
     -n|--dry-run:       pretend commands executed
@@ -157,22 +177,41 @@ done
 if [ -n "$bad_opts$bad_args" ]; then
     yell "command received invalid options or arguments:" \
         "\n  bad options: $bad_opts" 
-        "\n  unexpected args: $bad_args\nAborting!\n\n$help" 
+        "\n  unexpected args: $bad_args\nAborting.\n\n$help" 
 fi
 
+rm="rm"
+cat="cat"
+cp="cp"
+mkdir="mkdir"
+tar="tar -v"
+pip="pip"
+echo="echo"
+if [ $verbose -gt 0 ]; then
+    rm="$rm -v"
+    cp="$cp -v"
+    mkdir="$mkdir -v"
+    tar="$tar -v"
+
+    if [ $verbose -gt 1 ]; then
+        set -x 
+        pip="$pip -v"
+
+        if [ $verbose -gt 2 ]; then
+            set -v
+            pip="$pip -vv"
+        fi
+    fi
+fi
 if [ -n "$dry_run" ]; then
     info "PRETEND actions..."
-    pip="echo $pip"
     cp="echo $cp"
+    cat="echo $cat"
     rm="echo $rm"
-fi
-if [ $verbose -gt 0 ]; then
-    set -x 
-    pip="$pip -v"
-    if [ $verbose -gt 1 ]; then
-        set -v
-        pip="$pip -v"
-    fi
+    mkdir="echo $mkdir"
+    tar="echo $tar"
+    pip="echo $pip"
+    echo="false && echo"  # avoid redirections
 fi
 
 check_environ

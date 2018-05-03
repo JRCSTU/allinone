@@ -6,7 +6,7 @@ UPGRADE_SCRIPT=UpgradePack.sh
 
 input_script := upgrade-script.sh
 tmp_archive     := _archive.tar.bz2
-
+wheels_tstamp   := Packfiles/wheelhouse/.keepme
 wheels      := $(file < wheels.list)
 src_wheels  := $(addprefix wheelhouse/,$(wheels))
 dst_wheels  := $(addprefix Packfiles/wheelhouse/,$(wheels))
@@ -32,16 +32,17 @@ pack_files = $(wildcard PackFiles/*)
 
 all: $(UPGRADE_SCRIPT)
 
-$(dst_wheels): wheels.list $(src_wheels)
-	cp $(src_wheels) Packfiles/wheelhouse/.
-    
-$(tmp_archive): $(pack_files) $(dst_wheels)
+$(wheels_tstamp): wheels.list $(src_wheels)
+	$(cp) $(src_wheels) Packfiles/wheelhouse/.
+	touch $@
+
+$(tmp_archive): $(pack_files) $(wheels_tstamp)
 	$(rm)       -f $(tmp_archive)
 	$(tar)      $(pack_files:PackFiles/%=%)  |  $(zip)  >  $(tmp_archive) 
 
 $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 	## From https://unix.stackexchange.com/a/212419/156357
-	$(sed)      "s/__BASE64_ARCHIVE_LINENO__/$(last_line)/" $< > $@
+	$(cp)       $<  $@
 	$(cat)      $(tmp_archive)  |  $(base64)  >>  $@
 	$(chmod)    a+x  $@
 
