@@ -41,6 +41,7 @@ chmod 	:= chmod
 all: $(UPGRADE_SCRIPT)
 
 $(wheels_tstamp): wheels.list $(src_wheels)
+	$(rm) Packfiles/wheelhouse/*.whl
 	$(cp) $(src_wheels) Packfiles/wheelhouse/.
 	touch $@
 
