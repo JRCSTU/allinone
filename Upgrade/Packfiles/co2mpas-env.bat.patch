@@ -1,0 +1,12 @@
+--- co2mpas-env.bat	2018-04-26 10:59:15.759751700 +0200
++++ co2mpas-env-upgrade.bat	2018-05-08 13:21:24.089740400 +0200
+@@ -45,6 +45,9 @@
+ mkdir "%HOME%" "%GNUPGHOME%" > NUL 2>&1
+ 
+ :env_exists
++TASKLIST /V /FI "IMAGENAME eq console.exe" | FINDSTR AIO && IF EXIST %AIODIR%upgrade.sh (
++    START /WAIT bash -i %AIODIR%upgrade.sh --debug --verbose
++)
+ IF [%1] == [] GOTO end
+   %*
+ :end

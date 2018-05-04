@@ -12,6 +12,7 @@
 #   --keep-inflated                 do not clean up in  flated temporary dir
 #   -n|--dry-run:                   pretend actions executed (pack-files always inflated)
 #   --old-aio-version <VERSION>     don't ask user for it (used only if cannot locate AIO's version-file).
+#   --steps <NUM>...                run given upgrade-steps only
 #   -v|--verbose:                   increase verbosity (eg -vvv prints commands as executed)
 #   -y|--yes:                       answer all questions with yes (no interactive)
 #
@@ -38,6 +39,7 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [VERBOSE]="$VERBOSE"
     [AIODIR]="${AIODIR:=}"
     [WINPYDIR]="${WINPYDIR:=}"
+    [STEPS]="${STEPS=}"
     [DRY_RUN]="${DRY_RUN:=}"
     [KEEP_GOING]="${KEEP_GOING:=}"
     [DEBUG]="${DEBUG:=}"
@@ -48,6 +50,7 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--no-index --no-dependencies}"
 )
 
+#exec 2> >(tee -ia "$AIODIR/install.log") >&2 
 exec 3>/dev/null  # &3 used for redirecting stuff to log.
 
 ## ALL CMDS HERE
@@ -56,9 +59,11 @@ exec 3>/dev/null  # &3 used for redirecting stuff to log.
 CONF_CMDS=(
     "${CMDPATH:=/usr/bin}"
     "${rm:=$CMDPATH/rm}"
+    "${mv:=$CMDPATH/mv}"
     "${cat:=$CMDPATH/cat}"
     "${cp:=$CMDPATH/cp}"
     "${rsync:=$CMDPATH/rsync}"
+    "${patch:=$CMDPATH/patch -uN}"
     "${tee:=$CMDPATH/tee}"
     "${find:=$CMDPATH/find}"        # same filename in Windows path
     "${grep:=$CMDPATH/grep}"
@@ -84,14 +89,13 @@ CONF_CMDS=(
 # Cmdline parsing & validation.
 ####################################
 #
-get_help () {
+build_help () {
     local -a help_lines
     ## Read as array (from https://unix.stackexchange.com/a/205073/156357)
     #  and remove the 2-char comment prefix.
     #
-    mapfile -s2 -n20 help_lines < "$prog"
-    HELP="${help_lines[@]#\# }"
-    HELP_OPENING="${help_lines[0]#\# }"
+    HELP=$(sed '1,2d; /^$/q; s/^# *//' "$prog")
+    HELP_OPENING="$(echo "$HELP"| head -n1)"
 
     # Expand variables, from https://stackoverflow.com/a/27948896/548792
     #
@@ -100,15 +104,33 @@ get_help () {
 }
 
 BAD_OPTS= BAD_ARGS=
+declare -i SHIFTARGS=0
 parse_opt () {
     SHIFTARGS=1
     case "$1" in
         (--inflate-only)
-            INFLATE_ONLY=true
-            KEEP_INFLATED=true
-            ;;
+            INFLATE_ONLY=1
+            ;&
         (--keep-inflated)
-            KEEP_INFLATED=true
+            KEEP_INFLATED=1
+            ;;
+        (--steps)
+            if [ $# -lt 2 ]; then
+                BAD_OPTS="$BAD_OPTS $1(step number missing)"
+            else
+                local step
+                shift
+                for step; do
+                    if ! [[ $step =~ ^[0-9]+$ ]]; then
+                        if [ $SHIFTARGS -lt 2 ]; then
+                            BAD_OPTS="$BAD_OPTS $1(followed by a non number '$step')"
+                        fi
+                        break
+                    fi
+                    let SHIFTARGS++
+                done
+                STEPS=${@:1:$SHIFTARGS}
+            fi
             ;;
         (--old-aio-version)
             if [ $# -lt 2 ]; then
@@ -126,16 +148,17 @@ parse_opt () {
             exit
             ;;
         (-k|--keep-going)
-            KEEP_GOING=true
+            KEEP_GOING=1
             ;;
         (-d|--debug)
-            DEBUG=true
+            DEBUG=1
             ;;
         (-y|--yes)
-            ALL_YES=true
+            ALL_YES=1
+            patch="$patch -ft"
             ;;
         (-n|--dry-run)
-            DRY_RUN=true
+            DRY_RUN=1
             ;;
         (-v|--verbose)
             VERBOSE=$((VERBOSE + 1))
@@ -157,7 +180,7 @@ parse_opt () {
 }
 
 
-pargs_cmdline_args () {
+parse_cmdline_args () {
     while [ $# -ne 0 ]; do
         parse_opt "$@"
         shift $SHIFTARGS
@@ -173,7 +196,9 @@ pargs_cmdline_args () {
         info "${DRY_RUN}actions..."
         cp="echo $DRY_RUN$cp"
         rsync="$rsync --dry-run"
+        patch="$patch --dry-run"
         rm="echo $DRY_RUN$rm"
+        mv="echo $DRY_RUN$mv"
         pip="echo $DRY_RUN$pip"
         tee="echo $DRY_RUN$tee"
         sed="echo $DRY_RUN$sed"
@@ -185,6 +210,7 @@ pargs_cmdline_args () {
         rm="$rm -v"
         cp="$cp -v"
         rsync="$rsync -v"
+        patch="$patch --verbose"
         infl_rm="$rm -v"
         infl_mkdir="$infl_mkdir -v"
         infl_tar="$infl_tar -v"
@@ -245,23 +271,27 @@ die () {
     log FATAL $bold$red"$@"$reset
     exit 1
 }
+launch_debug_shell() {
+    local banner="$bold${green}Broke into DEBUG shell.
+  - All functions and variables have been iherited.
+  - Exit when done to continue.
+  - Exit with non-zero status to abort program).$reset"
+
+        # From: https://stackoverflow.com/a/7193037/548792
+        if ! bash --rcfile <(echo "export PS1='\[\033[33m\][$prog: line $1]\[\033[0m\] > ' &&  echo -e \"\$banner\""); then
+            die "Aborted by debug shell."
+        fi
+
+}
 err_report () {
     ## Adapted from: https://stackoverflow.com/a/185900/548792
     local err="aborted in line $1: ${2:-unspecified error}"
     err+="\n  stack: ${FUNCNAME[@]:1}"
     if [ -n "$DEBUG" ]; then
-        local banner="$bold${green}Broke into DEBUG shell.
-  - All functions and variables have been iherited.
-  - Exit when done to continue.
-  - Exit with non-zero status to abort program).$reset"
-
         error "$err"
-        # From: https://stackoverflow.com/a/7193037/548792
-        if ! bash --rcfile <(echo "export PS1='\[\033[33m\][$prog: line $1][\033[0m\] > ' &&  echo -e \"\$banner\""); then
-            die "Aborted by debug shell."
-        fi
+        launch_debug_shell
     elif [ -n "$KEEP_GOING" ]; then
-        error "error in line $1:${2:-unspecified error}$green\n  ...but KEEP GOING."
+        error "$err$green\n  ...but KEEP GOING."
     else
         die "$err\n  (relaunch with -v(vv) and ask for help)"
     fi
@@ -294,26 +324,9 @@ yesorno() {
 
 
 ####################################
-# Upgrade AIO functionality
+# AIO checks
 ####################################
 #
-prompt_for_abort() {
-    if [ "$OLD_AIO_VERSION" = "$NEW_VERSION" ]; then
-        SCRIPT_ACTION="RE-INSTALL into '$AIODIR', version $OLD_AIO_VERSION"
-    else
-        SCRIPT_ACTION="UPGRADE '$AIODIR', from version $OLD_AIO_VERSION --> $NEW_VERSION"
-    fi
-
-    if [ -z "$ALL_YES" ]; then
-        read -rs -p "${green}Ready to $SCRIPT_ACTION
-  Press [Enter] to continue, or [Ctrl+C] to cancel? $reset"
-        echo >&2
-    else
-        notice "Proceeding to $SCRIPT_ACTION..."
-    fi
-}
-
-
 check_python_version () {
     local inpver="${1#AIO-}"
     _VALID_VERSION=$( $python -c "import packaging.version as v;print(v.Version('$inpver'),end='')" )
@@ -370,6 +383,53 @@ check_existing_AIO () {
 }
 
 
+run_upgrade_steps () {
+    ## Launches all (or selected by `STEPS`) given functions, with `logstep` variable for logging.
+    local -i nsteps=${#@}
+    local -a step_funcs=("$@")
+    local -i step
+
+    logstep() {
+        info "$step of $nsteps: $1"
+    }
+
+    if [ -z "$STEPS" ]; then
+        STEPS=$(seq 0 $((nsteps - 1)))
+    fi
+
+    info "steps to run: "$STEPS
+
+    for step in $STEPS; do
+        if [ $step -lt ${#step_funcs} ]; then
+            "${step_funcs[$step]}"
+        else
+            warn "ignoring invalid step $step!"
+        fi
+    done
+}
+
+
+####################################
+# Upgrade AIO STAGE-1
+####################################
+#
+prompt_for_abort() {
+    if [ "$OLD_AIO_VERSION" = "$NEW_VERSION" ]; then
+        SCRIPT_ACTION="RE-INSTALL into '$AIODIR', version $OLD_AIO_VERSION"
+    else
+        SCRIPT_ACTION="UPGRADE '$AIODIR', from version: $OLD_AIO_VERSION --> $NEW_VERSION"
+    fi
+
+    if [ -z "$ALL_YES" ]; then
+        read -rs -p "${green}Ready to $SCRIPT_ACTION
+  Press [Enter] to continue, or [Ctrl+C] to cancel? $reset"
+        echo >&2  # Add new-line as feedback when user proceeds.
+    else
+        notice "Proceeding to $SCRIPT_ACTION..."
+    fi
+}
+
+
 clean_inflated () {
     if [ -z "$KEEP_INFLATED" ]; then
         debug "cleaning any inflated pack-files in temporary folders..."
@@ -412,43 +472,37 @@ inflate_pack_files () {
 }
 
 
-do_upgrade () {
+do_new_version_file() {
     local old_version_file="$AIODIR/ΑΙΟ-$OLD_AIO_VERSION.ver"
     local new_version_file="$AIODIR/ΑΙΟ-$NEW_VERSION.ver"
-    local -i nsteps=4
-    local -i step=1
-
-    logstep() {
-        info "$step of $nsteps: $1"
-        let step++
-    }
-
-    logstep "${DRY_RUN}engraving new version-file $new_version_file..."
+    logstep "${DRY_RUN}engraving new version-file '$new_version_file'..."
     if [ -f "$old_version_file" ]; then
         $cp "$old_version_file" "$new_version_file"
     fi
     echo -e "\n$NEW_VERSION: $( $date )" | $tee -a "$AIODIR/AIO-$NEW_VERSION.ver" >&3
-
+}
+do_upgrade_winpy() {
     logstep "${DRY_RUN}upgrading WinPython packages..."
     $pip install $PIP_INSTALL_OPTS "$INFLATE_DIR"/wheelhouse/*.whl
-
+}
+do_overlay_aio_files() {
     logstep "${DRY_RUN}overlaying Apps files..."
     $rsync -r "$INFLATE_DIR/AIO/" "$AIODIR/"
-
-    logstep "${DRY_RUN}patching console config (and TODO: fix MSYS2 unset vars)..."
-    $sed -i "s/title=\"AIO-[^\"+]\"/title=\"AIO-$NEW_VERSION/" "$AIODIR/Apps/Console/console.xml"
-
-    logstep "${DRY_RUN}deleting old version-file $old_version_file..."
-    if [ -f "$old_version_file" ]; then
-        $rm "$old_version_file"
-    fi
+}
+do_make_stage_2_script() {
+    logstep "${DRY_RUN}creating stage-2 upgrade file (to upgrade MSYS2/console on next launch)..."
+    $sed "/^# Upgrade AIO STAGE-1/Q" "$prog" > "$AIODIR/upgrade.sh"
+    $cat "$INFLATE_DIR/upgrade2-footer.sh" >> "$AIODIR/upgrade.sh"
+    ## `patch` fails with 1 when already patched, and 2 on more serious errors.
+    $patch "$AIODIR/co2mpas-env.bat" --input="$INFLATE_DIR/co2mpas-env.bat.patch" || [ $? -eq 1 ] && \
+            warn "ignoring patch-failure, assuming file '$AIODIR/co2mpas-env.bat' already upgraded."
 }
 
 ####################################
 ## Main body
 ####################################
-get_help
-pargs_cmdline_args "$@"
+build_help
+parse_cmdline_args "$@"
 
 notice "$HELP_OPENING\n  Use $prog --help for more options (e.g. --dry-run)"
 inflate_pack_files
@@ -458,9 +512,14 @@ if [ -n "$INFLATE_ONLY" ]; then
 fi
 check_existing_AIO
 prompt_for_abort
-do_upgrade
+run_upgrade_steps \
+    do_new_version_file \
+    do_upgrade_winpy \
+    do_overlay_aio_files \
+    do_make_stage_2_script
 
-notice "finished $DRY_RUN$SCRIPT_ACTION successfully."
+notice "finished stage-1 of $DRY_RUN$SCRIPT_ACTION successfully." \
+    "\n  Exit all AIO-console instances and relaunch it, to complete stage-2 of the upgrade."
 
 exit 0
 #######################################################################
