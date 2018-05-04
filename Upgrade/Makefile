@@ -2,21 +2,22 @@
 #
 # ask ankostis
 
-UPGRADE_SCRIPT=UpgradePack.sh
+VERSION         := 2018.1.a2
+UPGRADE_SCRIPT  := "CO2MPAS_AIO_UpgradePack-$(VERSION).sh"
 
-input_script := upgrade-script.sh
+input_script    := upgrade-script.sh
 tmp_archive     := _packfiles.tar.bz2
 wheels_tstamp   := Packfiles/wheelhouse/.keepme
-wheels      := $(file < wheels.list)
-nwheels     := $(words $(strip $(wheels)))
-src_wheels  := $(addprefix wheelhouse/,$(wheels))
-dst_wheels  := $(addprefix Packfiles/wheelhouse/,$(wheels))
+wheels          := $(file < wheels.list)
+nwheels         := $(words $(strip $(wheels)))
+src_wheels      := $(addprefix wheelhouse/,$(wheels))
+dst_wheels      := $(addprefix Packfiles/wheelhouse/,$(wheels))
 
 ## If script not ending with  a blank last line,
 #  inflating pack-file archive fail on upgrade.
 #
 eol_script := $(shell tail -c 1 $(input_script))
-ifneq ($(strip,$(eol_script)),)
+ifneq ($(strip $(eol_script)),)
     $(error '$(input_script)' not ending with NEWLINE but $(eol_script))
 endif
 
@@ -49,7 +50,8 @@ $(tmp_archive): $(pack_files) $(wheels_tstamp)
 
 $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 	## From https://unix.stackexchange.com/a/212419/156357
-	$(sed) '/declare -i WINPY_NPACKAGES/c declare -i WINPY_NPACKAGES=$(nwheels)'  $<  > $@
+	$(sed)  -e '/WINPY_NPACKAGES=/c declare -i WINPY_NPACKAGES=$(nwheels)' \
+			-e '/^NEW_VERSION=/c NEW_VERSION=$(VERSION)'     $<  > $@
 	$(cat)      $(tmp_archive)    >>  $@
 	$(chmod)    a+x  $@
 

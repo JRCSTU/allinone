@@ -3,27 +3,27 @@
 ## CO2MPAS AIO UpgradePack script 
 
 VERSION_FILE_CHECK="AIO-1.7.3*.ver"
-NEW_VERSION="2018.1.a2"
+NEW_VERSION=2018.1.a2
 INFLATE_DIR="$TMP/CO2MPAS_AIO/UpgradePack-1.7.3+2018.1.ver"
-declare -i WINPY_NPACKAGES=<replaced-on-build-time>
+declare -i WINPY_NPACKAGES=12
 
 set -u  # fail on unset variables
+set -E  # funcs inherit traps
 set -o pipefail
 
-####################################
-# Cmdline parsing & validation.
-####################################
-#
 declare -i verbose
 bad_opts='' bad_args='' dry_run='' force='' all_yes='' verbose=0
 
 prog="$0"
 
+HELP_OPENING="CO2MPAS upgrade-pack for ${VERSION_FILE_CHECK%.ver} --> $NEW_VERSION"
+
 ## Prefer `cat` instead of `read` command below (from https://serverfault.com/a/72511/215750)
 #  because its exit-status is 1 when EOF.
 # read -r -d '' help <<'EOF'
-help=$(cat <<EOF
-Inflate (in \$TMP/CO2MPAS_AIO/...) and install upgrade-pack for CO2MPAS $NEW_VERSION.
+HELP=$(cat <<EOF
+$HELP_OPENING
+
 SYNTAX:
     $prog [options]
 OPTIONS:
@@ -33,13 +33,20 @@ OPTIONS:
     -n|--dry-run:       pretend commands executed
     -v|--verbose:       print commands as executed
     -y|--yes:           answer all questions with yes (no interactive)
+
+- Contains $WINPY_NPACKAGES new or updated python packages (wheels).
+- Files will be inflated under \$TMP folder ($INFLATE_DIR).
 EOF
 )
 
+####################################
+# Cmdline parsing & validation.
+####################################
+#
 parse_opt () {
     case "$1" in
         (-h|--help)
-            echo "$help"
+            echo "$HELP"
             exit
             ;;
         (-k|--keep-going)
@@ -79,12 +86,13 @@ pargs_cmdline_args () {
     if [ -n "$bad_opts$bad_args" ]; then
         yell "command received invalid options or arguments:" \
             "\n  bad options: $bad_opts" \
-            "\n  unexpected args: $bad_args\nAborting.\n\n$help"
+            "\n  unexpected args: $bad_args\nAborting.\n\n$HELP"
     fi
 
     rm="rm"
     cat="cat"
     cp="cp"
+    rsync="rsync"
     mkdir="mkdir"
     tar="tar -v"
     pip="pip"
@@ -92,6 +100,7 @@ pargs_cmdline_args () {
     if [ $verbose -gt 0 ]; then
         rm="$rm -v"
         cp="$cp -v"
+        rsync="$rsync -v"
         mkdir="$mkdir -v"
         tar="$tar -v"
         log "cmdline options:\n  - verbose: $verbose\n  - dry_run: $dry_run\n  - force  : $force" \
@@ -110,6 +119,7 @@ pargs_cmdline_args () {
     if [ -n "$dry_run" ]; then
         info "PRETEND actions..."
         cp="echo $cp"
+        rsync="echo $rsync"
         cat="echo $cat"
         rm="echo $rm"
         mkdir="echo $mkdir"
@@ -121,7 +131,7 @@ pargs_cmdline_args () {
 
 
 ####################################
-# Log & Errors utilities
+# Logging & Errors utils
 ####################################
 #
 ## Logging from: https://natelandau.com/bash-scripting-utilities/
@@ -149,10 +159,10 @@ notice () {
     log $bold$green"$@" $reset
 }
 warn () {
-    log $bold$tan"$@" $reset
+    log WARN: $bold$tan"$@" $reset
 }
 yell () {
-    log $bold$red"$@" $reset
+    log ERR $bold$red"$@" $reset
     exit 1
 }
 keep_going=''  # Fail early on any error while script init.
@@ -160,13 +170,18 @@ err_report () {
     ## From: https://stackoverflow.com/a/185900/548792
     if [ -z "$keep_going" ]; then
         yell "aborted in line $1: ${2:-unspecified error}" \
-            "\n  (use -k to keep going, -v to debug it)"
+            "\n  (relaunch with -v(vv) to debug it, or  -k to keep going)"
     else
-        info "error in line $1:${2:-unspecified error}\n  ...but KEEP GOING."
+        warn "error in line $1:${2:-unspecified error}\n  ...but KEEP GOING."
     fi
 }
-trap 'err_report $LINENO  $BASH_COMMAND' ERR
+trap 'err_report $LINENO  "$BASH_COMMAND"' ERR
 
+
+####################################
+# Generic utils
+####################################
+#
 in_str() {
     ## $ in_str 'b' 'abc && echo ok
     #  ok
@@ -193,8 +208,9 @@ yesorno() {
 #
 prompt_for_abort() {
     if [ -z "$all_yes" ]; then
-        read -rs -p "${green}ready to upgrade $AIOVERSION --> $NEW_VERSION." \
-            "\n  Press [Enter] to continue, or [Ctrl+C] to cancel? $reset"
+        read -rs -p "${green}Ready to upgrade $AIOVERSION --> $NEW_VERSION.  
+  Press [Enter] to continue, or [Ctrl+C] to cancel? $reset"
+        echo >&2
     fi
 }
 
@@ -212,13 +228,13 @@ check_existing_AIO () {
     fi
 
     AIODIR="$(cygpath "$AIODIR")"
-    AIOVERSION="$( find "$AIODIR" -maxdepth 1 -name $VERSION_FILE_CHECK )"
+    AIOVERSION="$( find "$AIODIR" -maxdepth 1 -name $VERSION_FILE_CHECK -printf %f)"
 
     if [ -n "$AIOVERSION" ]; then
         ## Leninent handling of multiple version-files.
         #
         local allvers=( $AIOVERSION ) # var-to-array from; https://stackoverflow.com/a/15108607/548792
-        AIOVERSION=${allvers[0]}
+        AIOVERSION=${allvers[0]%.ver}
         if [ ${#allvers[@]} -ne 1 ]; then
             warn "existing AIO has ${#allvers[@]} version-files: ${allvers[@]}" \
             "\n  Arbitrarily assumed the first one as authoritative: $AIOVERSION."
@@ -229,14 +245,15 @@ check_existing_AIO () {
         local msg="cannot locate existing AIO's version-file: $AIODIR/$AIOVERSION"
         msg="$msg\n  Command must launch from an AIO-1.7.3+ console!"
         if [ -n "$force" ]; then
-            info "$msg\n  ...but FORCED upgrade."
+            warn "$msg\n  ...but FORCED upgrade."
 
             while true; do
-                read -p "${green}Which is your current AIO's version? $reset" old_version
+                read -p "${green}Which is your current AIO version? $reset" old_version
                 [ -z "$old_version" ] && continue
                 check_python_version "$old_version" || continue
-                if yesorno 'N' 1 "${green}Is your current version 'AIO-$_VALID_VERSION'? [y/N]$reset"; then
-                    AIOVERSION="$_VALID_VERSION"
+                old_version="AIO-$_VALID_VERSION"
+                if yesorno 'N' 1 "${green}Is your current version '$old_version'? [y/N]$reset"; then
+                    AIOVERSION="$old_version"
                     break
                 fi
             done
@@ -245,7 +262,7 @@ check_existing_AIO () {
         fi
     fi
 
-    NEW_VERSION="$AIOVERSION.$NEW_VERSION"
+    NEW_VERSION="${AIOVERSION%.$NEW_VERSION}.$NEW_VERSION"
 }
 
 
@@ -272,38 +289,42 @@ inflate_pack_files () {
     for exp_dir in AIO wheelhouse; do
         [ -d "$INFLATE_DIR/$exp_dir" ] || inflation_err="$inflation_err\n  - missing dir: $exp_dir/"
     done
-    local wheels=$(ls "$INFLATE_DIR/wheelhouse/*.whl")
-    wheels=( wheels )
+    local wheels="$(find "$INFLATE_DIR/wheelhouse" -name '*.whl')"
+    wheels=( $wheels )
     local nwhl=${#wheels[@]}
     [ $nwhl -ne $WINPY_NPACKAGES ] && inflation_err="\n  - missmatch num-of-wheels: expected $WINPY_NPACKAGES, inflated $nwhl"
     
-    [ -n "$inflation_err" ] && yell "inflating upgrade-pack has failed due to: $inflation_err!\nAborting."
+    if [ -n "$inflation_err" ]; then 
+        yell "inflating upgrade-pack has failed due to: $inflation_err!\nAborting."
+    fi
 }
 
 do_upgrade () {
-    info "upgradng WinPython packages..."
+    info "1. engraving new AIO-version..."
+    $echo "$NEW_VERSION" > "$AIODIR/$NEW_VERSION.ver"
+
+    info "2. upgrading WinPython packages..."
     $pip install --no-index --no-dependencies "$INFLATE_DIR"/wheelhouse/*.whl
 
-    info "overlaying Apps files..."
-    $cp -r "$INFLATE_DIR/AIO/"* "$AIODIR/."
+    info "3. overlaying Apps files..."
+    $rsync -r "$INFLATE_DIR/AIO/" "$AIODIR/"
 
-    info "engraving new AIO-version: ..."
+    info "4. dropping old AIO-version..."
     $rm -f "$AIOVERSION"
-    $echo $NEW_VERSION > "$AIODIR/$NEW_VERSION.ver"
-
-    notice "successfully upgraded $AIOVERSION --> $NEW_VERSION"
 }
 
 ####################################
 ## Main body
 ####################################
-notice "upgrade-pack for ${VERSION_FILE_CHECK%.ver} --> $NEW_VERSION" \
-    "\n  Use $prog --help for more options."
+notice "$HELP_OPENING\n  Use $prog --help for more options."
+
 pargs_cmdline_args "$@"
 check_existing_AIO
 inflate_pack_files
 prompt_for_abort
 do_upgrade
+
+notice "successfully upgraded $AIOVERSION --> $NEW_VERSION"
 
 exit 0
 #######################################################################
