@@ -96,7 +96,7 @@ pargs_cmdline_args () {
     mkdir="mkdir"
     tar="tar -v"
     pip="pip"
-    echo="echo"
+    tee="tee"
     if [ $verbose -gt 0 ]; then
         rm="$rm -v"
         cp="$cp -v"
@@ -119,13 +119,13 @@ pargs_cmdline_args () {
     if [ -n "$dry_run" ]; then
         info "PRETEND actions..."
         cp="echo $cp"
-        rsync="echo $rsync"
+        rsync="$rsync --dry-run -v"
         cat="echo $cat"
         rm="echo $rm"
         mkdir="echo $mkdir"
         tar="echo $tar"
         pip="echo $pip"
-        echo="false && echo"  # avoid redirections
+        tee="echo $tee"
     fi
 }
 
@@ -281,9 +281,10 @@ inflate_pack_files () {
     local lineno=$(grep --line-number --text "$match_text" "$prog" | cut -d: -f1 | tail -1)
     lineno=$(( lineno + 2 ))
 
-    $mkdir -p "$INFLATE_DIR"
+    mkdir -p "$INFLATE_DIR"
     trap 'clean_inflated' EXIT
-    tail +$lineno "$prog" | $tar -xj -C "$INFLATE_DIR"
+    ## NOTE: --exclude does not work when archiving.
+    tail +$lineno "$prog" | tar --exclude=.keepme -xj -C "$INFLATE_DIR"
 
     local inflation_err=''
     for exp_dir in AIO wheelhouse; do
@@ -301,7 +302,7 @@ inflate_pack_files () {
 
 do_upgrade () {
     info "1. engraving new AIO-version..."
-    $echo "$NEW_VERSION" > "$AIODIR/$NEW_VERSION.ver"
+    $tee "$NEW_VERSION" -a "$AIODIR/$NEW_VERSION.ver" >/dev/null
 
     info "2. upgrading WinPython packages..."
     $pip install --no-index --no-dependencies "$INFLATE_DIR"/wheelhouse/*.whl
@@ -316,7 +317,7 @@ do_upgrade () {
 ####################################
 ## Main body
 ####################################
-notice "$HELP_OPENING\n  Use $prog --help for more options."
+notice "$HELP_OPENING\n  Use $prog --help for more options (e.g. --dry-run)"
 
 pargs_cmdline_args "$@"
 check_existing_AIO
