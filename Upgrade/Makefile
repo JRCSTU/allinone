@@ -50,8 +50,10 @@ $(tmp_archive): $(pack_files) $(wheels_tstamp)
 
 $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 	## From https://unix.stackexchange.com/a/212419/156357
-	$(sed)  -e '/WINPY_NPACKAGES=/c declare -i WINPY_NPACKAGES=$(nwheels)' \
-			-e '/^NEW_VERSION=/c NEW_VERSION=$(VERSION)'     $<  > $@
+	$(sed)  -e '/^declare -i WINPY_NPACKAGES=/c declare -i WINPY_NPACKAGES=$(nwheels)' \
+			-e '/^NEW_VERSION=/c NEW_VERSION="$(VERSION)"' \
+			-e '/^INFLATE_DIR=/c INFLATE_DIR="$TMP/CO2MPAS_AIO/UpgradePack-$(VERSION)"' \
+			$<  > $@
 	$(cat)      $(tmp_archive)    >>  $@
 	$(chmod)    a+x  $@
 

@@ -3,9 +3,9 @@
 ## CO2MPAS AIO UpgradePack script 
 
 VERSION_FILE_CHECK="AIO-1.7.3*.ver"
-NEW_VERSION=2018.1.a2
-INFLATE_DIR="$TMP/CO2MPAS_AIO/UpgradePack-1.7.3+2018.1.ver"
-declare -i WINPY_NPACKAGES=12
+NEW_VERSION=
+INFLATE_DIR=
+declare -i WINPY_NPACKAGES=
 
 set -u  # fail on unset variables
 set -E  # funcs inherit traps
