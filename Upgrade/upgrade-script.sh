@@ -90,6 +90,7 @@ pargs_cmdline_args () {
     fi
 
     rm="rm"
+    tmp_rm="rm"
     cat="cat"
     cp="cp"
     rsync="rsync"
@@ -97,12 +98,16 @@ pargs_cmdline_args () {
     tar="tar -v"
     pip="pip"
     tee="tee"
+    exec 3>/dev/null  # &3 used for redirecting stuff to log.
     if [ $verbose -gt 0 ]; then
         rm="$rm -v"
+        tmp_rm="$rm -v"
         cp="$cp -v"
         rsync="$rsync -v"
         mkdir="$mkdir -v"
         tar="$tar -v"
+        exec 3>&2
+        
         log "cmdline options:\n  - verbose: $verbose\n  - dry_run: $dry_run\n  - force  : $force" \
            "\n  - all_yes: $all_yes\n  - keep_going: $keep_going"
            
@@ -117,15 +122,14 @@ pargs_cmdline_args () {
         fi
     fi
     if [ -n "$dry_run" ]; then
-        info "PRETEND actions..."
-        cp="echo $cp"
+        info "DRY-RUN actions..."
+        cp="echo DRY-RUN $cp"
         rsync="$rsync --dry-run -v"
-        cat="echo $cat"
-        rm="echo $rm"
-        mkdir="echo $mkdir"
-        tar="echo $tar"
-        pip="echo $pip"
-        tee="echo $tee"
+        rm="echo DRY-RUN $rm"
+        mkdir="echo DRY-RUN $mkdir"
+        tar="echo DRY-RUN $tar"
+        pip="echo DRY-RUN $pip"
+        tee="echo DRY-RUN $tee"
     fi
 }
 
@@ -208,7 +212,7 @@ yesorno() {
 #
 prompt_for_abort() {
     if [ -z "$all_yes" ]; then
-        read -rs -p "${green}Ready to upgrade $AIOVERSION --> $NEW_VERSION.  
+        read -rs -p "${green}Ready to upgrade $OLD_AIO_VERSION --> $NEW_VERSION.  
   Press [Enter] to continue, or [Ctrl+C] to cancel? $reset"
         echo >&2
     fi
@@ -216,7 +220,9 @@ prompt_for_abort() {
 
 
 check_python_version () {
-    _VALID_VERSION=$(python -c "import packaging.version as v;print(v.Version('$1'),end='')")
+    local inpver="${1#AIO-}"
+    _VALID_VERSION=$(python -c "import packaging.version as v;print(v.Version('$inpver'),end='')")
+    _VALID_VERSION="AIO-$_VALID_VERSION"
 }
 
 check_existing_AIO () {
@@ -228,21 +234,21 @@ check_existing_AIO () {
     fi
 
     AIODIR="$(cygpath "$AIODIR")"
-    AIOVERSION="$( find "$AIODIR" -maxdepth 1 -name $VERSION_FILE_CHECK -printf %f)"
+    local old_version_files="$( find "$AIODIR" -maxdepth 1 -name "$VERSION_FILE_CHECK" -printf '%f ')"
 
-    if [ -n "$AIOVERSION" ]; then
+    if [ -n "$old_version_files" ]; then
         ## Leninent handling of multiple version-files.
         #
-        local allvers=( $AIOVERSION ) # var-to-array from; https://stackoverflow.com/a/15108607/548792
-        AIOVERSION=${allvers[0]%.ver}
+        local allvers=( $old_version_files ) # var-to-array from; https://stackoverflow.com/a/15108607/548792
+        OLD_AIO_VERSION=${allvers[0]%.ver}
         if [ ${#allvers[@]} -ne 1 ]; then
             warn "existing AIO has ${#allvers[@]} version-files: ${allvers[@]}" \
-            "\n  Arbitrarily assumed the first one as authoritative: $AIOVERSION."
+            "\n  Arbitrarily assumed the first one as authoritative: $OLD_AIO_VERSION"
         fi
 
     else  # no version-file found
         local old_version
-        local msg="cannot locate existing AIO's version-file: $AIODIR/$AIOVERSION"
+        local msg="cannot locate existing AIO's version-file: $AIODIR/$VERSION_FILE_CHECK"
         msg="$msg\n  Command must launch from an AIO-1.7.3+ console!"
         if [ -n "$force" ]; then
             warn "$msg\n  ...but FORCED upgrade."
@@ -251,9 +257,9 @@ check_existing_AIO () {
                 read -p "${green}Which is your current AIO version? $reset" old_version
                 [ -z "$old_version" ] && continue
                 check_python_version "$old_version" || continue
-                old_version="AIO-$_VALID_VERSION"
+                old_version="AIO-${_VALID_VERSION#AIO-}"
                 if yesorno 'N' 1 "${green}Is your current version '$old_version'? [y/N]$reset"; then
-                    AIOVERSION="$old_version"
+                    OLD_AIO_VERSION="$old_version"
                     break
                 fi
             done
@@ -262,13 +268,13 @@ check_existing_AIO () {
         fi
     fi
 
-    NEW_VERSION="${AIOVERSION%.$NEW_VERSION}.$NEW_VERSION"
+    NEW_VERSION="${OLD_AIO_VERSION%?${NEW_VERSION}}.$NEW_VERSION"
 }
 
 
 clean_inflated () {
     debug "cleaning any inflated pack-files in temporary folders..."
-    $rm -rf "$INFLATE_DIR"
+    $tmp_rm -rf "$INFLATE_DIR"
 }
 
 inflate_pack_files () {
@@ -301,8 +307,14 @@ inflate_pack_files () {
 }
 
 do_upgrade () {
-    info "1. engraving new AIO-version..."
-    $tee "$NEW_VERSION" -a "$AIODIR/$NEW_VERSION.ver" >/dev/null
+    local old_version_file="$AIODIR/$OLD_AIO_VERSION.ver"
+    local new_version_file="$AIODIR/$NEW_VERSION.ver"
+
+    info "1. engrave new AIO-version..."
+    if [ -f "$old_version_file" ]; then
+        $cp "$old_version_file" "$new_version_file" 
+    fi
+    echo -e "\n$NEW_VERSION" | $tee -a "$AIODIR/$NEW_VERSION.ver" >&3
 
     info "2. upgrading WinPython packages..."
     $pip install --no-index --no-dependencies "$INFLATE_DIR"/wheelhouse/*.whl
@@ -310,8 +322,10 @@ do_upgrade () {
     info "3. overlaying Apps files..."
     $rsync -r "$INFLATE_DIR/AIO/" "$AIODIR/"
 
-    info "4. dropping old AIO-version..."
-    $rm -f "$AIOVERSION"
+    info "4. delete old AIO-version"
+    if [ -f "$old_version_file" ]; then
+        $rm "$old_version_file"
+    fi
 }
 
 ####################################
@@ -325,7 +339,7 @@ inflate_pack_files
 prompt_for_abort
 do_upgrade
 
-notice "successfully upgraded $AIOVERSION --> $NEW_VERSION"
+notice "successfully upgraded $OLD_AIO_VERSION --> $NEW_VERSION"
 
 exit 0
 #######################################################################
