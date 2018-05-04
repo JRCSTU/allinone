@@ -12,6 +12,10 @@ wheels          := $(file < wheels.list)
 nwheels         := $(words $(strip $(wheels)))
 src_wheels      := $(addprefix wheelhouse/,$(wheels))
 dst_wheels      := $(addprefix Packfiles/wheelhouse/,$(wheels))
+## Archive's requirements should become a "recursive" variable,
+#  in case some rule below creates more files.
+pack_files 		:= $(wildcard PackFiles/*)
+
 
 ## If script not ending with  a blank last line,
 #  inflating pack-file archive fail on upgrade.
@@ -21,23 +25,18 @@ ifneq ($(strip $(eol_script)),)
     $(error '$(input_script)' not ending with NEWLINE but $(eol_script))
 endif
 
-rm := rm -v
-base64 := base64
-cat := cat
-cp := cp -v
-rsync := rsync -v
-tar := tar --exclude=.keepme -cv -C Packfiles --to-stdout
-zip := bzip2 -7 - --stdout
-sed := sed
-chmod := chmod
-
-pack_files = $(wildcard PackFiles/*)
+base64 	:= base64
+cat     := cat
+cp 	    := cp -v
+rm 	    := rm -v
+rsync 	:= rsync -v
+tar     := tar -v
+zip     := bzip2 -7 - --stdout
+sed     := sed
+chmod 	:= chmod
 
 .DELETE_ON_ERROR:
-.PHONY: clean
-## Comment-out this to inspect intermediate archive.
-#.INTERMEDIATE: $(tmp_archive)
-
+.PHONY: all clean
 
 all: $(UPGRADE_SCRIPT)
 
@@ -45,19 +44,16 @@ $(wheels_tstamp): wheels.list $(src_wheels)
 	$(cp) $(src_wheels) Packfiles/wheelhouse/.
 	touch $@
 
-$(tmp_archive): $(pack_files) $(wheels_tstamp)
-	$(rm)       -f $(tmp_archive)
-	$(tar)      $(pack_files:PackFiles/%=%)  |  $(zip)  >  $(tmp_archive) 
+$(tmp_archive): $(wheels_tstamp)  $(pack_files)
+	$(tar) -c -C Packfiles --to-stdout --exclude=.keepme \
+		$(pack_files:PackFiles/%=%)  |  $(zip)  >  $@
 
 $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
-	## From https://unix.stackexchange.com/a/212419/156357
 	$(sed)  -e '/^declare -i WINPY_NPACKAGES=/c declare -i WINPY_NPACKAGES=$(nwheels)' \
 			-e '/^NEW_VERSION=/c NEW_VERSION="$(VERSION)"' \
 			-e '/^INFLATE_DIR=/c INFLATE_DIR="$$TMP/CO2MPAS_AIO/UpgradePack-$(VERSION)"' \
-			$<  > $@
-	$(cat)      $(tmp_archive)    >>  $@
-	$(chmod)    a+x  $@
+			$(input_script)  |	$(cat)   -   $(tmp_archive)  >  $@
+	$(chmod)  a+x  $@
 
-clean: 
+clean:
 	$(rm) -f $(tmp_archive) $(UPGRADE_SCRIPT)
-
