@@ -5,15 +5,15 @@
 # SYNTAX:
 #     $prog [options]
 # OPTIONS:
-#     -d|--debug          like --keep-going, but break into a debug shell to fix problem
-#     -h|--help           display this message
-#     --inflate-only      extract pack-files and exit
-#     -k|--keep-going:    continue working on errors (see also to --debug)
-#     --keep-inflated     do not clean up in  flated temporary dir
-#     -n|--dry-run:       pretend actions executed (pack-files always inflated)
-#     --old-aio-version:  don't ask user for it (used only if cannot find AIO's version-file).
-#     -v|--verbose:       increase verbosity (eg -vvv prints commands as executed)
-#     -y|--yes:           answer all questions with yes (no interactive)
+#   -d|--debug                      like --keep-going, but break into a debug shell to fix problem
+#   -h|--help                       display this message
+#   --inflate-only                  extract pack-files and exit
+#   -k|--keep-going:                continue working on errors (see also to --debug)
+#   --keep-inflated                 do not clean up in  flated temporary dir
+#   -n|--dry-run:                   pretend actions executed (pack-files always inflated)
+#   --old-aio-version <VERSION>     don't ask user for it (used only if cannot locate AIO's version-file).
+#   -v|--verbose:                   increase verbosity (eg -vvv prints commands as executed)
+#   -y|--yes:                       answer all questions with yes (no interactive)
 #
 # - Contains $WINPY_NPACKAGES new or updated python packages (wheels).
 # - Files will be inflated under \$TMP folder ($INFLATE_DIR).
