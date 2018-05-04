@@ -3,7 +3,7 @@
 # ask ankostis
 
 VERSION         := 2018.1.a2
-UPGRADE_SCRIPT  := "CO2MPAS_AIO_UpgradePack-$(VERSION).sh"
+UPGRADE_SCRIPT  := CO2MPAS_AIO_UpgradePack-$(VERSION).sh
 
 input_script    := upgrade-script.sh
 tmp_archive     := _packfiles.tar.bz2
