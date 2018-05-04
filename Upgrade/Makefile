@@ -25,7 +25,8 @@ rm := rm -v
 base64 := base64
 cat := cat
 cp := cp -v
-tar := tar -cv -C Packfiles --to-stdout
+rsync := rsync -v
+tar := tar --exclude=.keepme -cv -C Packfiles --to-stdout
 zip := bzip2 -7 - --stdout
 sed := sed
 chmod := chmod
@@ -52,7 +53,7 @@ $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 	## From https://unix.stackexchange.com/a/212419/156357
 	$(sed)  -e '/^declare -i WINPY_NPACKAGES=/c declare -i WINPY_NPACKAGES=$(nwheels)' \
 			-e '/^NEW_VERSION=/c NEW_VERSION="$(VERSION)"' \
-			-e '/^INFLATE_DIR=/c INFLATE_DIR="$TMP/CO2MPAS_AIO/UpgradePack-$(VERSION)"' \
+			-e '/^INFLATE_DIR=/c INFLATE_DIR="$$TMP/CO2MPAS_AIO/UpgradePack-$(VERSION)"' \
 			$<  > $@
 	$(cat)      $(tmp_archive)    >>  $@
 	$(chmod)    a+x  $@
