@@ -15,6 +15,7 @@ prog="$0"
 declare -i verbose=0
 BAD_OPTS= BAD_ARGS= DRY_RUN= FORCE= ALL_YES= INFLATE_ONLY= KEEP_INFLATED=
 
+exec 3>/dev/null  # &3 used for redirecting stuff to log.
 ## ALL CMDS HERE 
 #  (remember to add them also in verbose/dry-run)
 #
