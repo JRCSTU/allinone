@@ -16,7 +16,6 @@ prog="$0"
 declare -i VERBOSE=0
 conf=(  # Wrapped in an array not to type var-names twice.
     "${DRY_RUN:=}"
-    "${FORCE:=}"
     "${KEEP_GOING:=}"
     "${DEBUG:=}"
     "${ALL_YES:=}"
@@ -63,7 +62,6 @@ SYNTAX:
     $prog [options]
 OPTIONS:
     -d|--debug          like --keep-going, but break into a debug shell to fix problem
-    -f|--force:         upgrade AIO even if not ${VERSION_FILE_CHECK%.ver}
     -h|--help           display this message
     --inflate-only      extract pack-files and exit
     -k|--keep-going:    continue working on errors (see also to --debug)
@@ -115,9 +113,6 @@ parse_opt () {
             ;;
         (-d|--debug)
             DEBUG=true
-            ;;
-        (-f|--force)
-            FORCE=true
             ;;
         (-y|--yes)
             ALL_YES=true
@@ -187,7 +182,7 @@ pargs_cmdline_args () {
 
         local allcmds
         printf -v allcmds "  - %s\n"  "${CONF_CMDS[@]}"
-        log "configuration:\n  - VERBOSE: $VERBOSE\n  - DRY_RUN: $DRY_RUN\n  - FORCE  : $FORCE" \
+        log "configuration:\n  - VERBOSE: $VERBOSE\n  - DRY_RUN: $DRY_RUN" \
            "\n  - ALL_YES: $ALL_YES\n  - KEEP_GOING: $KEEP_GOING\n  - DEBUG: $DEBUG" \
            "\n  - KEEP_INFLATED: $KEEP_INFLATED\n  - INFLATE_ONLY: $INFLATE_ONLY\n$allcmds"
     fi
