@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Upgrade-pack for CO2MPAS ${VERSION_FILE_CHECK%.ver} --> $NEW_VERSION
-# 
+#
 # SYNTAX:
 #     $prog [options]
 # OPTIONS:
@@ -14,11 +14,12 @@
 #     --old-aio-version:  don't ask user for it (used only if cannot find AIO's version-file).
 #     -v|--verbose:       increase verbosity (eg -vvv prints commands as executed)
 #     -y|--yes:           answer all questions with yes (no interactive)
-# 
+#
 # - Contains $WINPY_NPACKAGES new or updated python packages (wheels).
 # - Files will be inflated under \$TMP folder ($INFLATE_DIR).
 # - \$CMDPATH controls the execution path of all POSIX commands invoked.
 # - All options have env-var counterparts (eg. --dry-run <--> \$DRY_RUN).
+# - Config-variables: ${!CONF[@]} 
 #
 
 set -u  # fail on unset variables
@@ -32,15 +33,19 @@ INFLATE_DIR=
 declare -i WINPY_NPACKAGES=
 
 prog="$0"
-declare -i VERBOSE=0
-conf=(  # Wrapped in an array not to type var-names twice.
-    "${DRY_RUN:=}"
-    "${KEEP_GOING:=}"
-    "${DEBUG:=}"
-    "${ALL_YES:=}"
-    "${INFLATE_ONLY:=}"
-    "${KEEP_INFLATED:=}"
-    "${OLD_AIO_VERSION:=}"
+declare -i VERBOSE="${VERBOSE:-0}"
+declare -A CONF=(  # Wrapped in an array not to type var-names twice.
+    [VERBOSE]="$VERBOSE"
+    [AIODIR]="${AIODIR:=}"
+    [WINPYDIR]="${WINPYDIR:=}"
+    [DRY_RUN]="${DRY_RUN:=}"
+    [KEEP_GOING]="${KEEP_GOING:=}"
+    [DEBUG]="${DEBUG:=}"
+    [ALL_YES]="${ALL_YES:=}"
+    [INFLATE_ONLY]="${INFLATE_ONLY:=}"
+    [KEEP_INFLATED]="${KEEP_INFLATED:=}"
+    [OLD_AIO_VERSION]="${OLD_AIO_VERSION:=}"
+    [PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--no-index --no-dependencies}"
 )
 
 exec 3>/dev/null  # &3 used for redirecting stuff to log.
@@ -61,8 +66,9 @@ CONF_CMDS=(
     "${date:=$CMDPATH/date}"
     "${tput:=$CMDPATH/tput}"
     "${cygpath:=$CMDPATH/cygpath}"
-    "${pip:=pip}"                   # python progs not in /usr/bin
-    "${python:=python}"             # python progs not in /usr/bin
+
+    "${python:=$WINPYDIR/python}"
+    "${pip:=$WINPYDIR/Scripts/pip}"
 
     ## Differentiate, not to --dry-run pack-files inflation.
     #
@@ -80,14 +86,16 @@ CONF_CMDS=(
 #
 get_help () {
     local -a help_lines
-    # From https://unix.stackexchange.com/a/205073/156357
-    mapfile -s2 -n19 help_lines < "$prog"
-    
+    ## Read as array (from https://unix.stackexchange.com/a/205073/156357)
+    #  and remove the 2-char comment prefix.
+    #
+    mapfile -s2 -n20 help_lines < "$prog"
     HELP="${help_lines[@]#\# }"
-    # From https://stackoverflow.com/a/27948896/548792
-    HELP=$(eval "echo \"$HELP\"")
-    
     HELP_OPENING="${help_lines[0]#\# }"
+
+    # Expand variables, from https://stackoverflow.com/a/27948896/548792
+    #
+    HELP=$(eval "echo \"$HELP\"")
     HELP_OPENING=$(eval "echo \"$HELP_OPENING\"")
 }
 
@@ -161,16 +169,19 @@ pargs_cmdline_args () {
     fi
 
     if [ -n "$DRY_RUN" ]; then
-        info "DRY-RUN actions..."
-        cp="echo DRY-RUN $cp"
+        DRY_RUN="PRETEND "
+        info "${DRY_RUN}actions..."
+        cp="echo $DRY_RUN$cp"
         rsync="$rsync --dry-run"
-        rm="echo DRY-RUN $rm"
-        pip="echo DRY-RUN $pip"
-        tee="echo DRY-RUN $tee"
-        sed="echo DRY-RUN $sed"
+        rm="echo $DRY_RUN$rm"
+        pip="echo $DRY_RUN$pip"
+        tee="echo $DRY_RUN$tee"
+        sed="echo $DRY_RUN$sed"
     fi
 
     if [ $VERBOSE -gt 0 ]; then
+        local confdump=
+
         rm="$rm -v"
         cp="$cp -v"
         rsync="$rsync -v"
@@ -180,20 +191,18 @@ pargs_cmdline_args () {
         exec 3>&2
 
        if [ $VERBOSE -gt 1 ]; then
-            set -x
-            pip="$pip -v"
-
+            confdump=$( set -o posix; set )
+            (set -o posix; set)
+            pip="$pip -vv"
+            rsync="$rsync -v"
             if [ $VERBOSE -gt 2 ]; then
-                pip="$pip -v"
-                rsync="$rsync -v"
+                set -x
             fi
+        else
+            confdump="- configuration: $(declare -p CONF) \n- command paths: ${CONF_CMDS[@]}"
         fi
 
-        local allcmds
-        printf -v allcmds "  - %s\n"  "${CONF_CMDS[@]}"
-        log "configuration:\n  - VERBOSE: $VERBOSE\n  - DRY_RUN: $DRY_RUN" \
-           "\n  - ALL_YES: $ALL_YES\n  - KEEP_GOING: $KEEP_GOING\n  - DEBUG: $DEBUG" \
-           "\n  - KEEP_INFLATED: $KEEP_INFLATED\n  - INFLATE_ONLY: $INFLATE_ONLY\n$allcmds"
+        log "$confdump\n"
     fi
 }
 
@@ -205,13 +214,13 @@ pargs_cmdline_args () {
 ## Logging from: https://natelandau.com/bash-scripting-utilities/
 # Only those attributes below work in AIO-console.
 #
-reset=$($tput sgr0)
 bold=$($tput bold)
 red=$($tput setaf 1)
 #red=$($tput setaf 6)    # redder
 green=$($tput setaf 2)   # hard to tell from cyan/blue
 tan=$($tput setaf 3)     # with bold only
 blue=$($tput setaf 4)
+reset=$($tput sgr0)
 log () {
     echo -e "$prog:" "$@" >&2
 }
@@ -349,10 +358,8 @@ check_existing_AIO () {
             while true; do
                 read -p "${green}Which is your current AIO version? $reset" old_version
                 [ -z "$old_version" ] && continue
-                check_python_version "$old_version" || continue
-                old_version="AIO-${_VALID_VERSION#AIO-}"
-                if yesorno 'N' 1 "${green}Is your current version '$old_version'? [y/N]$reset"; then
-                    OLD_AIO_VERSION="$old_version"
+                if check_python_version "$old_version"; then
+                    OLD_AIO_VERSION="${_VALID_VERSION#AIO-}"
                     break
                 fi
             done
@@ -416,22 +423,22 @@ do_upgrade () {
         let step++
     }
 
-    logstep "engraving new version-file $new_version_file..."
+    logstep "${DRY_RUN}engraving new version-file $new_version_file..."
     if [ -f "$old_version_file" ]; then
         $cp "$old_version_file" "$new_version_file"
     fi
     echo -e "\n$NEW_VERSION: $( $date )" | $tee -a "$AIODIR/AIO-$NEW_VERSION.ver" >&3
 
-    logstep "upgrading WinPython packages..."
-    $pip install --no-index --no-dependencies "$INFLATE_DIR"/wheelhouse/*.whl
+    logstep "${DRY_RUN}upgrading WinPython packages..."
+    $pip install $PIP_INSTALL_OPTS "$INFLATE_DIR"/wheelhouse/*.whl
 
-    logstep "overlaying Apps files..."
+    logstep "${DRY_RUN}overlaying Apps files..."
     $rsync -r "$INFLATE_DIR/AIO/" "$AIODIR/"
 
-    logstep "patching console config (and TODO: fix MSYS2 unset vars)..."
+    logstep "${DRY_RUN}patching console config (and TODO: fix MSYS2 unset vars)..."
     $sed -i "s/title=\"AIO-[^\"+]\"/title=\"AIO-$NEW_VERSION/" "$AIODIR/Apps/Console/console.xml"
 
-    logstep "deleting old version-file $old_version_file..."
+    logstep "${DRY_RUN}deleting old version-file $old_version_file..."
     if [ -f "$old_version_file" ]; then
         $rm "$old_version_file"
     fi
@@ -453,7 +460,7 @@ check_existing_AIO
 prompt_for_abort
 do_upgrade
 
-notice "finished $SCRIPT_ACTION successfully."
+notice "finished $DRY_RUN$SCRIPT_ACTION successfully."
 
 exit 0
 #######################################################################
