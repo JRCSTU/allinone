@@ -1,6 +1,25 @@
 #!/bin/bash
 #
-## CO2MPAS AIO UpgradePack script
+# Upgrade-pack for CO2MPAS ${VERSION_FILE_CHECK%.ver} --> $NEW_VERSION
+# 
+# SYNTAX:
+#     $prog [options]
+# OPTIONS:
+#     -d|--debug          like --keep-going, but break into a debug shell to fix problem
+#     -h|--help           display this message
+#     --inflate-only      extract pack-files and exit
+#     -k|--keep-going:    continue working on errors (see also to --debug)
+#     --keep-inflated     do not clean up in  flated temporary dir
+#     -n|--dry-run:       pretend actions executed (pack-files always inflated)
+#     --old-aio-version:  don't ask user for it (used only if cannot find AIO's version-file).
+#     -v|--verbose:       increase verbosity (eg -vvv prints commands as executed)
+#     -y|--yes:           answer all questions with yes (no interactive)
+# 
+# - Contains $WINPY_NPACKAGES new or updated python packages (wheels).
+# - Files will be inflated under \$TMP folder ($INFLATE_DIR).
+# - \$CMDPATH controls the execution path of all POSIX commands invoked.
+# - All options have env-var counterparts (eg. --dry-run <--> \$DRY_RUN).
+#
 
 set -u  # fail on unset variables
 set -E  # funcs inherit traps
@@ -54,34 +73,24 @@ CONF_CMDS=(
     "${infl_rm:=$CMDPATH/rm}"
 )
 
-HELP_OPENING="Upgrade-pack for CO2MPAS ${VERSION_FILE_CHECK%.ver} --> $NEW_VERSION"
-
-HELP="$HELP_OPENING
-
-SYNTAX:
-    $prog [options]
-OPTIONS:
-    -d|--debug          like --keep-going, but break into a debug shell to fix problem
-    -h|--help           display this message
-    --inflate-only      extract pack-files and exit
-    -k|--keep-going:    continue working on errors (see also to --debug)
-    --keep-inflated     do not clean up in  flated temporary dir
-    -n|--dry-run:       pretend actions executed (pack-files always inflated)
-    --old-aio-version:  don't ask user for it (used only if cannot find AIO's version-file).
-    -v|--verbose:       increase verbosity (eg -vvv prints commands as executed)
-    -y|--yes:           answer all questions with yes (no interactive)
-
-- Contains $WINPY_NPACKAGES new or updated python packages (wheels).
-- Files will be inflated under \$TMP folder ($INFLATE_DIR).
-- \$CMDPATH controls the execution path of all POSIX commands invoked.
-- All options have env-var counterparts (eg --dry-run <--> \$DRY_RUN).
-"
-
 
 ####################################
 # Cmdline parsing & validation.
 ####################################
 #
+get_help () {
+    local -a help_lines
+    # From https://unix.stackexchange.com/a/205073/156357
+    mapfile -s2 -n19 help_lines < "$prog"
+    
+    HELP="${help_lines[@]#\# }"
+    # From https://stackoverflow.com/a/27948896/548792
+    HELP=$(eval "echo \"$HELP\"")
+    
+    HELP_OPENING="${help_lines[0]#\# }"
+    HELP_OPENING=$(eval "echo \"$HELP_OPENING\"")
+}
+
 BAD_OPTS= BAD_ARGS=
 parse_opt () {
     SHIFTARGS=1
@@ -431,9 +440,10 @@ do_upgrade () {
 ####################################
 ## Main body
 ####################################
-notice "$HELP_OPENING\n  Use $prog --help for more options (e.g. --dry-run)"
-
+get_help
 pargs_cmdline_args "$@"
+
+notice "$HELP_OPENING\n  Use $prog --help for more options (e.g. --dry-run)"
 inflate_pack_files
 if [ -n "$INFLATE_ONLY" ]; then
     notice "inflated pack-files in '$INFLATE_DIR' and stopped."
