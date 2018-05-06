@@ -22,6 +22,7 @@ conf=(  # Wrapped in an array not to type var-names twice.
     "${ALL_YES:=}"
     "${INFLATE_ONLY:=}"
     "${KEEP_INFLATED:=}"
+    "${OLD_AIO_VERSION:=}"
 )
 
 exec 3>/dev/null  # &3 used for redirecting stuff to log.
@@ -68,6 +69,7 @@ OPTIONS:
     -k|--keep-going:    continue working on errors (see also to --debug)
     --keep-inflated     do not clean up in  flated temporary dir
     -n|--dry-run:       pretend actions executed (pack-files always inflated)
+    --old-aio-version:  don't ask user for it (used only if cannot find AIO's version-file).
     -v|--verbose:       increase verbosity (eg -vvv prints commands as executed)
     -y|--yes:           answer all questions with yes (no interactive)
 
@@ -84,6 +86,7 @@ OPTIONS:
 #
 BAD_OPTS= BAD_ARGS=
 parse_opt () {
+    SHIFTARGS=1
     case "$1" in
         (--inflate-only)
             INFLATE_ONLY=true
@@ -91,6 +94,16 @@ parse_opt () {
             ;;
         (--keep-inflated)
             KEEP_INFLATED=true
+            ;;
+        (--old-aio-version)
+            if [ $# -lt 2 ]; then
+                BAD_OPTS="$BAD_OPTS $1(version missing)"
+            elif [ "${2#-}" != "$2" ]; then
+                BAD_OPTS="$BAD_OPTS $1(followed by option $2)"
+            else
+                OLD_AIO_VERSION=$2
+                SHIFTARGS=2
+            fi
             ;;
         (-h|--help)
             echo "$HELP"
@@ -134,8 +147,8 @@ parse_opt () {
 
 pargs_cmdline_args () {
     while [ $# -ne 0 ]; do
-        parse_opt "$1"
-        shift
+        parse_opt "$@"
+        shift $SHIFTARGS
     done
     if [ -n "$BAD_OPTS$BAD_ARGS" ]; then
         die "command received invalid options or arguments:" \
@@ -224,9 +237,9 @@ err_report () {
     local err="aborted in line $1: ${2:-unspecified error}"
     err+="\n  stack: ${FUNCNAME[@]:1}"
     if [ -n "$DEBUG" ]; then
-        local banner="$bold${green}Broke into DEBUG shell. 
-  - All functions and variables have been iherited. 
-  - Exit when done to continue. 
+        local banner="$bold${green}Broke into DEBUG shell.
+  - All functions and variables have been iherited.
+  - Exit when done to continue.
   - Exit with non-zero status to abort program).$reset"
 
         error "$err"
@@ -305,6 +318,9 @@ check_existing_AIO () {
     local old_version_files="$( $find "$AIODIR" -maxdepth 1 -name "$VERSION_FILE_CHECK" -printf '%f ')"
 
     if [ -n "$old_version_files" ]; then
+        if [ -n "$OLD_AIO_VERSION" ]; then
+            warn "ignoring given old---aio-version: $OLD_AIO_VERSION"
+        fi
         ## Leninent handling of multiple version-files.
         #
         local allvers=( $old_version_files ) # var-to-array from; https://stackoverflow.com/a/15108607/548792
@@ -318,9 +334,13 @@ check_existing_AIO () {
     else  # no version-file found
         local old_version
         local msg="cannot locate existing AIO's version-file: $AIODIR/$VERSION_FILE_CHECK"
-        msg="$msg\n  Command must launch from an AIO-1.7.3+ console!"
-        if [ -n "$FORCE" ]; then
-            warn "$msg\n  ...but FORCED upgrade."
+
+        if [ -n "$OLD_AIO_VERSION" ]; then
+            warn "$msg$blue\n  using given version: $OLD_AIO_VERSION"
+            check_python_version "$OLD_AIO_VERSION" || die "invalid --old-aio-version $OLD_AIO_VERSION"
+
+        else  # none given from cmdline, ask user.
+            warn "$msg"
 
             while true; do
                 read -p "${green}Which is your current AIO version? $reset" old_version
@@ -332,8 +352,6 @@ check_existing_AIO () {
                     break
                 fi
             done
-        else
-            die "$msg\n  (use --force if you must)"
         fi
     fi
 
