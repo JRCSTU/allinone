@@ -313,7 +313,7 @@ check_python_version () {
 check_existing_AIO () {
     ##  Check existing AIO's version and decide future-one.
 
-    if [ -z "${AIODIR+x}" ];then
+    if [ -z "${AIODIR:+x}" ];then
         die "no \$AIODIR variable is defined!" \
         "\n  command must launch from an AIO-1.7.3+ console!\nAborting."
     fi
@@ -451,7 +451,6 @@ if [ -n "$INFLATE_ONLY" ]; then
 fi
 check_existing_AIO
 prompt_for_abort
-    set +x
 do_upgrade
 
 notice "finished $SCRIPT_ACTION successfully."
