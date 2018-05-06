@@ -2,72 +2,87 @@
 #
 ## CO2MPAS AIO UpgradePack script
 
+set -u  # fail on unset variables
+set -E  # funcs inherit traps
+#set -o pipefail  # code written &&  expects diffrently...
+set -a  # export all, to facilitate --debug sub-shell
+
 VERSION_FILE_CHECK="AIO-1.7.3*.ver"
 NEW_VERSION=
 INFLATE_DIR=
 declare -i WINPY_NPACKAGES=
 
-set -u  # fail on unset variables
-set -E  # funcs inherit traps
-#set -o pipefail  # code written &&  expects diffrently...
-
 prog="$0"
-declare -i verbose=0
-BAD_OPTS= BAD_ARGS= DRY_RUN= FORCE= ALL_YES= INFLATE_ONLY= KEEP_INFLATED=
+declare -i VERBOSE=0
+conf=(  # Wrapped in an array not to type var-names twice.
+    "${DRY_RUN:=}"
+    "${FORCE:=}"
+    "${KEEP_GOING:=}"
+    "${DEBUG:=}"
+    "${ALL_YES:=}"
+    "${INFLATE_ONLY:=}"
+    "${KEEP_INFLATED:=}"
+)
 
 exec 3>/dev/null  # &3 used for redirecting stuff to log.
-## ALL CMDS HERE 
+
+## ALL CMDS HERE
 #  (remember to add them also in verbose/dry-run)
 #
-CMDPATH="${CMDPATH:-/usr/bin}"
-rm="${rm:=$CMDPATH/rm}"
-    set +x
-tmp_rm="${tmp_rm:=$CMDPATH/rm}"     # separate, not to --dry-run temp-folder
-cat="${cat:=$CMDPATH/cat}"
-cp="${cp:=$CMDPATH/cp}"
-rsync="${rsync:=$CMDPATH/rsync}"
-mkdir="${mkdir:=$CMDPATH/mkdir}"
-tar="${tar:-$CMDPATH/tar}"
-tee="${tee:=$CMDPATH/tee}"
-find="${find:=$CMDPATH/find}"       # same filename in Windows path
-grep="${grep:=$CMDPATH/grep}"
-date="${date:=$CMDPATH/date}"
-tput="${tput:=$CMDPATH/tput}"
-cygpath="${cygpath:=$CMDPATH/cygpath}"
-pip="${pip:=pip}"                   # python progs not in /usr/bin
-python="${python:=python}"          # python progs not in /usr/bin
+CONF_CMDS=(
+    "${CMDPATH:=/usr/bin}"
+    "${rm:=$CMDPATH/rm}"
+    "${cat:=$CMDPATH/cat}"
+    "${cp:=$CMDPATH/cp}"
+    "${rsync:=$CMDPATH/rsync}"
+    "${tee:=$CMDPATH/tee}"
+    "${find:=$CMDPATH/find}"        # same filename in Windows path
+    "${grep:=$CMDPATH/grep}"
+    "${sed:=$CMDPATH/sed}"
+    "${date:=$CMDPATH/date}"
+    "${tput:=$CMDPATH/tput}"
+    "${cygpath:=$CMDPATH/cygpath}"
+    "${pip:=pip}"                   # python progs not in /usr/bin
+    "${python:=python}"             # python progs not in /usr/bin
 
+    ## Differentiate, not to --dry-run pack-files inflation.
+    #
+    "${infl_awk:=$CMDPATH/awk}"
+    "${infl_tail:=$CMDPATH/tail}"
+    "${infl_mkdir:=$CMDPATH/mkdir}" # that
+    "${infl_tar:=$CMDPATH/tar}"
+    "${infl_rm:=$CMDPATH/rm}"
+)
 
-HELP_OPENING="CO2MPAS upgrade-pack for ${VERSION_FILE_CHECK%.ver} --> $NEW_VERSION"
+HELP_OPENING="Upgrade-pack for CO2MPAS ${VERSION_FILE_CHECK%.ver} --> $NEW_VERSION"
 
-## Prefer `cat` instead of `read` command below (from https://serverfault.com/a/72511/215750)
-#  because its exit-status is 1 when EOF.
-# read -r -d '' help <<'EOF'
-HELP=$( $cat <<EOF
-$HELP_OPENING
+HELP="$HELP_OPENING
 
 SYNTAX:
     $prog [options]
 OPTIONS:
+    -d|--debug          like --keep-going, but break into a debug shell to fix problem
     -f|--force:         upgrade AIO even if not ${VERSION_FILE_CHECK%.ver}
     -h|--help           display this message
     --inflate-only      extract pack-files and exit
-    -k|--keep-going:    continue working even if some upgrade steps fail
+    -k|--keep-going:    continue working on errors (see also to --debug)
     --keep-inflated     do not clean up in  flated temporary dir
     -n|--dry-run:       pretend actions executed (pack-files always inflated)
-    -v|--verbose:       print commands as executed
+    -v|--verbose:       increase verbosity (eg -vvv prints commands as executed)
     -y|--yes:           answer all questions with yes (no interactive)
 
 - Contains $WINPY_NPACKAGES new or updated python packages (wheels).
 - Files will be inflated under \$TMP folder ($INFLATE_DIR).
 - \$CMDPATH controls the execution path of all POSIX commands invoked.
-EOF
-)
+- All options have env-var counterparts (eg --dry-run <--> \$DRY_RUN).
+"
+
 
 ####################################
 # Cmdline parsing & validation.
 ####################################
 #
+BAD_OPTS= BAD_ARGS=
 parse_opt () {
     case "$1" in
         (--inflate-only)
@@ -83,7 +98,10 @@ parse_opt () {
             exit
             ;;
         (-k|--keep-going)
-            keep_going=true
+            KEEP_GOING=true
+            ;;
+        (-d|--debug)
+            DEBUG=true
             ;;
         (-f|--force)
             FORCE=true
@@ -95,7 +113,7 @@ parse_opt () {
             DRY_RUN=true
             ;;
         (-v|--verbose)
-            verbose=$((verbose + 1))
+            VERBOSE=$((VERBOSE + 1))
             ;;
         (-[a-z]?*)
             ## recursively parse '-vvn'`' opts.`
@@ -120,44 +138,45 @@ pargs_cmdline_args () {
         shift
     done
     if [ -n "$BAD_OPTS$BAD_ARGS" ]; then
-        yell "command received invalid options or arguments:" \
+        die "command received invalid options or arguments:" \
             "\n  bad options: $BAD_OPTS" \
             "\n  unexpected args: $BAD_ARGS\nAborting.\n\n$HELP"
     fi
 
-    exec 3>/dev/null  # &3 used for redirecting stuff to log.
-    if [ $verbose -gt 0 ]; then
-        rm="$rm -v"
-        tmp_rm="$rm -v"
-        cp="$cp -v"
-        rsync="$rsync -v"
-        mkdir="$mkdir -v"
-        tar="$tar -v"
-        exec 3>&2
-
-        log "cmdline options:\n  - verbose: $verbose\n  - DRY_RUN: $DRY_RUN\n  - FORCE  : $FORCE" \
-           "\n  - ALL_YES: $ALL_YES\n  - keep_going: $keep_going\n  - KEEP_INFLATED: $KEEP_INFLATED " \
-           "\n  - INFLATE_ONLY: $INFLATE_ONLY"
-
-       if [ $verbose -gt 1 ]; then
-            set -v
-            pip="$pip -v"
-
-            if [ $verbose -gt 2 ]; then
-                set -x
-                pip="$pip -vv"
-            fi
-        fi
-    fi
     if [ -n "$DRY_RUN" ]; then
         info "DRY-RUN actions..."
         cp="echo DRY-RUN $cp"
-        rsync="$rsync --dry-run -v"
+        rsync="$rsync --dry-run"
         rm="echo DRY-RUN $rm"
-        mkdir="echo DRY-RUN $mkdir"
-        tar="echo DRY-RUN $tar"
         pip="echo DRY-RUN $pip"
         tee="echo DRY-RUN $tee"
+        sed="echo DRY-RUN $sed"
+    fi
+
+    if [ $VERBOSE -gt 0 ]; then
+        rm="$rm -v"
+        cp="$cp -v"
+        rsync="$rsync -v"
+        infl_rm="$rm -v"
+        infl_mkdir="$infl_mkdir -v"
+        infl_tar="$infl_tar -v"
+        exec 3>&2
+
+       if [ $VERBOSE -gt 1 ]; then
+            set -x
+            pip="$pip -v"
+
+            if [ $VERBOSE -gt 2 ]; then
+                pip="$pip -v"
+                rsync="$rsync -v"
+            fi
+        fi
+
+        local allcmds
+        printf -v allcmds "  - %s\n"  "${CONF_CMDS[@]}"
+        log "configuration:\n  - VERBOSE: $VERBOSE\n  - DRY_RUN: $DRY_RUN\n  - FORCE  : $FORCE" \
+           "\n  - ALL_YES: $ALL_YES\n  - KEEP_GOING: $KEEP_GOING\n  - DEBUG: $DEBUG" \
+           "\n  - KEEP_INFLATED: $KEEP_INFLATED\n  - INFLATE_ONLY: $INFLATE_ONLY\n$allcmds"
     fi
 }
 
@@ -180,32 +199,45 @@ log () {
     echo -e "$prog:" "$@" >&2
 }
 debug () {
-    if [ $verbose -gt 0 ]; then
+    if [ $VERBOSE -gt 0 ]; then
         log "$@"
     fi
 }
 info () {
-    log $bold$blue"$@" $reset
+    log $bold$blue"$@"$reset
 }
 notice () {
-    log $bold$green"$@" $reset
+    log $bold$green"$@"$reset
 }
 warn () {
-    log WARN: $bold$tan"$@" $reset
+    log WARN: $bold$tan"$@"$reset
 }
-yell () {
-    log ERR $bold$red"$@" $reset
+error () {
+    log ERR: $bold$red"$@"$reset
+}
+die () {
+    log FATAL $bold$red"$@"$reset
     exit 1
 }
-keep_going=''  # Fail early on any error while script init.
 err_report () {
-    ## From: https://stackoverflow.com/a/185900/548792
-    if [ -z "$keep_going" ]; then
-        yell "aborted in line $1: ${2:-unspecified error}" \
-            "\n  stack: ${FUNCNAME[@]:1}" \
-            "\n  (relaunch with -v(vv) to debug it, or  -k to keep going)"
+    ## Adapted from: https://stackoverflow.com/a/185900/548792
+    local err="aborted in line $1: ${2:-unspecified error}"
+    err+="\n  stack: ${FUNCNAME[@]:1}"
+    if [ -n "$DEBUG" ]; then
+        local banner="$bold${green}Broke into DEBUG shell. 
+  - All functions and variables have been iherited. 
+  - Exit when done to continue. 
+  - Exit with non-zero status to abort program).$reset"
+
+        error "$err"
+        # From: https://stackoverflow.com/a/7193037/548792
+        if ! bash --rcfile <(echo "export PS1='\[\033[33m\][$prog: line $1][\033[0m\] > ' &&  echo -e \"\$banner\""); then
+            die "Aborted by debug shell."
+        fi
+    elif [ -n "$KEEP_GOING" ]; then
+        error "error in line $1:${2:-unspecified error}$green\n  ...but KEEP GOING."
     else
-        warn "error in line $1:${2:-unspecified error}\n  ...but KEEP GOING."
+        die "$err\n  (relaunch with -v(vv) and ask for help)"
     fi
 }
 trap 'err_report $LINENO  "$BASH_COMMAND"' ERR
@@ -265,7 +297,7 @@ check_existing_AIO () {
     ##  Check existing AIO's version and decide future-one.
 
     if [ -z "${AIODIR+x}" ];then
-        yell "no \$AIODIR variable is defined!" \
+        die "no \$AIODIR variable is defined!" \
         "\n  command must launch from an AIO-1.7.3+ console!\nAborting."
     fi
 
@@ -301,7 +333,7 @@ check_existing_AIO () {
                 fi
             done
         else
-            yell "$msg\n  (use --force if you must)"
+            die "$msg\n  (use --force if you must)"
         fi
     fi
 
@@ -312,26 +344,24 @@ check_existing_AIO () {
 clean_inflated () {
     if [ -z "$KEEP_INFLATED" ]; then
         debug "cleaning any inflated pack-files in temporary folders..."
-        $tmp_rm -rf "$INFLATE_DIR"
+        $infl_rm -rf "$INFLATE_DIR"
     fi
-    
+
 }
 
 
 inflate_pack_files () {
-    $tmp_rm -rf "$INFLATE_DIR"  # clean any remnants
+    $infl_rm -rf "$INFLATE_DIR"  # clean any remnants
     info "inflating pack-files in '$INFLATE_DIR'..."
 
-    ## Find the lineno of the last B64 HEADER.
+    ## Inflate lines after the 2nd(!) raw-bytes header.
     #
-    local match_text='UpgradePack_RAW_BYTES_BELOW'
-    local lineno=$( $grep --line-number --text "$match_text" "$prog" | cut -d: -f1 | tail -1 )
-    lineno=$(( lineno + 2 ))
-
+    local -i rawline=$($infl_awk \
+                    '/UpgradePack_RAW_BYTES_BELOW/ { m++; if (m == 2) { print FNR + 2; exit }}' \
+                    "$prog")
     mkdir -p "$INFLATE_DIR"
     trap 'clean_inflated' EXIT
-    ## NOTE: --exclude does not work when archiving.
-    tail +$lineno "$prog" | tar --exclude=.keepme -xj -C "$INFLATE_DIR"
+    $infl_tail -n+$rawline "$prog" | $infl_tar -xj -C "$INFLATE_DIR"
 
     ## Check some expected dirs exist.
     #
@@ -348,7 +378,7 @@ inflate_pack_files () {
     [ $nwhl -ne $WINPY_NPACKAGES ] && inflation_err="\n  - missmatch num-of-wheels: expected $WINPY_NPACKAGES, inflated $nwhl"
 
     if [ -n "$inflation_err" ]; then
-        yell "inflating upgrade-pack has failed due to: $inflation_err!\nAborting."
+        die "inflating upgrade-pack has failed due to: $inflation_err!\nAborting."
     fi
 }
 
@@ -359,7 +389,7 @@ do_upgrade () {
     local -i nsteps=4
     local -i step=1
 
-    logstep() { 
+    logstep() {
         info "$step of $nsteps: $1"
         let step++
     }
@@ -371,10 +401,13 @@ do_upgrade () {
     echo -e "\n$NEW_VERSION: $( $date )" | $tee -a "$AIODIR/AIO-$NEW_VERSION.ver" >&3
 
     logstep "upgrading WinPython packages..."
-    $pip install --no-index "$INFLATE_DIR"/wheelhouse/*.whl
+    $pip install --no-index --no-dependencies "$INFLATE_DIR"/wheelhouse/*.whl
 
     logstep "overlaying Apps files..."
     $rsync -r "$INFLATE_DIR/AIO/" "$AIODIR/"
+
+    logstep "patching console config (and TODO: fix MSYS2 unset vars)..."
+    $sed -i "s/title=\"AIO-[^\"+]\"/title=\"AIO-$NEW_VERSION/" "$AIODIR/Apps/Console/console.xml"
 
     logstep "deleting old version-file $old_version_file..."
     if [ -f "$old_version_file" ]; then
