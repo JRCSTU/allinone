@@ -12,7 +12,7 @@
 #   --keep-inflated                 do not clean up in  flated temporary dir
 #   -n|--dry-run:                   pretend actions executed (pack-files always inflated)
 #   --old-aio-version <VERSION>     don't ask user for it (used only if cannot locate AIO's version-file).
-#   --steps <NUM>...                run given upgrade-steps only
+#   --steps <NUM> ...               run given upgrade-steps only (zero-based)
 #   -v|--verbose:                   increase verbosity (eg -vvv prints commands as executed)
 #   -y|--yes:                       answer all questions with yes (no interactive)
 #
@@ -51,7 +51,7 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
 )
 
 #exec 2> >(tee -ia "$AIODIR/install.log") >&2 
-exec 3>/dev/null  # &3 used for redirecting stuff to log.
+exec 3>/dev/null  # &3 used for redirecting `tee` to log when verbose.
 
 ## ALL CMDS HERE
 #  (remember to add them also in verbose/dry-run)
@@ -119,8 +119,7 @@ parse_opt () {
                 BAD_OPTS="$BAD_OPTS $1(step number missing)"
             else
                 local step
-                shift
-                for step; do
+                for step in "${@:2}"; do
                     if ! [[ $step =~ ^[0-9]+$ ]]; then
                         if [ $SHIFTARGS -lt 2 ]; then
                             BAD_OPTS="$BAD_OPTS $1(followed by a non number '$step')"
@@ -129,7 +128,10 @@ parse_opt () {
                     fi
                     let SHIFTARGS++
                 done
-                STEPS=${@:1:$SHIFTARGS}
+
+                local -i nsteps
+                nsteps=$(($SHIFTARGS - 1))
+                STEPS="${@:2:$nsteps}"
             fi
             ;;
         (--old-aio-version)
@@ -228,7 +230,10 @@ parse_cmdline_args () {
             confdump="- configuration: $(declare -p CONF) \n- command paths: ${CONF_CMDS[@]}"
         fi
 
-        log "$confdump\n"
+        log "$confdump\n$reset"
+        ## Variable printing above surely garbled terminal.
+        stty sane 
+        log $reset
     fi
 }
 
@@ -273,9 +278,9 @@ die () {
 }
 launch_debug_shell() {
     local banner="$bold${green}Broke into DEBUG shell.
-  - All functions and variables have been iherited.
+  - All functions and variables have been inherited.
   - Exit when done to continue.
-  - Exit with non-zero status to abort program).$reset"
+  - Exit with non-zero status to abort program.$reset"
 
         # From: https://stackoverflow.com/a/7193037/548792
         if ! bash --rcfile <(echo "export PS1='\[\033[33m\][$prog: line $1]\[\033[0m\] > ' &&  echo -e \"\$banner\""); then
@@ -289,7 +294,7 @@ err_report () {
     err+="\n  stack: ${FUNCNAME[@]:1}"
     if [ -n "$DEBUG" ]; then
         error "$err"
-        launch_debug_shell
+        launch_debug_shell "$@"
     elif [ -n "$KEEP_GOING" ]; then
         error "$err$green\n  ...but KEEP GOING."
     else
@@ -334,6 +339,7 @@ check_python_version () {
 
 check_existing_AIO () {
     ##  Check existing AIO's version and decide future-one.
+    local action_prefix="$1"
 
     if [ -z "${AIODIR:+x}" ];then
         die "no \$AIODIR variable is defined!" \
@@ -380,6 +386,28 @@ check_existing_AIO () {
     fi
 
     NEW_VERSION="${OLD_AIO_VERSION%?${NEW_VERSION}}.$NEW_VERSION"
+    if [ "$OLD_AIO_VERSION" = "$NEW_VERSION" ]; then
+        SCRIPT_ACTION="RE-INSTALL into '$AIODIR', version $OLD_AIO_VERSION"
+    else
+        SCRIPT_ACTION="UPGRADE '$AIODIR', from version: $OLD_AIO_VERSION --> $NEW_VERSION"
+    fi
+    SCRIPT_ACTION="$action_prefix$SCRIPT_ACTION"
+
+    ## Update also teminal title 
+    #  from: https://askubuntu.com/questions/636944/how-to-change-the-title
+    echo -e "\033]0;$SCRIPT_ACTION\a"
+}
+
+
+
+prompt_for_abort() {
+    if [ -z "$ALL_YES" ]; then
+        read -rs -p "${green}Ready to $SCRIPT_ACTION
+  Press [Enter] to continue, or [Ctrl+C] to cancel? $reset"
+        echo >&2  # Add new-line as feedback when user proceeds.
+    else
+        notice "Proceeding to $SCRIPT_ACTION..."
+    fi
 }
 
 
@@ -388,6 +416,9 @@ run_upgrade_steps () {
     local -i nsteps=${#@}
     local -a step_funcs=("$@")
     local -i step
+    local step_func
+
+    prompt_for_abort
 
     logstep() {
         info "$step of $nsteps: $1"
@@ -400,35 +431,19 @@ run_upgrade_steps () {
     info "steps to run: "$STEPS
 
     for step in $STEPS; do
-        if [ $step -lt ${#step_funcs} ]; then
-            "${step_funcs[$step]}"
+        if [ -v "step_funcs[$step]" ]; then
+            step_func="${step_funcs[$step]}"
+            "$step_func"
         else
             warn "ignoring invalid step $step!"
         fi
     done
 }
 
-
 ####################################
 # Upgrade AIO STAGE-1
 ####################################
 #
-prompt_for_abort() {
-    if [ "$OLD_AIO_VERSION" = "$NEW_VERSION" ]; then
-        SCRIPT_ACTION="RE-INSTALL into '$AIODIR', version $OLD_AIO_VERSION"
-    else
-        SCRIPT_ACTION="UPGRADE '$AIODIR', from version: $OLD_AIO_VERSION --> $NEW_VERSION"
-    fi
-
-    if [ -z "$ALL_YES" ]; then
-        read -rs -p "${green}Ready to $SCRIPT_ACTION
-  Press [Enter] to continue, or [Ctrl+C] to cancel? $reset"
-        echo >&2  # Add new-line as feedback when user proceeds.
-    else
-        notice "Proceeding to $SCRIPT_ACTION..."
-    fi
-}
-
 
 clean_inflated () {
     if [ -z "$KEEP_INFLATED" ]; then
@@ -491,8 +506,8 @@ do_overlay_aio_files() {
 }
 do_make_stage_2_script() {
     logstep "${DRY_RUN}creating stage-2 upgrade file (to upgrade MSYS2/console on next launch)..."
-    $sed "/^# Upgrade AIO STAGE-1/Q" "$prog" > "$AIODIR/upgrade.sh"
-    $cat "$INFLATE_DIR/upgrade2-footer.sh" >> "$AIODIR/upgrade.sh"
+    $sed "/^# Upgrade AIO STAGE-1/Q" "$prog" |  $tee "$AIODIR/upgrade.sh" >&3
+    $cat "$INFLATE_DIR/upgrade2-footer.sh" | $tee -a "$AIODIR/upgrade.sh" >&3
     ## `patch` fails with 1 when already patched, and 2 on more serious errors.
     $patch "$AIODIR/co2mpas-env.bat" --input="$INFLATE_DIR/co2mpas-env.bat.patch" || [ $? -eq 1 ] && \
             warn "ignoring patch-failure, assuming file '$AIODIR/co2mpas-env.bat' already upgraded."
@@ -502,23 +517,22 @@ do_make_stage_2_script() {
 ## Main body
 ####################################
 build_help
+notice "STAGE-1 of $HELP_OPENING\n  Use $prog --help for more options (e.g. --dry-run)"
 parse_cmdline_args "$@"
 
-notice "$HELP_OPENING\n  Use $prog --help for more options (e.g. --dry-run)"
 inflate_pack_files
 if [ -n "$INFLATE_ONLY" ]; then
     notice "inflated pack-files in '$INFLATE_DIR' and stopped."
     exit 0
 fi
-check_existing_AIO
-prompt_for_abort
+check_existing_AIO "STAGE-1 of "
 run_upgrade_steps \
     do_new_version_file \
     do_upgrade_winpy \
     do_overlay_aio_files \
     do_make_stage_2_script
 
-notice "finished stage-1 of $DRY_RUN$SCRIPT_ACTION successfully." \
+notice "finished $DRY_RUN$SCRIPT_ACTION successfully." \
     "\n  Exit all AIO-console instances and relaunch it, to complete stage-2 of the upgrade."
 
 exit 0

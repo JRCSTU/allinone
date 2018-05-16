@@ -5,17 +5,23 @@ do_patch_console_config () {
     local orig_file="$AIODIR/Apps/Console/console.xml"
     local backup_file="$AIODIR/Apps/Console/console.OLD-$OLD_AIO_VERSION.xml"
     
+    logstep "${DRY_RUN}patching console configuration: $orig_file, backup: $backup_file..."
     $cp "$orig_file" "$backup_file"
     $sed -i "s/title=\"AIO-[^\"+]\"/title=\"AIO-$NEW_VERSION/" "$orig_file" 
     ## TODO: fix MSYS2 unset vars...
 }
 do_disable_2nd_stage_script() {
-    mv "$0" "${0#.sh}-$OLD_AIO_VERSION.sh"
+    local orig_file="$0"
+    local dest_file="${0#.sh}-$OLD_AIO_VERSION-$($date +%Y%m%d_%H%M%S).sh"
+
+    logstep "${DRY_RUN}disabling 2nd-stage upgrade-script: $orig_file --> $dest_file..."
+    $mv "$orig_file" "$dest_file"
 }
 do_delete_old_version_file() {
     ## This marks the end of all setup.
-    logstep "${DRY_RUN}deleting old version-file $old_version_file..."
     local old_version_file="$AIODIR/ΑΙΟ-$OLD_AIO_VERSION.ver"
+    
+    logstep "${DRY_RUN}deleting old version-file $old_version_file..."
     if [ -f "$old_version_file" ]; then
         $rm "$old_version_file"
     fi
@@ -26,18 +32,17 @@ do_delete_old_version_file() {
 ## Main body
 ####################################
 build_help
+notice "STAGE-2 of $HELP_OPENING"
+
 parse_cmdline_args "$@"
 
-notice "Stage 2 of $HELP_OPENING"
-
-check_existing_AIO
-check_python_version
+check_existing_AIO "STAGE-2 of "
 run_upgrade_steps \
     do_patch_console_config \
     do_disable_2nd_stage_script \
     do_delete_old_version_file
 
 
-notice "finished stage-2 of $DRY_RUN$SCRIPT_ACTION successfully." \
+notice "finished $DRY_RUN$SCRIPT_ACTION successfully." \
     "\n  Press any key to continue."
 read -sn1

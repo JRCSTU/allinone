@@ -3,7 +3,7 @@
 # ask ankostis
 
 VERSION         := 2018.1.a2
-UPGRADE_SCRIPT  := CO2MPAS_AIO_UpgradePack-$(VERSION).sh
+UPGRADE_SCRIPT  := "CO2MPAS_AIO_UpgradePack-$(VERSION).sh"
 
 input_script    := upgrade-script.sh
 tmp_archive     := _packfiles.tar.bz2
@@ -12,9 +12,9 @@ wheels          := $(file < wheels.list)
 nwheels         := $(words $(strip $(wheels)))
 src_wheels      := $(addprefix wheelhouse/,$(wheels))
 dst_wheels      := $(addprefix Packfiles/wheelhouse/,$(wheels))
-## Archive's requirements should become a "recursive" variable,
-#  in case some rule below creates more files.
-pack_files 		:= $(wildcard PackFiles/*)
+## Archive's requirements could be a "recursive" variable,
+#  in case another rule above had created more files.
+pack_files := $(wildcard PackFiles/*)
 
 
 ## If script not ending with  a blank last line,
@@ -26,13 +26,13 @@ ifneq ($(strip $(eol_script)),)
 endif
 
 base64 	:= base64
-cat     := cat
-cp 	    := cp -v
-rm 	    := rm -v
+cat := cat
+cp 	:= cp -v
+rm 	:= rm -v
 rsync 	:= rsync -v
-tar     := tar -v
-zip     := bzip2 -7 - --stdout
-sed     := sed
+tar := tar -v
+zip := bzip2 -7 - --stdout
+sed := sed
 chmod 	:= chmod
 
 .DELETE_ON_ERROR:
@@ -41,7 +41,6 @@ chmod 	:= chmod
 all: $(UPGRADE_SCRIPT)
 
 $(wheels_tstamp): wheels.list $(src_wheels)
-	$(rm) Packfiles/wheelhouse/*.whl
 	$(cp) $(src_wheels) Packfiles/wheelhouse/.
 	touch $@
 
