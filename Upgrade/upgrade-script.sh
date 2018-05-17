@@ -347,7 +347,8 @@ check_existing_AIO () {
     fi
 
     AIODIR="$( $cygpath "$AIODIR" )"
-    local old_version_files="$( $find "$AIODIR" -maxdepth 1 -name "$VERSION_FILE_CHECK" -printf '%f ')"
+    local old_version_files="$( $find "$AIODIR" -maxdepth 1 -name "$VERSION_FILE_CHECK" \
+                                -printf '%T@\0%f\n' | sort -rn | cut -d '' -f2 )"
 
     if [ -n "$old_version_files" ]; then
         if [ -n "$OLD_AIO_VERSION" ]; then
@@ -360,7 +361,7 @@ check_existing_AIO () {
         OLD_AIO_VERSION=${OLD_AIO_VERSION#AIO-}
         if [ ${#allvers[@]} -ne 1 ]; then
             warn "existing AIO has ${#allvers[@]} version-files: ${allvers[@]}" \
-            "\n  Arbitrarily assumed the first one as authoritative: $OLD_AIO_VERSION"
+            "\n  Assumiming arbitrarily the latest  chronologically is the authoritative one: $OLD_AIO_VERSION"
         fi
 
     else  # no version-file found
