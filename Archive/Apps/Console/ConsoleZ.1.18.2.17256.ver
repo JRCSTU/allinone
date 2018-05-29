@@ -1,0 +1,53 @@
+## ConsoleZ.1.18.2.17256 (beta)
+
+1.18.2.17272
+@cbucher cbucher released this on Sep 29, 2017 · 13 commits to master since this release
+
+! Display an error dialog when seeking settings of an undefined tab.
+! Detect if ConsoleZ is hooked (ConsoleHook/ConsoleHook32).
++ "New Tab" button in tabs area.
++ Save "Switch On/Off Transparency" state.
+* Fix startup directory consistency.
+* Fix retrieving of last process ID attached to the console.
+* Fix sliders in transparency settings dialog.
+* Refresh tab title when last process ID attached to the console changes.
+* Fix bing image copyright displayed into status bar.
+* Fix external command saving into settings file.
+
+
+## ConsoleZ.1.18.1.17087
+@cbucher released this on Mar 28 · 7 commits to master since this release
+
++ Transparency settings per windowed/full screen mode.
++ Print code page (for each shell) in diagnostic report.
+* ALT-SPACE menu.
+* "Attach Consoles" failure.
+* Split bar size.
+* Start a safe console when no console started.
+* Standardize hotkeys modifiers and order (mouse).
+
+ 
+## 1.18.0.17048
+@cbucher cbucher released this on Feb 18 · 28 commits to master since this release
+
+! Update tab title current directory in realtime.
+! Renaming a tab title to empty is no longer allowed
+  (empty string is replaced by tab title from settings).
+! Backup settings file using a timestamp (unique backup filename).
+! Tabbing framework localization.
++ Workspaces.
++ Option to hide the "close tab" button.
++ Split bar size is configurable.
++ Allow merging tabs (horizontally or vertically).
++ Allow view keeping background, colors and cursor
+  when it moved into another tab.
++ Support for reversed video (swap foreground and background).
++ Allow mouse events forwarding.
++ Show Bing image copyright in status bar.
+* GDI leaks (thanks to char101).
+* Allow choosing environment variables inheritance method.
+* Improve Windows 10 glass transparency.
+* PowerShell progress bar is fixed on Windows 10.
+
+## ConsoleZ.1.18.1.17023
+previous in AIO

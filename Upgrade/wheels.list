@@ -17,6 +17,7 @@ networkx-2.1-py2.py3-none-any.whl
 numba-0.38.0-cp36-cp36m-win_amd64.whl
 numexpr-2.6.5-cp36-cp36m-win_amd64.whl
 openpyxl-2.5.3-py2.py3-none-any.whl
+packaging-17.1-py2.py3-none-any.whl
 pandas-0.23.0-cp36-cp36m-win_amd64.whl
 pip_tools-2.0.2-py2.py3-none-any.whl
 pipdeptree-0.12.1-py3-none-any.whl

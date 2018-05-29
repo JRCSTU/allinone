@@ -337,6 +337,13 @@ check_python_version () {
     _VALID_VERSION=$( $python -c "import packaging.version as v;print(v.Version('$inpver'),end='')" )
 }
 
+
+add_versions () {
+    NEW_VERSION="$( PYTHONPATH="$INFLATE_DIR/wheelhouse/packaging-17.1-py2.py3-none-any.whl" \
+                python "$INFLATE_DIR/vermath.py" "${OLD_AIO_VERSION}" "^$NEW_VERSION" )"
+
+}
+
 check_existing_AIO () {
     ##  Check existing AIO's version and decide future-one.
     local action_prefix="$1"
@@ -386,7 +393,7 @@ check_existing_AIO () {
         fi
     fi
 
-    NEW_VERSION="${OLD_AIO_VERSION%?${NEW_VERSION}}.$NEW_VERSION"
+    add_versions
     if [ "$OLD_AIO_VERSION" = "$NEW_VERSION" ]; then
         SCRIPT_ACTION="RE-INSTALL into '$AIODIR', version $OLD_AIO_VERSION"
     else
