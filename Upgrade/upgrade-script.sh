@@ -12,7 +12,7 @@
 #   --keep-inflated                 do not clean up in  flated temporary dir
 #   -n|--dry-run:                   pretend actions executed (pack-files always inflated)
 #   --old-aio-version <VERSION>     don't ask user for it (used only if cannot locate AIO's version-file).
-#   --steps <NUM> ...               run given upgrade-steps only (zero-based)
+#   --steps <NUM> ...               run given upgrade-steps only (one-based)
 #   -v|--verbose:                   increase verbosity (eg -vvv prints commands as executed)
 #   -y|--yes:                       answer all questions with yes (no interactive)
 #
@@ -20,7 +20,7 @@
 # - Files will be inflated under \$TMP folder ($INFLATE_DIR).
 # - \$CMDPATH controls the execution path of all POSIX commands invoked.
 # - All options have env-var counterparts (eg. --dry-run <--> \$DRY_RUN).
-# - Config-variables: ${!CONF[@]} 
+# - Config-variables: ${!CONF[@]}
 #
 
 set -u  # fail on unset variables
@@ -39,7 +39,7 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [VERBOSE]="$VERBOSE"
     [AIODIR]="${AIODIR:=}"
     [WINPYDIR]="${WINPYDIR:=}"
-    [STEPS]="${STEPS=}"
+    [STEPS]="${STEPS=}"  # 1-based
     [DRY_RUN]="${DRY_RUN:=}"
     [KEEP_GOING]="${KEEP_GOING:=}"
     [DEBUG]="${DEBUG:=}"
@@ -50,7 +50,7 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--no-index --no-dependencies}"
 )
 
-#exec 2> >(tee -ia "$AIODIR/install.log") >&2 
+#exec 2> >(tee -ia "$AIODIR/install.log") >&2
 exec 3>/dev/null  # &3 used for redirecting `tee` to log when verbose.
 
 ## ALL CMDS HERE
@@ -232,7 +232,7 @@ parse_cmdline_args () {
 
         log "$confdump\n$reset"
         ## Variable printing above surely garbled terminal.
-        stty sane 
+        stty sane
         log $reset
     fi
 }
@@ -394,7 +394,7 @@ check_existing_AIO () {
     fi
     SCRIPT_ACTION="$action_prefix$SCRIPT_ACTION"
 
-    ## Update also teminal title 
+    ## Update also teminal title
     #  from: https://askubuntu.com/questions/636944/how-to-change-the-title
     echo -e "\033]0;$SCRIPT_ACTION\a"
 }
@@ -426,14 +426,14 @@ run_upgrade_steps () {
     }
 
     if [ -z "$STEPS" ]; then
-        STEPS=$(seq 0 $((nsteps - 1)))
+        STEPS=$(seq 1 nsteps)
     fi
 
     info "steps to run: "$STEPS
 
     for step in $STEPS; do
-        if [ -v "step_funcs[$step]" ]; then
-            step_func="${step_funcs[$step]}"
+        if [ -v "step_funcs[$(( $step - 1 ))]" ]; then
+            step_func="${step_funcs[$(( $step - 1 ))]}"
             "$step_func"
         else
             warn "ignoring invalid step $step!"
