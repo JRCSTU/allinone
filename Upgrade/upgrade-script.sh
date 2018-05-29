@@ -39,7 +39,7 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [VERBOSE]="$VERBOSE"
     [AIODIR]="${AIODIR:=}"
     [WINPYDIR]="${WINPYDIR:=}"
-    [STEPS]="${STEPS=}"  # 1-based
+    [STEPS]="${STEPS=1 2 3 5}"  # 1-based
     [DRY_RUN]="${DRY_RUN:=}"
     [KEEP_GOING]="${KEEP_GOING:=}"
     [DEBUG]="${DEBUG:=}"
@@ -412,6 +412,17 @@ prompt_for_abort() {
 }
 
 
+do_delete_old_version_file() {
+    ## This marks the end of all setup.
+    local old_version_file="$AIODIR/ΑΙΟ-$OLD_AIO_VERSION.ver"
+
+    logstep "${DRY_RUN}deleting old version-file $old_version_file..."
+    if [ -f "$old_version_file" ]; then
+        $rm "$old_version_file"
+    fi
+
+}
+
 run_upgrade_steps () {
     ## Launches all (or selected by `STEPS`) given functions, with `logstep` variable for logging.
     local -i nsteps=${#@}
@@ -531,7 +542,8 @@ run_upgrade_steps \
     do_new_version_file \
     do_upgrade_winpy \
     do_overlay_aio_files \
-    do_make_stage_2_script
+    do_make_stage_2_script \
+    do_delete_old_version_file
 
 notice "finished $DRY_RUN$SCRIPT_ACTION successfully." \
     "\n  Exit all AIO-console instances and relaunch it, to complete stage-2 of the upgrade."

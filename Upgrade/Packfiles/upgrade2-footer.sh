@@ -17,16 +17,6 @@ do_disable_2nd_stage_script() {
     logstep "${DRY_RUN}disabling 2nd-stage upgrade-script: $orig_file --> $dest_file..."
     $mv "$orig_file" "$dest_file"
 }
-do_delete_old_version_file() {
-    ## This marks the end of all setup.
-    local old_version_file="$AIODIR/ΑΙΟ-$OLD_AIO_VERSION.ver"
-    
-    logstep "${DRY_RUN}deleting old version-file $old_version_file..."
-    if [ -f "$old_version_file" ]; then
-        $rm "$old_version_file"
-    fi
-
-}
 
 ####################################
 ## Main body
