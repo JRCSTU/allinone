@@ -12,7 +12,7 @@ flake8-3.5.0-py2.py3-none-any.whl
 formulas-0.0.9-py3-none-any.whl
 graphviz-0.8.3-py2.py3-none-any.whl
 immutable-0.0.2-py3-none-any.whl
-llvmlite-0.23.1-cp36-cp36m-win_amd64.whl
+llvmlite-0.23.0-cp36-cp36m-win_amd64.whl
 networkx-2.1-py2.py3-none-any.whl
 numba-0.38.0-cp36-cp36m-win_amd64.whl
 numexpr-2.6.5-cp36-cp36m-win_amd64.whl
