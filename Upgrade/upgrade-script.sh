@@ -71,17 +71,19 @@ CONF_CMDS=(
     "${date:=$CMDPATH/date}"
     "${tput:=$CMDPATH/tput}"
     "${cygpath:=$CMDPATH/cygpath}"
+    "${cmd:=$COMSPEC}"
+    "${pip:=$WINPYDIR/Scripts/pip}"
 
     "${python:=$WINPYDIR/python}"
-    "${pip:=$WINPYDIR/Scripts/pip}"
 
     ## Differentiate, not to --dry-run pack-files inflation.
     #
+    "${infl_rm:=$rm}"
+    "${infl_mkdir:=$CMDPATH/mkdir}"
     "${infl_awk:=$CMDPATH/awk}"
     "${infl_tail:=$CMDPATH/tail}"
-    "${infl_mkdir:=$CMDPATH/mkdir}" # that
     "${infl_tar:=$CMDPATH/tar}"
-    "${infl_rm:=$CMDPATH/rm}"
+    "${infl_python:=$python}"
 )
 
 
@@ -201,9 +203,11 @@ parse_cmdline_args () {
         patch="$patch --dry-run"
         rm="echo $DRY_RUN$rm"
         mv="echo $DRY_RUN$mv"
-        pip="echo $DRY_RUN$pip"
         tee="echo $DRY_RUN$tee"
         sed="echo $DRY_RUN$sed"
+        pip="echo $DRY_RUN$pip"
+        python="echo $DRY_RUN$python"
+        cmd="echo $DRY_RUN$cmd"
     fi
 
     if [ $VERBOSE -gt 0 ]; then
@@ -334,13 +338,13 @@ yesorno() {
 #
 check_python_version () {
     local inpver="${1#AIO-}"
-    _VALID_VERSION=$( $python -c "import packaging.version as v;print(v.Version('$inpver'),end='')" )
+    _VALID_VERSION=$( $infl_python -c "import packaging.version as v;print(v.Version('$inpver'),end='')" )
 }
 
 
 add_versions () {
     NEW_VERSION="$( PYTHONPATH="$INFLATE_DIR/wheelhouse/packaging-17.1-py2.py3-none-any.whl" \
-                python "$INFLATE_DIR/vermath.py" "${OLD_AIO_VERSION}" "^$NEW_VERSION" )"
+                $infl_python "$INFLATE_DIR/vermath.py" "${OLD_AIO_VERSION}" "^$NEW_VERSION" )"
 
 }
 
@@ -482,7 +486,7 @@ inflate_pack_files () {
     local -i rawline=$($infl_awk \
                     '/UpgradePack_RAW_BYTES_BELOW/ { m++; if (m == 2) { print FNR + 2; exit }}' \
                     "$prog")
-    mkdir -p "$INFLATE_DIR"
+    $infl_mkdir -p "$INFLATE_DIR"
     trap 'clean_inflated' EXIT
     $infl_tail -n+$rawline "$prog" | $infl_tar -xj -C "$INFLATE_DIR"
 
@@ -517,7 +521,13 @@ do_new_version_file() {
 }
 do_upgrade_winpy() {
     logstep "${DRY_RUN}upgrading WinPython packages..."
-    $pip install $PIP_INSTALL_OPTS "$INFLATE_DIR"/wheelhouse/*.whl
+    ## Recomendation: https://docs.python.org/3/distributing/index.html#installing-the-tools
+    $python -m pip install $PIP_INSTALL_OPTS "$INFLATE_DIR/wheelhouse/"{pip,setuptools,wheel,twine}-*.whl
+    ## For opts: https://pip.pypa.io/en/stable/user_guide/#installation-bundles
+    $find "$INFLATE_DIR/wheelhouse/" -name '*.whl' \
+            -a \! -name 'pip-*.whl' -a \! -name 'setuptools-*.whl' -a \! -name 'wweel-*.whl' -a \! -name 'twine-*.whl' \
+            -print0 | xargs -0 $pip $PIP_INSTALL_OPTS install
+    $cmd /c "$(cygpath -w "$AIODIR/Apps/WinPython/scripts/make_winpython_movable.bat")" <(yes)
 }
 do_overlay_aio_files() {
     logstep "${DRY_RUN}overlaying Apps files..."
