@@ -20,6 +20,7 @@
 # - Files will be inflated under \$TMP folder ($INFLATE_DIR).
 # - \$CMDPATH controls the execution path of all POSIX commands invoked.
 # - All options have env-var counterparts (eg. --dry-run <--> \$DRY_RUN).
+# - Use \$ARCHIVE envvar to specify adiffferent 7z file than its self.
 # - Config-variables: ${!CONF[@]}
 #
 
@@ -34,22 +35,25 @@ NEW_VERSION=
 declare -i WINPY_NPACKAGES=
 
 prog="$0"
+
 declare -i VERBOSE="${VERBOSE:-0}"
 declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [VERBOSE]="$VERBOSE"
     [AIODIR]="${AIODIR:=}"
     [WINPYDIR]="${WINPYDIR:=}"
-    [STEPS]="${STEPS=1 2 3 4 6}"  # 1-based
+    [STEPS]="${STEPS=1 2 3 5}"  # 1-based
     [DRY_RUN]="${DRY_RUN:=}"
     [KEEP_GOING]="${KEEP_GOING:=}"
     [DEBUG]="${DEBUG:=}"
     [ALL_YES]="${ALL_YES:=}"
-    [INFLATE_DIR]="${INFLATE_DIR:=$TMP/CO2MPAS_AIO/UpgradePack-${NEW_VERSION}}"
+    [ARCHIVE]="${ARCHIVE:=$prog}"
+    [INFLATE_DIR]="${INFLATE_DIR:=$TMP/CO2MPAS_AIO/UpgradePack-$NEW_VERSION}"
     [INFLATE_ONLY]="${INFLATE_ONLY:=}"
     [KEEP_INFLATED]="${KEEP_INFLATED:=}"
     [OLD_AIO_VERSION]="${OLD_AIO_VERSION:=}"
-    ## Recomendation: https://docs.python.org/3/distributing/index.html#installing-the-tools
-    [PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--force-reinstall --ignore-installed --upgrade --no-index --no-deps}"
+    ## Recomendation: https://pip.pypa.io/en/stable/user_guide/#installation-bundles
+    #[PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--force-reinstall --ignore-installed --upgrade --no-index --no-deps}"
+    [PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--upgrade --no-index --no-deps}"
 )
 
 #exec 2> >(tee -ia "$AIODIR/install.log") >&2
@@ -175,7 +179,6 @@ parse_opt () {
             parse_opt "-${1:2}"
             ;;
         (-*)
-            echo "p$1p"
             BAD_OPTS="$BAD_OPTS $1"
             ;;
         (*)
@@ -524,14 +527,11 @@ do_upgrade_winpy() {
 
     $find . -name '*.whl' | grep -E $basepacks_regex | \
             xargs $python -m pip install $PIP_INSTALL_OPTS
+    yes | $cmd /c "$(cygpath -w "$AIODIR/Apps/WinPython/scripts/make_winpython_movable.bat")"
     ## For opts: https://pip.pypa.io/en/stable/user_guide/#installation-bundles
     $find . -name '*.whl' | grep -vE "$basepacks_regex" | \
             xargs $pip install $PIP_INSTALL_OPTS
     cd -
-}
-do_fix_winpy() {
-    logstep "${DRY_RUN}applying WinPython fix to make it moveable..."
-    yes | $cmd /c "$(cygpath -w "$AIODIR/Apps/WinPython/scripts/make_winpython_movable.bat")"
 }
 do_overlay_aio_files() {
     logstep "${DRY_RUN}overlaying Apps files..."
@@ -562,7 +562,6 @@ check_existing_AIO "STAGE-1 of "
 run_upgrade_steps \
     do_new_version_file \
     do_upgrade_winpy \
-    do_fix_winpy \
     do_overlay_aio_files \
     do_make_stage_2_script \
     do_delete_old_version_file
