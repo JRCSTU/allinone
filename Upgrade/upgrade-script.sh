@@ -485,7 +485,7 @@ inflate_pack_files () {
     $infl_mkdir -p "$INFLATE_DIR"
     trap 'clean_inflated' EXIT
 
-    $zipper x "$prog" -o"$INFLATE_DIR"
+    $zipper x "$ARCHIVE" -o"$INFLATE_DIR"
 
     ## Check some expected dirs exist.
     #
