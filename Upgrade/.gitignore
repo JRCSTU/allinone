@@ -1,4 +1,6 @@
 *.bz2
 *.b64
+*.7z
 /*UpgradePack*.sh
 **/wheelhouse/*.whl
+freeze.list

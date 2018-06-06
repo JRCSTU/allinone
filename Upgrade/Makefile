@@ -3,13 +3,18 @@
 # ask ankostis
 
 VERSION         = 0.20180506.a0
-UPGRADE_SCRIPT  = "CO2MPAS_AIO_UpgradePack-$(VERSION).sh"
+UPGRADE_SCRIPT  = CO2MPAS_AIO_UpgradePack-$(VERSION).sh
 C_NATIVE_PACKS  = co2mpas|Bottleneck|coverage|fastparquet|llvmlite|numba|numexpr|pyarrow|regex|scikit_learn|thrift|xgboost
+# 9(max): 303k(!), 5: 304, 2: 305037635, 2: 305k(!), 1(off): 305k!!
+# 9(max), ZIP_ANALYSIS: 9(max): 296k   not worth the time
+ZIP_LEVEL     	:= 1
+ZIP_ANALYSIS	:= 1
 
 input_script    := upgrade-script.sh
-tmp_archive     := _packfiles.tar.bz2
+tmp_archive     := _packfiles.7z
 wheels_tstamp   := Packfiles/wheelhouse/.keepme
 wheels          := $(file < wheels.list)
+## Any missed file in `wheels.list` will crash after inflating (on runtime).
 nwheels         := $(words $(strip $(wheels)))
 src_wheels      := $(addprefix wheelhouse/,$(wheels))
 dst_wheels      := $(addprefix Packfiles/wheelhouse/,$(wheels))
@@ -31,8 +36,7 @@ cat := cat
 cp 	:= cp -v
 rm 	:= rm -v
 rsync 	:= rsync -v
-tar := tar -v
-zip := bzip2 -7 - --stdout
+zip := 7zr
 sed := sed
 grep := grep
 chmod 	:= chmod
@@ -55,13 +59,12 @@ $(wheels_tstamp): wheels.list $(src_wheels)
 	touch $@
 
 $(tmp_archive): $(wheels_tstamp)  $(pack_files)
-	$(tar) -c -C Packfiles --to-stdout --exclude=.keepme \
-		$(pack_files:PackFiles/%=%)  |  $(zip)  >  $@
+	$(rm) -f $@
+	$(zip)  -mx=$(ZIP_LEVEL) -myx=$(ZIP_ANALYSIS) -ms=off a $@ ./Packfiles/*  -xr!.keepme 
 
 $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 	$(sed)  -e '/^declare -i WINPY_NPACKAGES=/c declare -i WINPY_NPACKAGES=$(nwheels)' \
 			-e '/^NEW_VERSION=/c NEW_VERSION="$(VERSION)"' \
-			-e '/^INFLATE_DIR=/c INFLATE_DIR="$$TMP/CO2MPAS_AIO/UpgradePack-$(VERSION)"' \
 			$(input_script)  |	$(cat)   -   $(tmp_archive)  >  $@
 	$(chmod)  a+x  $@
 

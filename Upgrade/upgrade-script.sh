@@ -30,7 +30,7 @@ set -a  # export all, to facilitate --debug sub-shell
 
 VERSION_FILE_CHECK="AIO-1.7.3*.ver"
 NEW_VERSION=
-INFLATE_DIR=
+
 declare -i WINPY_NPACKAGES=
 
 prog="$0"
@@ -39,11 +39,12 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [VERBOSE]="$VERBOSE"
     [AIODIR]="${AIODIR:=}"
     [WINPYDIR]="${WINPYDIR:=}"
-    [STEPS]="${STEPS=1 2 3 5}"  # 1-based
+    [STEPS]="${STEPS=1 2 3 4 6}"  # 1-based
     [DRY_RUN]="${DRY_RUN:=}"
     [KEEP_GOING]="${KEEP_GOING:=}"
     [DEBUG]="${DEBUG:=}"
     [ALL_YES]="${ALL_YES:=}"
+    [INFLATE_DIR]="${INFLATE_DIR:=$TMP/CO2MPAS_AIO/UpgradePack-${NEW_VERSION}}"
     [INFLATE_ONLY]="${INFLATE_ONLY:=}"
     [KEEP_INFLATED]="${KEEP_INFLATED:=}"
     [OLD_AIO_VERSION]="${OLD_AIO_VERSION:=}"
@@ -82,8 +83,7 @@ CONF_CMDS=(
     "${infl_rm:=$rm}"
     "${infl_mkdir:=$CMDPATH/mkdir}"
     "${infl_awk:=$CMDPATH/awk}"
-    "${infl_tail:=$CMDPATH/tail}"
-    "${infl_tar:=$CMDPATH/tar}"
+    "${zipper:=$CMDPATH/7zr}"
     "${infl_python:=$python}"
 )
 
@@ -220,7 +220,6 @@ parse_cmdline_args () {
         patch="$patch --verbose"
         infl_rm="$rm -v"
         infl_mkdir="$infl_mkdir -v"
-        infl_tar="$infl_tar -v"
         exec 3>&2
 
        if [ $VERBOSE -gt 1 ]; then
@@ -442,6 +441,7 @@ run_upgrade_steps () {
     local -i step
     local step_func
 
+    stty sane; log $reset
     prompt_for_abort
 
     logstep() {
@@ -471,7 +471,7 @@ run_upgrade_steps () {
 
 clean_inflated () {
     if [ -z "$KEEP_INFLATED" ]; then
-        debug "cleaning any inflated pack-files in temporary folders..."
+        debug "cleaning any inflated pack-files in tempdi...\n    use --keep-inflated otherwise."        
         $infl_rm -rf "$INFLATE_DIR"
     fi
 
@@ -482,14 +482,10 @@ inflate_pack_files () {
     $infl_rm -rf "$INFLATE_DIR"  # clean any remnants
     info "inflating pack-files in '$INFLATE_DIR'..."
 
-    ## Inflate lines after the 2nd(!) raw-bytes header.
-    #
-    local -i rawline=$($infl_awk \
-                    '/UpgradePack_RAW_BYTES_BELOW/ { m++; if (m == 2) { print FNR + 2; exit }}' \
-                    "$prog")
     $infl_mkdir -p "$INFLATE_DIR"
     trap 'clean_inflated' EXIT
-    $infl_tail -n+$rawline "$prog" | $infl_tar -xj -C "$INFLATE_DIR"
+
+    $zipper x "$prog" -o"$INFLATE_DIR"
 
     ## Check some expected dirs exist.
     #
@@ -521,13 +517,21 @@ do_new_version_file() {
     echo -e "\n$NEW_VERSION: $( $date )" | $tee -a "$AIODIR/AIO-$NEW_VERSION.ver" >&3
 }
 do_upgrade_winpy() {
+    ## Recomendation: https://docs.python.org/3/distributing/index.html#installing-the-tools
     logstep "${DRY_RUN}upgrading WinPython packages..."
-    $python -m pip install $PIP_INSTALL_OPTS "$INFLATE_DIR/wheelhouse/"{pip,setuptools,wheel,twine}-*.whl
+    local basepacks_regex='(pip|setuptools|wheel|twine)-.*\.whl'
+    cd "$INFLATE_DIR/wheelhouse"
+
+    $find . -name '*.whl' | grep -E $basepacks_regex | \
+            xargs $python -m pip install $PIP_INSTALL_OPTS
     ## For opts: https://pip.pypa.io/en/stable/user_guide/#installation-bundles
-    $find "$INFLATE_DIR/wheelhouse/" -name '*.whl' \
-            -a \! -name 'pip-*.whl' -a \! -name 'setuptools-*.whl' -a \! -name 'wweel-*.whl' -a \! -name 'twine-*.whl' \
-            -print0 | xargs -0 $pip $PIP_INSTALL_OPTS install
-    $cmd /c "$(cygpath -w "$AIODIR/Apps/WinPython/scripts/make_winpython_movable.bat")" <(yes)
+    $find . -name '*.whl' | grep -vE "$basepacks_regex" | \
+            xargs $pip install $PIP_INSTALL_OPTS
+    cd -
+}
+do_fix_winpy() {
+    logstep "${DRY_RUN}applying WinPython fix to make it moveable..."
+    yes | $cmd /c "$(cygpath -w "$AIODIR/Apps/WinPython/scripts/make_winpython_movable.bat")"
 }
 do_overlay_aio_files() {
     logstep "${DRY_RUN}overlaying Apps files..."
@@ -558,6 +562,7 @@ check_existing_AIO "STAGE-1 of "
 run_upgrade_steps \
     do_new_version_file \
     do_upgrade_winpy \
+    do_fix_winpy \
     do_overlay_aio_files \
     do_make_stage_2_script \
     do_delete_old_version_file
