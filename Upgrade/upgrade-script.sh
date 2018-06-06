@@ -47,7 +47,8 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [INFLATE_ONLY]="${INFLATE_ONLY:=}"
     [KEEP_INFLATED]="${KEEP_INFLATED:=}"
     [OLD_AIO_VERSION]="${OLD_AIO_VERSION:=}"
-    [PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--no-index --no-dependencies}"
+    ## Recomendation: https://docs.python.org/3/distributing/index.html#installing-the-tools
+    [PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--force-reinstall --ignore-installed --upgrade --no-index --no-deps}"
 )
 
 #exec 2> >(tee -ia "$AIODIR/install.log") >&2
@@ -521,7 +522,6 @@ do_new_version_file() {
 }
 do_upgrade_winpy() {
     logstep "${DRY_RUN}upgrading WinPython packages..."
-    ## Recomendation: https://docs.python.org/3/distributing/index.html#installing-the-tools
     $python -m pip install $PIP_INSTALL_OPTS "$INFLATE_DIR/wheelhouse/"{pip,setuptools,wheel,twine}-*.whl
     ## For opts: https://pip.pypa.io/en/stable/user_guide/#installation-bundles
     $find "$INFLATE_DIR/wheelhouse/" -name '*.whl' \
