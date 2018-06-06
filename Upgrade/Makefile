@@ -1,14 +1,26 @@
 # Build a self-extract AIO-UpgradePack.
 #
-# ask ankostis
+## ask ankostis
+#  btw, in the old AIO-1.7.3, `pip install co2mpas` prints this::
+#
+#     Automat-0.6.0 PySocks-1.6.8 Unidecode-1.0.22 bs4-0.0.1
+#     constantly-15.1.0 easygui-0.98.1 future-0.16.0 gitdb2-2.0.3 gitpython-2.1.10 
+#     hyperlink-18.0.0 incremental-17.5.0 pandalone-0.2.4 parsedatetime-2.4 pyarrow-0.4.1 
+#     pykalman-0.9.5 python-gnupg-0.4.2 schedula-0.1.19 schema-0.6.7 smmap2-2.0.3 
+#     transitions-0.6.8 validate-email-1.3 wltp-0.1.0a2 zope.interface-4.5.0
+#
+#  And we don't want to touch these (hot-fixed?) packs::
+#
+# 	  PySocks, transitions, smmap2, gitdb2, gitpython, python-gnupg
+#
 
-VERSION         = 0.20180506.a0
+VERSION         = 0.20180507.a0
 UPGRADE_SCRIPT  = CO2MPAS_AIO_UpgradePack-$(VERSION).sh
 C_NATIVE_PACKS  = co2mpas|Bottleneck|coverage|fastparquet|llvmlite|numba|numexpr|pyarrow|regex|scikit_learn|thrift|xgboost
 # 9(max): 303k(!), 5: 304, 2: 305037635, 2: 305k(!), 1(off): 305k!!
 # 9(max), ZIP_ANALYSIS: 9(max): 296k   not worth the time
-ZIP_LEVEL     	:= 1
-ZIP_ANALYSIS	:= 1
+ZIP_LEVEL     	= 1
+ZIP_ANALYSIS	= 1
 
 input_script    := upgrade-script.sh
 tmp_archive     := _packfiles.7z
