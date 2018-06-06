@@ -36,6 +36,7 @@ pandas-0.23.0-cp36-cp36m-win_amd64.whl
 pip_tools-2.0.2-py2.py3-none-any.whl
 pip-10.0.1-py2.py3-none-any.whl
 pipdeptree-0.12.1-py3-none-any.whl
+pkginfo-1.4.2-py2.py3-none-any.whl
 polyvers-0.1.0a1-py2.py3-none-any.whl
 polyversion-0.1.0a7-py2.py3-none-any.whl
 pyarrow-0.4.1-cp36-cp36m-win_amd64.whl
@@ -44,6 +45,8 @@ pyflakes-1.6.0-py2.py3-none-any.whl
 pyparsing-2.2.0-py2.py3-none-any.whl
 rainbow_logging_handler-2.2.2-py3-none-any.whl
 regex-2018.2.21-cp36-cp36m-win_amd64.whl
+requests_toolbelt-0.8.0-py2.py3-none-any.whl
+requests-2.18.4-py2.py3-none-any.whl
 ruamel.yaml-0.15.37-cp36-cp36m-win_amd64.whl
 scikit_learn-0.19.1-cp36-cp36m-win_amd64.whl
 setuptools-39.2.0-py2.py3-none-any.whl
@@ -51,6 +54,10 @@ six-1.11.0-py2.py3-none-any.whl
 spectate-0.1.0-py3-none-any.whl
 thrift-0.11.0-cp36-cp36m-win_amd64.whl
 toolz-0.9.0-cp36-none-any.whl
+tqdm-4.23.4-py2.py3-none-any.whl
+twine-1.11.0-py2.py3-none-any.whl
+Twisted-18.4.0-cp36-cp36m-win_amd64.whl
+urllib3-1.22-py2.py3-none-any.whl
 wheel-0.31.1-py2.py3-none-any.whl
 xgboost-0.72-cp36-cp36m-win_amd64.whl
 xlrd-1.1.0-py2.py3-none-any.whl
