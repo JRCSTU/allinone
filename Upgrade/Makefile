@@ -2,7 +2,7 @@
 #
 # ask ankostis
 
-VERSION         = post20180506.a0
+VERSION         = 0.20180506.a0
 UPGRADE_SCRIPT  = "CO2MPAS_AIO_UpgradePack-$(VERSION).sh"
 C_NATIVE_PACKS  = co2mpas|Bottleneck|coverage|fastparquet|llvmlite|numba|numexpr|pyarrow|regex|scikit_learn|thrift|xgboost
 
