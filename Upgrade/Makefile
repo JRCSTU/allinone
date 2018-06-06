@@ -2,8 +2,9 @@
 #
 # ask ankostis
 
-VERSION         := post20180506.a0
-UPGRADE_SCRIPT  := "CO2MPAS_AIO_UpgradePack-$(VERSION).sh"
+VERSION         = post20180506.a0
+UPGRADE_SCRIPT  = "CO2MPAS_AIO_UpgradePack-$(VERSION).sh"
+C_NATIVE_PACKS  = co2mpas|Bottleneck|coverage|fastparquet|llvmlite|numba|numexpr|pyarrow|regex|scikit_learn|thrift|xgboost
 
 input_script    := upgrade-script.sh
 tmp_archive     := _packfiles.tar.bz2
@@ -33,6 +34,7 @@ rsync 	:= rsync -v
 tar := tar -v
 zip := bzip2 -7 - --stdout
 sed := sed
+grep := grep
 chmod 	:= chmod
 
 .DELETE_ON_ERROR:
@@ -40,7 +42,15 @@ chmod 	:= chmod
 
 all: $(UPGRADE_SCRIPT)
 
+
+## Independent utiliy rule to convert files-->freeze-list.
+#
+freeze.list: wheels.list 
+	$(sed) -E 's/(.+)-([[:digit:]].+?)-(cp|py).+/\1 == \2/' $< | \
+	$(grep) -vE '$(C_NATIVE_PACKS)' > $@
+
 $(wheels_tstamp): wheels.list $(src_wheels)
+	$(rm) -f Packfiles/wheelhouse/*.whl
 	$(cp) $(src_wheels) Packfiles/wheelhouse/.
 	touch $@
 
