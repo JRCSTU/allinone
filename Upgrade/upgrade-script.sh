@@ -221,6 +221,7 @@ parse_cmdline_args () {
         cp="$cp -v"
         rsync="$rsync -v"
         patch="$patch --verbose"
+        zipper="$zipper -bb1"
         infl_rm="$rm -v"
         infl_mkdir="$infl_mkdir -v"
         exec 3>&2
