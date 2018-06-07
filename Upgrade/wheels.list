@@ -45,7 +45,6 @@ lmfit-0.9.10-py3-none-any.whl
 logutils-0.3.5-cp36-none-any.whl
 lxml-4.2.1-cp36-cp36m-win_amd64.whl
 mccabe-0.6.1-py2.py3-none-any.whl
-Naked-0.1.31-py2.py3-none-any.whl
 networkx-2.1-py2.py3-none-any.whl
 numba-0.38.1-cp36-cp36m-win_amd64.whl
 numexpr-2.6.5-cp36-cp36m-win_amd64.whl
@@ -77,6 +76,7 @@ ruamel.yaml-0.15.37-cp36-cp36m-win_amd64.whl
 schedula-0.1.19-py3-none-any.whl
 schema-0.6.7-py2.py3-none-any.whl
 scikit_learn-0.19.1-cp36-cp36m-win_amd64.whl
+scipy-1.1.0-cp36-none-win_amd64.whl
 setuptools-39.2.0-py2.py3-none-any.whl
 six-1.11.0-py2.py3-none-any.whl
 smmap2-2.0.3-py2.py3-none-any.whl
