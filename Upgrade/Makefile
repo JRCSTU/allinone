@@ -14,7 +14,7 @@
 # 	  PySocks, transitions, smmap2, gitdb2, gitpython, python-gnupg
 #
 
-VERSION         = 0.0.0.20180507.a0
+VERSION         = 0.0.0.20180507a1
 UPGRADE_SCRIPT  = CO2MPAS_AIO_UpgradePack-$(VERSION).sh
 C_NATIVE_PACKS  = co2mpas|Bottleneck|coverage|fastparquet|llvmlite|numba|numexpr|pyarrow|regex|scikit_learn|thrift|xgboost
 # 9(max): 303k(!), 5: 304, 2: 305037635, 2: 305k(!), 1(off): 305k!!
@@ -54,7 +54,7 @@ grep := grep
 chmod 	:= chmod
 
 .DELETE_ON_ERROR:
-.PHONY: all clean
+.PHONY: all clean dupewheels
 
 all: $(UPGRADE_SCRIPT)
 
@@ -65,7 +65,12 @@ freeze.list: wheels.list
 	$(sed) -E 's/(.+)-([[:digit:]].+?)-(cp|py).+/\1 == \2/' $< | \
 	$(grep) -vE '$(C_NATIVE_PACKS)' > $@
 
-$(wheels_tstamp): wheels.list $(src_wheels)
+dupewheels: wheels.list
+	sed -E 's/(.+)-[[:digit:]].+/\1/' ./wheels.list | sort | uniq -d
+	# Rerun 2nd time to fail on duplicates printed above
+	sed -E 's/(.+)-[[:digit:]].+/\1/' ./wheels.list | sort | sort -cu
+
+$(wheels_tstamp): wheels.list $(src_wheels) dupewheels
 	$(rm) -f Packfiles/wheelhouse/*.whl
 	$(cp) $(src_wheels) Packfiles/wheelhouse/.
 	touch $@
