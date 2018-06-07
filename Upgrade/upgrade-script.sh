@@ -53,7 +53,7 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [OLD_AIO_VERSION]="${OLD_AIO_VERSION:=}"
     ## Recomendation: https://pip.pypa.io/en/stable/user_guide/#installation-bundles
     #[PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--force-reinstall --ignore-installed --upgrade --no-index --no-deps}"
-    [PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--upgrade --no-index --no-deps}"
+    [PIP_INSTALL_OPTS]="${PIP_INSTALL_OPTS:=--no-index --no-deps}"
 )
 
 #exec 2> >(tee -ia "$AIODIR/install.log") >&2
