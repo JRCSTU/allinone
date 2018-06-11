@@ -28,7 +28,8 @@ flake8-3.5.0-py2.py3-none-any.whl
 Flask-1.0.2-py2.py3-none-any.whl
 formulas-0.0.10-py3-none-any.whl
 future-0.16.0-cp36-none-any.whl
-gitdb2-2.0.0-py2.py3-none-any.whl
+gitdb2-2.0.3-py2.py3-none-any.whl
+GitPython-2.1.10-py2.py3-none-any.whl
 graphviz-0.8.3-py2.py3-none-any.whl
 hyperlink-18.0.0-py2.py3-none-any.whl
 idna-2.6-py2.py3-none-any.whl
