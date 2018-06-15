@@ -68,7 +68,7 @@ freeze.list: wheels.list
 dupewheels: wheels.list
 	sed -E 's/(.+)-[[:digit:]].+/\1/' ./wheels.list | sort | uniq -d
 	# Rerun 2nd time to fail on duplicates printed above
-	sed -E 's/(.+)-[[:digit:]].+/\1/' ./wheels.list | sort | sort -cu
+	sed -E 's/-[[:digit:]].+//' ./wheels.list | sort | sort -cu
 
 $(wheels_tstamp): wheels.list $(src_wheels) dupewheels
 	$(rm) -f Packfiles/wheelhouse/*.whl
