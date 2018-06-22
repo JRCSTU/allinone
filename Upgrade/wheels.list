@@ -71,11 +71,11 @@ pykalman-0.9.5-cp36-none-any.whl
 pyparsing-2.2.0-py2.py3-none-any.whl
 pytest_cov-2.5.1-py2.py3-none-any.whl
 pytest_runner-4.2-py2.py3-none-any.whl
-python_gnupg-0.4.2-py2.py3-none-any.whl
+python_gnupg-0.4.3-py2.py3-none-any.whl
 regex-2018.06.06-cp36-none-win_amd64.whl
 requests_toolbelt-0.8.0-py2.py3-none-any.whl
 requests-2.18.4-py2.py3-none-any.whl
-ruamel.yaml-0.15.37-cp36-cp36m-win_amd64.whl
+ruamel.yaml-0.15.40-cp36-cp36m-win_amd64.whl
 schedula-0.1.19-py3-none-any.whl
 schema-0.6.7-py2.py3-none-any.whl
 scikit_learn-0.19.1-cp36-cp36m-win_amd64.whl
