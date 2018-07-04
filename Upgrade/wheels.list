@@ -47,7 +47,7 @@ lmfit-0.9.10-py3-none-any.whl
 logutils-0.3.5-cp36-none-any.whl
 lxml-4.2.1-cp36-cp36m-win_amd64.whl
 mccabe-0.6.1-py2.py3-none-any.whl
-mypy-0.600-py3-none-any.whl
+mypy-0.610-py3-none-any.whl
 networkx-2.1-py2.py3-none-any.whl
 numba-0.38.1-cp36-cp36m-win_amd64.whl
 numexpr-2.6.5-cp36-cp36m-win_amd64.whl
@@ -62,7 +62,7 @@ pip_tools-2.0.2-py2.py3-none-any.whl
 pipdeptree-0.12.1-py3-none-any.whl
 pkginfo-1.4.2-py2.py3-none-any.whl
 polyvers-0.1.0a1-py2.py3-none-any.whl
-polyversion-0.1.0a7-py2.py3-none-any.whl
+polyversion-0.1.1a3-py2.py3-none-any.whl
 pyarrow-0.4.1-cp36-cp36m-win_amd64.whl
 pycodestyle-2.3.1-py2.py3-none-any.whl
 pyflakes-1.6.0-py2.py3-none-any.whl
