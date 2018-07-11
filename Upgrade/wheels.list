@@ -61,8 +61,8 @@ parsedatetime-2.4-cp36-none-any.whl
 pip_tools-2.0.2-py2.py3-none-any.whl
 pipdeptree-0.12.1-py3-none-any.whl
 pkginfo-1.4.2-py2.py3-none-any.whl
-polyvers-0.1.0a1-py2.py3-none-any.whl
-polyversion-0.1.1a3-py2.py3-none-any.whl
+polyvers-0.1.1a0-py2.py3-none-any.whl
+polyversion-0.2.2a0-py2.py3-none-any.whl
 pyarrow-0.4.1-cp36-cp36m-win_amd64.whl
 pycodestyle-2.3.1-py2.py3-none-any.whl
 pyflakes-1.6.0-py2.py3-none-any.whl
