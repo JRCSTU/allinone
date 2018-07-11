@@ -345,7 +345,7 @@ exist after installing::
 - ::
 
       pacman -S man git make tar zip p7zip unzip  dos2unix rsync \
-                procps inetutils patch gnu-netcat colordiff
+                procps inetutils patch gnu-netcat colordiff nano
 
 - Ensure *ssh* config-folder exists in WinUser's home dir
   (usually ``/c/Users/<user>/.ssh``) because as `explained
