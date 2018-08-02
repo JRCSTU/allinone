@@ -18,6 +18,9 @@ set CO2MPAS_PATH=%~dp0Apps\GnuPG\pub;;%~dp0Apps\MSYS2\mingw64\bin;^
 %~dp0Apps\clink;%~dp0Apps\Console
 
 PATH %CO2MPAS_PATH%;%PATH%
+
+set ENCRYPTION_KEYS_PATH=~/DICE_KEYS/dice.co2mpas.keys'
+
 call "%AIODIR%Apps\WinPython\scripts\env.bat"
 
 
