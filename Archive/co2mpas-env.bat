@@ -49,6 +49,10 @@ set WINPYWORKDIR=%HOME%
 mkdir "%HOME%" "%GNUPGHOME%" > NUL 2>&1
 
 :env_exists
+TASKLIST /V /FI "IMAGENAME eq console.exe" | FINDSTR AIO && IF EXIST %AIODIR%upgrade.sh (
+    START /WAIT bash -i %AIODIR%upgrade.sh --debug --verbose
+)
+
 IF [%1] == [] GOTO end
   %*
 :end
