@@ -14,7 +14,7 @@
 # 	  PySocks, transitions, smmap2, gitdb2, gitpython, python-gnupg
 #
 
-VERSION         = 0.0.0.20180711a0
+VERSION         = 0.0.0.20180807b0
 UPGRADE_SCRIPT  = CO2MPAS_AIO_UpgradePack-$(VERSION).sh
 C_NATIVE_PACKS  = co2mpas|Bottleneck|coverage|fastparquet|llvmlite|numba|numexpr|pyarrow|regex|scikit_learn|thrift|xgboost
 # 9(max): 303k(!), 5: 304, 2: 305037635, 2: 305k(!), 1(off): 305k!!
