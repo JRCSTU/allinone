@@ -1,12 +1,32 @@
---- co2mpas-env.bat	2018-04-26 10:59:15.759751700 +0200
-+++ co2mpas-env-upgrade.bat	2018-05-08 13:21:24.089740400 +0200
-@@ -45,6 +45,9 @@
+diff --git a/Archive/co2mpas-env.bat b/Archive/co2mpas-env.bat
+index 9b4db45..e1b6e6c 100644
+--- a/Archive/co2mpas-env.bat
++++ b/Archive/co2mpas-env.bat
+@@ -12,8 +12,15 @@ If "%PROCESSOR_ARCHITECTURE%" == "x86" (
+ IF DEFINED CO2MPAS_PATH GOTO env_exists
+ 
+ set AIODIR=%~dp0
+-set CO2MPAS_PATH=%~dp0Apps\GnuPG\pub;%~dp0Apps\MSYS2\usr\local\bin;%~dp0Apps\MSYS2\usr\bin;%~dp0Apps\MSYS2\bin;%~dp0Apps\MSYS2\opt\bin;%~dp0Apps\graphviz\bin;%~dp0Apps\node.js;%~dp0Apps\clink;%~dp0Apps\Console
++set CO2MPAS_PATH=%~dp0Apps\GnuPG\pub;;%~dp0Apps\MSYS2\mingw64\bin;^
++%~dp0Apps\MSYS2\usr\local\bin;%~dp0Apps\MSYS2\usr\bin;%~dp0Apps\MSYS2\bin;^
++%~dp0Apps\MSYS2\opt\bin;%~dp0Apps\graphviz\bin;%~dp0Apps\node.js;^
++%~dp0Apps\clink;%~dp0Apps\Console
++
+ PATH %CO2MPAS_PATH%;%PATH%
++
++set ENCRYPTION_KEYS_PATH=~/DICE_KEYS/dice.co2mpas.keys'
++
+ call "%AIODIR%Apps\WinPython\scripts\env.bat"
+ 
+ 
+@@ -42,6 +49,10 @@ set WINPYWORKDIR=%HOME%
  mkdir "%HOME%" "%GNUPGHOME%" > NUL 2>&1
  
  :env_exists
 +TASKLIST /V /FI "IMAGENAME eq console.exe" | FINDSTR AIO && IF EXIST %AIODIR%upgrade.sh (
 +    START /WAIT bash -i %AIODIR%upgrade.sh --debug --verbose
 +)
++
  IF [%1] == [] GOTO end
    %*
  :end
