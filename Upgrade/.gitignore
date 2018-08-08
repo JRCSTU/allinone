@@ -5,3 +5,4 @@
 **/wheelhouse/*.whl
 freeze.list
 Packfiles/AIO/Apps/MSYS2/mingw64/
+Packfiles/AIO/Apps/wheelhouse/
