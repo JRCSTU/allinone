@@ -541,8 +541,11 @@ do_overlay_aio_files() {
 do_patch_co2mpas_env_bat() {
     logstep "${DRY_RUN}patching [AIO]/co2mpas-env.bat script..."
     ## `patch` fails with 1 when already patched, and 2 on more serious errors.
-    $patch "$AIODIR/co2mpas-env.bat" --input="$INFLATE_DIR/co2mpas-env.bat.patch" || [ $? -eq 1 ] && \
-            warn "ignoring patch-failure, assuming file '$AIODIR/co2mpas-env.bat' already upgraded."
+    $patch "$AIODIR/co2mpas-env.bat" --input="$INFLATE_DIR/co2mpas-env.bat.patch"
+    if [ $? -gt 1 ]; then
+        ## 0: ok, 1: some hunks failed, printing what, 2: serious errors
+        warn "ignoring patch-failure, assuming file '$AIODIR/co2mpas-env.bat' already upgraded."
+    fi
 }
 ## UNUSED, if used, remeber it needs `do_patch_co2mpas_env_bat()`.
 do_make_stage_2_script() {
