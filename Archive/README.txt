@@ -116,7 +116,7 @@ A pre-populated folder with WinPython + CO2MPAS + Consoles for *Windows*.
             REM The python-interpreter that comes 1st is what we care about.
             > where python
             D:\Apps\co2mpas_AIO-vX.Y.Z\Apps\WinPython\python-3.5.3\python.exe
-            D:\Apps\co2mpas_AIO-vX.Y.Z\Apps\Cygwin\bin\python
+            D:\Apps\co2mpas_AIO-vX.Y.Z\Apps\MSYS2\bin\python
 
             > co2mpas --version
             co2mpas-X.Y.Z at D:\Apps\co2mpas_AIO-vX.Y.Z\Apps\WinPython\python-3.5.2.amd64\lib\site-packages\co2mpas
@@ -163,7 +163,7 @@ Generic Tips
   **TotalCommander**, from http://www.ghisler.com/ (no admin-rights needed).
   From inside this file-manager, ``F3`` key-shortcut views files.
 
-- The **Cygwin** POSIX-environment and its accompanying **bash-shell** are
+- The **MSYS2** POSIX-environment and its accompanying **bash-shell** are
   a much better choice to give console-commands compare to `cmd.exe` prompt,
   supporting *auto-completion* for various commands (with ``[TAB]``key) and
   enhanced history search (with ``[UP]/[DOWN]`` cursor-keys).
@@ -193,10 +193,10 @@ File Contents
 ::
 
     CO2MPAS.vbs                ## Launch CO2MPAS GUI.
-    CONSOLE.vbs                ## Open a python+cygwin enabled `cmd.exe` console.
+    CONSOLE.vbs                ## Open a python+MSYS2 enabled `cmd.exe` console.
 
     INSTALL.vbs                ## Install ALLINONE on your Windows start-menu; needed to execute it only once.
-    co2mpas-env.bat            ## Sets env-vars for python+cygwin and launches arguments as new command
+    co2mpas-env.bat            ## Sets env-vars for python+MSYS2 and launches arguments as new command
                                ## !!!!! DO NOT MODIFY !!!!! used by Windows StartMenu shortcuts.
 
 
