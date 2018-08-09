@@ -538,13 +538,20 @@ do_overlay_aio_files() {
     logstep "${DRY_RUN}overlaying Apps files..."
     $rsync -r "$INFLATE_DIR/AIO/" "$AIODIR/"
 }
+do_patch_co2mpas_env_bat() {
+    logstep "${DRY_RUN}patching [AIO]/co2mpas-env.bat script..."
+    ## `patch` fails with 1 when already patched, and 2 on more serious errors.
+    $patch "$AIODIR/co2mpas-env.bat" --input="$INFLATE_DIR/co2mpas-env.bat.patch" || [ $? -eq 1 ] && \
+            warn "ignoring patch-failure, assuming file '$AIODIR/co2mpas-env.bat' already upgraded."
+}
+## UNUSED, if used, remeber it needs `do_patch_co2mpas_env_bat()`.
 do_make_stage_2_script() {
     logstep "${DRY_RUN}creating stage-2 upgrade file (to upgrade MSYS2/console on next launch)..."
     $sed "/^# Upgrade AIO STAGE-1/Q" "$prog" |  $tee "$AIODIR/upgrade.sh" >&3
     $cat "$INFLATE_DIR/upgrade2-footer.sh" | $tee -a "$AIODIR/upgrade.sh" >&3
-    ## `patch` fails with 1 when already patched, and 2 on more serious errors.
-    $patch "$AIODIR/co2mpas-env.bat" --input="$INFLATE_DIR/co2mpas-env.bat.patch" || [ $? -eq 1 ] && \
-            warn "ignoring patch-failure, assuming file '$AIODIR/co2mpas-env.bat' already upgraded."
+
+notice "You need to exit all AIO-console instances and relaunch it,
+to complete STAGE-2 of the upgrade."
 }
 
 ####################################
@@ -564,11 +571,10 @@ run_upgrade_steps \
     do_new_version_file \
     do_upgrade_winpy \
     do_overlay_aio_files \
-    do_make_stage_2_script \
+    do_patch_co2mpas_env_bat \
     do_delete_old_version_file
 
-notice "finished $DRY_RUN$SCRIPT_ACTION successfully." \
-    "\n  Exit all AIO-console instances and relaunch it, to complete stage-2 of the upgrade."
+notice "finished $DRY_RUN$SCRIPT_ACTION successfully."
 
 exit 0
 #######################################################################
