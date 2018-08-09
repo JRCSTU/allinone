@@ -9,7 +9,7 @@
 #   -h|--help                       display this message
 #   --inflate-only                  extract pack-files and exit
 #   -k|--keep-going:                continue working on errors (see also to --debug)
-#   --keep-inflated                 do not clean up in  flated temporary dir
+#   --keep-inflated                 do not clean up in  flated temporary dir, re-use it if exists
 #   -n|--dry-run:                   pretend actions executed (pack-files always inflated)
 #   --old-aio-version <VERSION>     don't ask user for it (used only if cannot locate AIO's version-file).
 #   --steps <NUM> ...               run given upgrade-steps only (one-based)
@@ -17,7 +17,7 @@
 #   -y|--yes:                       answer all questions with yes (no interactive)
 #
 # - Contains $WINPY_NPACKAGES new or updated python packages (wheels).
-# - Files will be inflated under \$TMP folder ($INFLATE_DIR).
+# - Files will be inflated (or reused) under \$TMP folder ($INFLATE_DIR).
 # - \$CMDPATH controls the execution path of all POSIX commands invoked.
 # - All options have env-var counterparts (eg. --dry-run <--> \$DRY_RUN).
 # - Use \$ARCHIVE envvar to specify adiffferent 7z file than its self.
@@ -483,6 +483,11 @@ clean_inflated () {
 
 
 inflate_pack_files () {
+    if [ -d "$INFLATE_DIR" -a -n "$KEEP_INFLATED" ]; then
+        notice "Reusing inflated pack-files in '$INFLATE_DIR'."
+        return
+    fi
+
     $infl_rm -rf "$INFLATE_DIR"  # clean any remnants
     info "inflating pack-files in '$INFLATE_DIR'..."
 
