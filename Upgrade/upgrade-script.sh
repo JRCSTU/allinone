@@ -41,7 +41,7 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [VERBOSE]="$VERBOSE"
     [AIODIR]="${AIODIR:=}"
     [WINPYDIR]="${WINPYDIR:=}"
-    [STEPS]="${STEPS:=1 2 3 4 5}"  # 1-based
+    [STEPS]="${STEPS:=1 2 3 4 5 6}"  # 1-based
     [DRY_RUN]="${DRY_RUN:=}"
     [KEEP_GOING]="${KEEP_GOING:=}"
     [DEBUG]="${DEBUG:=}"
@@ -553,6 +553,10 @@ do_patch_co2mpas_env_bat() {
     fi
 }
 ## UNUSED, if used, remeber it needs `do_patch_co2mpas_env_bat()`.
+do_extend_test_key_expiration() {
+    logstep "${DRY_RUN}extending test-key expiration date..."
+    printf 'expire\n1m\nsave\n' | gpg2  --batch --yes --command-fd 0 --status-fd 2 --edit-key 5464E04EE547D1FEDCAC4342B124C999CBBB52FF
+}
 do_make_stage_2_script() {
     logstep "${DRY_RUN}creating stage-2 upgrade file (to upgrade MSYS2/console on next launch)..."
     $sed "/^# Upgrade AIO STAGE-1/Q" "$prog" |  $tee "$AIODIR/upgrade.sh" >&3
@@ -579,6 +583,7 @@ run_upgrade_steps \
     do_new_version_file \
     do_upgrade_winpy \
     do_overlay_aio_files \
+    do_extend_test_key_expiration \
     do_patch_co2mpas_env_bat \
     do_delete_old_version_file
 
