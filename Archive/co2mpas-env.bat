@@ -1,4 +1,3 @@
-@echo off
 REM ## Sets environment variables and launches any arguments as new command. ##
 REM #  used by Windows StartMenu shortcuts.
 REM
@@ -62,5 +61,5 @@ TASKLIST /V /FI "IMAGENAME eq console.exe" | FINDSTR AIO && IF EXIST %AIODIR%upg
 IF [%1] == [] GOTO end
   %*
 :end
-REM ## Remove the `REM ` below to enable the `pause` cmd, to debug problems. ##
-REM pause
+
+IF defined DEBUG_AIO pause
