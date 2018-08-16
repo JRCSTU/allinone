@@ -18,7 +18,7 @@ set CO2MPAS_PATH=%~dp0Apps\GnuPG\pub;^
 %~dp0Apps\MSYS2\usr\bin;^
 %~dp0Apps\MSYS2\bin;^
 %~dp0Apps\MSYS2\opt\bin;^
-%~dp0Apps\graphviz\bin;&
+%~dp0Apps\graphviz\bin;^
 %~dp0Apps\node.js;^
 %~dp0Apps\clink;^
 %~dp0Apps\Console
