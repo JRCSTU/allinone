@@ -4,9 +4,9 @@
 #  btw, in the old AIO-1.7.3, `pip install co2mpas` prints this::
 #
 #     Automat-0.6.0 PySocks-1.6.8 Unidecode-1.0.22 bs4-0.0.1
-#     constantly-15.1.0 easygui-0.98.1 future-0.16.0 gitdb2-2.0.3 gitpython-2.1.10 
-#     hyperlink-18.0.0 incremental-17.5.0 pandalone-0.2.4 parsedatetime-2.4 pyarrow-0.4.1 
-#     pykalman-0.9.5 python-gnupg-0.4.2 schedula-0.1.19 schema-0.6.7 smmap2-2.0.3 
+#     constantly-15.1.0 easygui-0.98.1 future-0.16.0 gitdb2-2.0.3 gitpython-2.1.10
+#     hyperlink-18.0.0 incremental-17.5.0 pandalone-0.2.4 parsedatetime-2.4 pyarrow-0.4.1
+#     pykalman-0.9.5 python-gnupg-0.4.2 schedula-0.1.19 schema-0.6.7 smmap2-2.0.3
 #     transitions-0.6.8 validate-email-1.3 wltp-0.1.0a2 zope.interface-4.5.0
 #
 #  And we don't want to touch these (hot-fixed?) packs::
@@ -23,16 +23,20 @@ ZIP_LEVEL     	= 6
 ZIP_ANALYSIS	= 1
 
 input_script    := upgrade-script.sh
-tmp_archive     := _packfiles.7z
-wheels_tstamp   := Packfiles/wheelhouse/.keepme
+
+## files to copy from `../Archive/ --> Packfiles/AIO/`
+#
+demo_files      := $(wildcard ../Archive/Apps/.co2mpas-demos/*.xlsx)
+arch_files      := README.txt co2mpas-env.bat CONSOLE.vbs CO2MPAS.vbs \
+                   $(demo_files:../Archive/%=%)
+
 wheels          := $(file < wheels.list)
 ## Any missed file in `wheels.list` will crash after inflating (on runtime).
 nwheels         := $(words $(strip $(wheels)))
 src_wheels      := $(addprefix wheelhouse/,$(wheels))
-dst_wheels      := $(addprefix Packfiles/wheelhouse/,$(wheels))
 ## Archive's requirements could be a "recursive" variable,
 #  in case another rule above had created more files.
-pack_files := $(wildcard PackFiles/*)
+tmp_archive     := _packfiles.7z
 
 
 ## If script not ending with  a blank last line,
@@ -54,30 +58,40 @@ grep := grep
 chmod 	:= chmod
 
 .DELETE_ON_ERROR:
-.PHONY: all clean dupewheels
+.PHONY: all clean
 
 all: $(UPGRADE_SCRIPT)
 
 
-## Independent utiliy rule to convert files-->freeze-list.
+
+## Independent utility rule to convert files-->freeze-list.
 #
-freeze.list: wheels.list 
+freeze.list: wheels.list
 	$(sed) -E 's/(.+)-([[:digit:]].+?)-(cp|py).+/\1 == \2/' $< | \
 	$(grep) -vE '$(C_NATIVE_PACKS)' > $@
 
-dupewheels: wheels.list
+
+Packfiles/AIO/.keepme: $(addprefix ../Archive/,$(arch_files))
+	$(cp) -r $? Packfiles/AIO/
+	touch $@
+
+
+Packfiles/wheelhouse/.keepme: wheels.list $(src_wheels)
+	## Comparing: wheels.list <--> wheelhouse
 	sed -E 's/(.+)-[[:digit:]].+/\1/' ./wheels.list | sort | uniq -d
 	# Rerun 2nd time to fail on duplicates printed above
 	sed -E 's/-[[:digit:]].+//' ./wheels.list | sort | sort -cu
-
-$(wheels_tstamp): wheels.list $(src_wheels) dupewheels
-	$(rm) -f Packfiles/wheelhouse/*.whl
+	
+	## Copying wheels
+	$(rm) -f Packfiles/wheelhouse/*
 	$(cp) $(src_wheels) Packfiles/wheelhouse/.
 	touch $@
 
-$(tmp_archive): $(wheels_tstamp)  $(pack_files)
+
+$(tmp_archive): $(shell find Packfiles/) Packfiles/AIO/.keepme Packfiles/wheelhouse/.keepme
 	$(rm) -f $@
-	$(zip)  -mx=$(ZIP_LEVEL) -myx=$(ZIP_ANALYSIS) -ms=off a $@ ./Packfiles/*  -xr!.keepme 
+	$(zip)  -mx=$(ZIP_LEVEL) -myx=$(ZIP_ANALYSIS) -ms=off a $@ ./Packfiles/*  -xr!.keepme
+
 
 $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 	$(sed)  -e '/^declare -i WINPY_NPACKAGES=/c declare -i WINPY_NPACKAGES=$(nwheels)' \

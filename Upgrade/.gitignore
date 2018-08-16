@@ -6,5 +6,8 @@
 /*UpgradePack*.sh
 **/wheelhouse/*.whl
 freeze.list
+Packfiles/AIO/*
+Packfiles/.keepme
 Packfiles/AIO/Apps/MSYS2/mingw64/
 Packfiles/AIO/Apps/wheelhouse/
+Packfiles/AIO/Apps/.co2mpas-demos/
