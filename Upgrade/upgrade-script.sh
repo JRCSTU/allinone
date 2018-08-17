@@ -41,7 +41,7 @@ declare -A CONF=(  # Wrapped in an array not to type var-names twice.
     [VERBOSE]="$VERBOSE"
     [AIODIR]="${AIODIR:=}"
     [WINPYDIR]="${WINPYDIR:=}"
-    [STEPS]="${STEPS:=1 2 3 4 5}"  # 1-based
+    [STEPS]="${STEPS:=1 2 3 4 5 6}"  # 1-based
     [DRY_RUN]="${DRY_RUN:=}"
     [KEEP_GOING]="${KEEP_GOING:=}"
     [DEBUG]="${DEBUG:=}"
@@ -547,6 +547,9 @@ do_extend_test_key_expiration() {
     logstep "${DRY_RUN}extending test-key expiration date..."
     printf 'expire\n1m\nsave\n' | gpg2  --batch --yes --command-fd 0 --status-fd 2 --edit-key 5464E04EE547D1FEDCAC4342B124C999CBBB52FF
 }
+do_remove_co2mpas_bash_completion () {
+ $sed -i.orig '/complete -fdev .* co2mpas$/d' ~/.bashrc
+}
 ## UNUSED, if used, remeber it needs 1.9+ `env_bat()`.
 do_make_stage_2_script() {
     logstep "${DRY_RUN}creating stage-2 upgrade file (to upgrade MSYS2/console on next launch)..."
@@ -575,6 +578,7 @@ run_upgrade_steps \
     do_upgrade_winpy \
     do_overlay_aio_files \
     do_extend_test_key_expiration \
+    do_remove_co2mpas_bash_completion \
     do_delete_old_version_file
 
 notice "finished $DRY_RUN$SCRIPT_ACTION successfully."
