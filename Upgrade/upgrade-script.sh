@@ -543,15 +543,11 @@ do_overlay_aio_files() {
     logstep "${DRY_RUN}overlaying Apps files..."
     $rsync -r "$INFLATE_DIR/AIO/" "$AIODIR/"
 }
-do_patch_co2mpas_env_bat() {
-    logstep "${DRY_RUN}patching [AIO]/co2mpas-env.bat script..."
-    ## `patch` fails with 1 when already patched, and 2 on more serious errors.
-    $patch "$AIODIR/co2mpas-env.bat" --input="$INFLATE_DIR/co2mpas-env.bat.patch"
-    if [ $? -gt 1 ]; then
-        ## 0: ok, 1: some hunks failed, printing what, 2: serious errors
-        warn "ignoring patch-failure, assuming file '$AIODIR/co2mpas-env.bat' already upgraded."
-    fi
+do_extend_test_key_expiration() {
+    logstep "${DRY_RUN}extending test-key expiration date..."
+    printf 'expire\n1m\nsave\n' | gpg2  --batch --yes --command-fd 0 --status-fd 2 --edit-key 5464E04EE547D1FEDCAC4342B124C999CBBB52FF
 }
+## UNUSED, if used, remeber it needs 1.9+ `env_bat()`.
 do_make_stage_2_script() {
     logstep "${DRY_RUN}creating stage-2 upgrade file (to upgrade MSYS2/console on next launch)..."
     $sed "/^# Upgrade AIO STAGE-1/Q" "$prog" |  $tee "$AIODIR/upgrade.sh" >&3
