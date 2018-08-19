@@ -79,6 +79,7 @@ CONF_CMDS=(
     "${cygpath:=$CMDPATH/cygpath}"
     "${cmd:=$COMSPEC}"
     "${pip:=$WINPYDIR/Scripts/pip}"
+    "${gpg2:=gpg2}"
 
     "${python:=$WINPYDIR/python}"
 
@@ -210,6 +211,7 @@ parse_cmdline_args () {
         tee="echo $DRY_RUN$tee"
         sed="echo $DRY_RUN$sed"
         pip="echo $DRY_RUN$pip"
+        gpg2="echo $DRY_RUN$gpg2"
         python="echo $DRY_RUN$python"
         cmd="echo $DRY_RUN$cmd"
     fi
@@ -545,7 +547,7 @@ do_overlay_aio_files() {
 }
 do_extend_test_key_expiration() {
     logstep "${DRY_RUN}extending test-key expiration date..."
-    printf 'expire\n1m\nsave\n' | gpg2  --batch --yes --command-fd 0 --status-fd 2 --edit-key 5464E04EE547D1FEDCAC4342B124C999CBBB52FF
+    printf 'expire\n1m\nsave\n' | $gpg2  --batch --yes --command-fd 0 --status-fd 2 --edit-key 5464E04EE547D1FEDCAC4342B124C999CBBB52FF
 }
 do_remove_co2mpas_bash_completion () {
  logstep "${DRY_RUN}removing co2mpas-command autocompletion, was broken..."
