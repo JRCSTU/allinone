@@ -548,7 +548,9 @@ do_extend_test_key_expiration() {
     printf 'expire\n1m\nsave\n' | gpg2  --batch --yes --command-fd 0 --status-fd 2 --edit-key 5464E04EE547D1FEDCAC4342B124C999CBBB52FF
 }
 do_remove_co2mpas_bash_completion () {
+ logstep "${DRY_RUN}removing co2mpas-command autocompletion, was broken..."
  $sed -i.orig '/complete -fdev .* co2mpas$/d' ~/.bashrc
+ $rm -f $AIODIR/Apps/clink/profile/co2mpas_autocompletion.lua
 }
 ## UNUSED, if used, remeber it needs 1.9+ `env_bat()`.
 do_make_stage_2_script() {
