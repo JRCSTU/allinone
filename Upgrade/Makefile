@@ -14,29 +14,31 @@
 # 	  PySocks, transitions, smmap2, gitdb2, gitpython, python-gnupg
 #
 
-VERSION         = 0.0.0.20180820b0
-UPGRADE_SCRIPT  = CO2MPAS_AIO_UpgradePack-$(VERSION).sh
+VERSION			= 0.0.0.20180820b0
+UPGRADE_SCRIPT	= CO2MPAS_AIO_UpgradePack-$(VERSION).sh
+UPGRADE_EXE		= CO2MPAS_AIO_UpgradePack-$(VERSION).exe
 C_NATIVE_PACKS  = co2mpas|Bottleneck|coverage|fastparquet|llvmlite|numba|numexpr|pyarrow|regex|scikit_learn|thrift|xgboost
 # 9(max): 303k(!), 5: 304, 2: 305037635, 2: 305k(!), 1(off): 305k!!
 # 9(max), ZIP_ANALYSIS: 9(max): 296k   not worth the time
-ZIP_LEVEL     	= 6
+ZIP_LEVE		= 6
 ZIP_ANALYSIS	= 1
 
-input_script    := upgrade-script.sh
+input_script	:= upgrade-script.sh
+upgrade_script	:= upgrade.sh
 
 ## files to copy from `../Archive/ --> Packfiles/AIO/`
 #
-demo_files      := $(wildcard ../Archive/Apps/.co2mpas-demos/*.xlsx)
-arch_files      := README.txt co2mpas-env.bat CONSOLE.vbs CO2MPAS.vbs \
-                   $(demo_files:../Archive/%=%)
+demo_files		:= $(wildcard ../Archive/Apps/.co2mpas-demos/*.xlsx)
+arch_files	:= README.txt co2mpas-env.bat CONSOLE.vbs CO2MPAS.vbs \
+					$(demo_files:../Archive/%=%)
 
-wheels          := $(file < wheels.list)
+wheels			:= $(file < wheels.list)
 ## Any missed file in `wheels.list` will crash after inflating (on runtime).
-nwheels         := $(words $(strip $(wheels)))
-src_wheels      := $(addprefix wheelhouse/,$(wheels))
+nwheels			:= $(words $(strip $(wheels)))
+src_wheels		:= $(addprefix wheelhouse/,$(wheels))
 ## Archive's requirements could be a "recursive" variable,
 #  in case another rule above had created more files.
-tmp_archive     := _packfiles.7z
+tmp_archive		:= _packfiles.7z
 
 
 ## If script not ending with  a blank last line,
@@ -98,6 +100,14 @@ $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 			-e '/^NEW_VERSION=/c NEW_VERSION="$(VERSION)"' \
 			$(input_script)  |	$(cat)   -   $(tmp_archive)  >  $@
 	$(chmod)  a+x  $@
+
+
+$(UPGRADE_EXE): $(input_script) $(tmp_archive)
+	$(sed)  -e '/^declare -i WINPY_NPACKAGES=/c declare -i WINPY_NPACKAGES=$(nwheels)' \
+			-e '/^NEW_VERSION=/c NEW_VERSION="$(VERSION)"' \
+			$(input_script)  |	$(cat)   -   $(tmp_archive)  >  $@
+	$(chmod)  a+x  $@
+
 
 clean:
 	$(rm) -f $(tmp_archive) $(UPGRADE_SCRIPT)
