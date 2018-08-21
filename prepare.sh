@@ -1,4 +1,6 @@
 #!/bin/bash
+shopt -extglob
+
 my_dir=`dirname "$0"`
 cd $my_dir
 
@@ -38,6 +40,7 @@ $rm -rf "$aio/Apps/GnuPG/home/*"
 #$noop $aio/Apps/MSYS2/usr/bin/pacman -Scc --noconfirm
 $rm -rf $aio/Apps/MSYS2/var/cache/*
 
+find ${aio} -mindepth 1 -name '*.ver' | xargs $rm -rf
 find ${aio}/{*.xlsx,*.zip,*.ipynb} | xargs $rm -rf
 find ${aio}/CO2MPAS  -mindepth 1 | grep -vFf keepfiles.txt | xargs $rm -rf
 find ${aio}/Apps/WinPython/settings -mindepth 1  | grep -v winpython.ini | grep -v .jupyter | grep -v .ipython | xargs $rm -rf
