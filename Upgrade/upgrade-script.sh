@@ -530,17 +530,18 @@ do_new_version_file() {
 do_upgrade_winpy() {
     ## Recomendation: https://docs.python.org/3/distributing/index.html#installing-the-tools
     logstep "${DRY_RUN}upgrading WinPython packages..."
-    local basepacks_regex='(pip|setuptools|wheel|twine)-.*\.whl'
-    cd "$INFLATE_DIR/wheelhouse"
+    local cdir="$PWD"
 
-    $pip uninstall co2mpas -y || true
-    $find . -name '*.whl' | grep -E $basepacks_regex | \
-            xargs $python -m pip install $PIP_INSTALL_OPTS
+    cd "$INFLATE_DIR/basewheels"
+    $find . -name '*.whl' | xargs $python -m pip install $PIP_INSTALL_OPTS
     yes | $cmd /c "$(cygpath -w "$AIODIR/Apps/WinPython/scripts/make_winpython_movable.bat")"
+
+    cd "$INFLATE_DIR/wheelhouse"
+    $pip uninstall co2mpas -y  || true
     ## For opts: https://pip.pypa.io/en/stable/user_guide/#installation-bundles
-    $find . -name '*.whl' | grep -vE "$basepacks_regex" | \
-            xargs $pip install $PIP_INSTALL_OPTS
-    cd -
+    $find . -name '*.whl' | xargs $pip install $PIP_INSTALL_OPTS
+
+    cd "$cdir"
 }
 do_overlay_aio_files() {
     logstep "${DRY_RUN}overlaying Apps files..."
