@@ -478,7 +478,7 @@ do_upgrade_winpy() {
     local basepacks_regex='(pip|setuptools|wheel|twine)-.*\.whl'
     cd "$INFLATE_DIR/wheelhouse"
 
-    $pip uninstall co2mpas -y
+    $pip uninstall co2mpas -y || true
     $find . -name '*.whl' | grep -E $basepacks_regex | \
             xargs $python -m pip install $PIP_INSTALL_OPTS
     yes | $cmd /c "$(cygpath -w "$AIODIR/Apps/WinPython/scripts/make_winpython_movable.bat")"
