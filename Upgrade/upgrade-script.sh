@@ -549,7 +549,7 @@ do_overlay_aio_files() {
 }
 do_extend_test_key_expiration() {
     logstep "${DRY_RUN}extending test-key expiration date..."
-    printf 'expire\n1m\nsave\n' | $gpg2  --batch --yes --command-fd 0 --status-fd 2 --edit-key 5464E04EE547D1FEDCAC4342B124C999CBBB52FF
+    printf 'expire\n1y\nsave\n' | $gpg2  --batch --yes --command-fd 0 --status-fd 2 --edit-key 5464E04EE547D1FEDCAC4342B124C999CBBB52FF
 }
 do_remove_co2mpas_bash_completion () {
  logstep "${DRY_RUN}removing co2mpas-command autocompletion, was broken..."
