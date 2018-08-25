@@ -28,9 +28,13 @@ upgrade_script	:= upgrade.sh
 
 ## files to copy from `../Archive/ --> Packfiles/AIO/`
 #
-demo_files		:= $(wildcard ../Archive/Apps/.co2mpas-demos/*.xlsx)
-arch_files	:= README.txt co2mpas-env.bat CONSOLE.vbs CO2MPAS.vbs \
-					$(demo_files:../Archive/%=%)
+demofiles		:= $(wildcard ../Archive/Apps/.co2mpas-demos/*.xlsx)
+demofiles_dir	:= Packfiles/AIO/Apps/.co2mpas-demos/
+demofiles_dest	:= $(addprefix $(demofiles_dir), $(notdir $(demofiles)))
+launchers		:= $(addprefix ../Archive/, \
+					README.txt co2mpas-env.bat CONSOLE.vbs CO2MPAS.vbs)
+launchers_dir	:= Packfiles/AIO/
+launchers_dest	:= $(addprefix $(launchers_dir), $(notdir $(launchers)))
 
 wheels			:= $(file < wheels.list)
 ## Any missed file in `wheels.list` will crash after inflating (on runtime).
@@ -59,8 +63,9 @@ sed := sed
 grep := grep
 chmod 	:= chmod
 
+.PHONY: all clean rm_demos
 .DELETE_ON_ERROR:
-.PHONY: all clean
+.SUFFIXES:
 
 all: $(UPGRADE_SCRIPT)
 
@@ -71,11 +76,6 @@ all: $(UPGRADE_SCRIPT)
 freeze.list: wheels.list
 	$(sed) -E 's/(.+)-([[:digit:]].+?)-(cp|py).+/\1 == \2/' $< | \
 	$(grep) -vE '$(C_NATIVE_PACKS)' > $@
-
-
-Packfiles/AIO/.keepme: $(addprefix ../Archive/,$(arch_files))
-	$(cp) -r $? Packfiles/AIO/
-	touch $@
 
 
 Packfiles/wheelhouse/.keepme: wheels.list $(src_wheels)
@@ -90,7 +90,18 @@ Packfiles/wheelhouse/.keepme: wheels.list $(src_wheels)
 	touch $@
 
 
-$(tmp_archive): $(shell find Packfiles/) Packfiles/AIO/.keepme Packfiles/wheelhouse/.keepme
+$(demofiles_dir)%.xlsx: $(demofiles)
+	$(rm) -rf $(demofiles_dir)
+	mkdir $(demofiles_dir)
+	$(cp) $^	 $(demofiles_dir)
+
+$(launchers_dest): $(launchers)
+	$(cp) -r $(launchers) $(launchers_dir)
+	touch $@
+
+
+$(tmp_archive): $(shell find Packfiles/) Packfiles/wheelhouse/.keepme \
+				$(demofiles_dest) $(launchers_dest)
 	$(rm) -f $@
 	$(zip)  -mx=$(ZIP_LEVEL) -myx=$(ZIP_ANALYSIS) -ms=off a $@ ./Packfiles/*  -xr!.keepme
 
