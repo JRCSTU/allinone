@@ -40,6 +40,8 @@ wheels			:= $(file < wheels.list)
 ## Any missed file in `wheels.list` will crash after inflating (on runtime).
 nwheels			:= $(words $(strip $(wheels)))
 src_wheels		:= $(addprefix wheelhouse/,$(wheels))
+wheels_dir		:= Packfiles/wheelhouse/
+dest_wheels		:= $(addprefix $(wheels_dir), $(wheels))
 ## Archive's requirements could be a "recursive" variable,
 #  in case another rule above had created more files.
 tmp_archive		:= _packfiles.7z
@@ -78,7 +80,7 @@ freeze.list: wheels.list
 	$(grep) -vE '$(C_NATIVE_PACKS)' > $@
 
 
-Packfiles/wheelhouse/.keepme: wheels.list $(src_wheels)
+$(wheels_dir)%.whl: wheels.list $(src_wheels)
 	## Comparing: wheels.list <--> wheelhouse
 	sed -E 's/(.+)-[[:digit:]].+/\1/' ./wheels.list | sort | uniq -d
 	# Rerun 2nd time to fail on duplicates printed above
@@ -87,7 +89,6 @@ Packfiles/wheelhouse/.keepme: wheels.list $(src_wheels)
 	## Copying wheels
 	$(rm) -f Packfiles/wheelhouse/*
 	$(cp) $(src_wheels) Packfiles/wheelhouse/.
-	touch $@
 
 
 $(demofiles_dir)%.xlsx: $(demofiles)
@@ -95,13 +96,13 @@ $(demofiles_dir)%.xlsx: $(demofiles)
 	mkdir $(demofiles_dir)
 	$(cp) $^	 $(demofiles_dir)
 
-$(launchers_dest): $(launchers)
+$(launchers_dir).keepme: $(launchers)
 	$(cp) -r $(launchers) $(launchers_dir)
 	touch $@
 
 
-$(tmp_archive): $(shell find Packfiles/) Packfiles/wheelhouse/.keepme \
-				$(demofiles_dest) $(launchers_dest)
+$(tmp_archive): $(shell find Packfiles/) $(dest_wheels) \
+				$(demofiles_dest) $(launchers_dir).keepme
 	$(rm) -f $@
 	$(zip)  -mx=$(ZIP_LEVEL) -myx=$(ZIP_ANALYSIS) -ms=off a $@ ./Packfiles/*  -xr!.keepme
 
