@@ -81,7 +81,7 @@ freeze.list: wheels.list
 	$(grep) -vE '$(C_NATIVE_PACKS)' > $@
 
 
-$(wheels_dir)%.whl: wheels.list $(src_wheels)
+$(wheels_dir).keepme: wheels.list $(src_wheels)
 	## Comparing: wheels.list <--> wheelhouse
 	sed -E 's/(.+)-[[:digit:]].+/\1/' ./wheels.list | sort | uniq -d
 	# Rerun 2nd time to fail on duplicates printed above
@@ -90,7 +90,7 @@ $(wheels_dir)%.whl: wheels.list $(src_wheels)
 	## Copying wheels
 	$(rm) -f Packfiles/wheelhouse/*
 	$(cp) $(src_wheels) Packfiles/wheelhouse/.
-
+	touch $@
 
 $(demofiles_dir)%.xlsx: $(demofiles)
 	$(rm) -rf $(demofiles_dir)
@@ -102,7 +102,7 @@ $(launchers_dir).keepme: $(launchers)
 	touch $@
 
 
-$(tmp_archive): $(shell find Packfiles/) $(dest_wheels) \
+$(tmp_archive): $(shell find Packfiles/) $(wheels_dir).keepme \
 				$(demofiles_dest) $(launchers_dir).keepme
 	$(rm) -f $@
 	$(zip)  -mx=$(ZIP_LEVEL) -myx=$(ZIP_ANALYSIS) -ms=off a $@ ./Packfiles/*  -xr!.keepme
