@@ -349,9 +349,9 @@ check_python_version () {
 
 
 add_versions () {
-    NEW_VERSION="$( PYTHONPATH="$INFLATE_DIR/wheelhouse/packaging-17.1-py2.py3-none-any.whl" \
-                $infl_python "$INFLATE_DIR/vermath.py" "${OLD_AIO_VERSION}" "$NEW_VERSION" )"
-
+#     NEW_VERSION="$( PYTHONPATH="$INFLATE_DIR/wheelhouse/packaging-17.1-py2.py3-none-any.whl" \
+#                 $infl_python "$INFLATE_DIR/vermath.py" "${OLD_AIO_VERSION}" "$NEW_VERSION" )"
+:
 }
 
 check_existing_AIO () {
