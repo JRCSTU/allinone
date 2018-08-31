@@ -125,4 +125,4 @@ $(UPGRADE_EXE): 7z.sfx  tt.7z  7z.config
 	chmod a+x $@
 
 clean:
-	$(rm) -f $(tmp_archive) $(UPGRADE_SCRIPT)
+	$(rm) -f $(tmp_archive) $(UPGRADE_SCRIPT) $(wheels_dir)*
