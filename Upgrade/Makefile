@@ -115,7 +115,12 @@ $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 	$(chmod)  a+x  $@
 
 
-tt.7z: $(wildcard UPack/*)
+UPack/upgrade.sh: 
+	$(sed)  -e '/^declare -i WINPY_NPACKAGES=/c declare -i WINPY_NPACKAGES=$(nwheels)' \
+			-e '/^NEW_VERSION=/c NEW_VERSION="$(VERSION)"' \
+			upgrade.sh >  $@
+
+tt.7z: UPack/upgrade.sh  $(wildcard UPack/*)
 	$(zip)  -mx=$(ZIP_LEVEL) -myx=$(ZIP_ANALYSIS) -ms=off a $@ ./UPack/*
 
 # `7z.sfx` from: 
