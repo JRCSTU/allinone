@@ -14,7 +14,7 @@
 # 	  PySocks, transitions, smmap2, gitdb2, gitpython, python-gnupg
 #
 
-VERSION			= 0.0.0.20180827rc2
+VERSION			= 2.0.0
 UPGRADE_SCRIPT	= CO2MPAS_AIO_UpgradePack-$(VERSION).sh
 #UPGRADE_EXE		= CO2MPAS_AIO_UpgradePack-$(VERSION).exe
 UPGRADE_EXE		= CO2AIOUP.exe
