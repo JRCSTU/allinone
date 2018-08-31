@@ -118,7 +118,8 @@ $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 tt.7z: $(wildcard UPack/*)
 	$(zip)  -mx=$(ZIP_LEVEL) -myx=$(ZIP_ANALYSIS) -ms=off a $@ ./UPack/*
 
-# `7z.sfx` from: https://github.com/github/ghfw-build-extra/tree/master/7-Zip
+# `7z.sfx` from: 
+#  https://github.com/chrislake/7zsfxmm/wiki/Download: 7zsd_extra_160_2712.7z!7zsd_All_x64.sfx
 $(UPGRADE_EXE): 7z.sfx  tt.7z  7z.config 
 	cat 7z.sfx 7z.config tt.7z > $@
 	chmod a+x $@
