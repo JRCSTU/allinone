@@ -16,7 +16,8 @@
 
 VERSION			= 0.0.0.20180827rc2
 UPGRADE_SCRIPT	= CO2MPAS_AIO_UpgradePack-$(VERSION).sh
-UPGRADE_EXE		= CO2MPAS_AIO_UpgradePack-$(VERSION).exe
+#UPGRADE_EXE		= CO2MPAS_AIO_UpgradePack-$(VERSION).exe
+UPGRADE_EXE		= CO2AIOUP.exe
 C_NATIVE_PACKS  = co2mpas|Bottleneck|coverage|fastparquet|llvmlite|numba|numexpr|pyarrow|regex|scikit_learn|thrift|xgboost
 # 9(max): 303k(!), 5: 304, 2: 305037635, 2: 305k(!), 1(off): 305k!!
 # 9(max), ZIP_ANALYSIS: 9(max): 296k   not worth the time
@@ -114,12 +115,12 @@ $(UPGRADE_SCRIPT): $(input_script) $(tmp_archive)
 	$(chmod)  a+x  $@
 
 
-$(UPGRADE_EXE): $(input_script) $(tmp_archive)
-	$(sed)  -e '/^declare -i WINPY_NPACKAGES=/c declare -i WINPY_NPACKAGES=$(nwheels)' \
-			-e '/^NEW_VERSION=/c NEW_VERSION="$(VERSION)"' \
-			$(input_script)  |	$(cat)   -   $(tmp_archive)  >  $@
-	$(chmod)  a+x  $@
-
+tt.7z: $(wildcard UPack/*)
+	$(zip)  -mx=$(ZIP_LEVEL) -myx=$(ZIP_ANALYSIS) -ms=off a $@ ./UPack/*
+	
+$(UPGRADE_EXE): 7z.sfx  tt.7z  7z.config 
+	cat 7z.sfx 7z.config tt.7z > $@
+	chmod a+x $@
 
 clean:
 	$(rm) -f $(tmp_archive) $(UPGRADE_SCRIPT)

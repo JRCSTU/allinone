@@ -83,8 +83,6 @@ CONF_CMDS=(
 
     ## Differentiate, not to --dry-run pack-files inflation.
     #
-    "${infl_rm:=$rm}"
-    "${infl_awk:=$CMDPATH/awk}"
     "${infl_python:=$python}"
 )
 
@@ -213,7 +211,6 @@ parse_cmdline_args () {
         cp="$cp -v"
         rsync="$rsync -v"
         patch="$patch --verbose"
-        infl_rm="$rm -v"
         exec 3>&2
 
        if [ $VERBOSE -gt 1 ]; then
