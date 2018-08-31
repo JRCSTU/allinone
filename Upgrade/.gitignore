@@ -3,6 +3,7 @@
 *.7z
 *.7z.asc
 *.sh.asc
+/*.exe
 /*UpgradePack*.sh
 **/wheelhouse/*.whl
 freeze.list
