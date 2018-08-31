@@ -15,8 +15,8 @@
 #
 
 VERSION			= 2.0.0
-UPGRADE_SCRIPT	= CO2MPAS_AIO_UpgradePack-$(VERSION).sh
-#UPGRADE_EXE		= CO2MPAS_AIO_UpgradePack-$(VERSION).exe
+UPGRADE_SCRIPT	= co2mpas_AIO_UpgradePack-$(VERSION).sh
+#UPGRADE_EXE		= co2mpas_AIO_UpgradePack-$(VERSION).exe
 UPGRADE_EXE		= CO2AIOUP.exe
 C_NATIVE_PACKS  = co2mpas|Bottleneck|coverage|fastparquet|llvmlite|numba|numexpr|pyarrow|regex|scikit_learn|thrift|xgboost
 # 9(max): 303k(!), 5: 304, 2: 305037635, 2: 305k(!), 1(off): 305k!!
