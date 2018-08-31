@@ -4,7 +4,7 @@ shopt -extglob
 my_dir=`dirname "$0"`
 cd $my_dir
 
-aio=./co2mpas_AIO
+aio=./co2mpas_AIO-2.0.0
 ##aio_ver="$(cat VERSION.txt)"  !!
 read -d $'\x04' aio_ver < VERSION.txt
 rm="rm -v"
