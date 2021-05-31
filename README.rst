@@ -4,6 +4,12 @@ CO2MPAS ALLINONE archive
 
 Ingredients for a pre-populated archive with WinPython+Consoles+Graphviz to run *CO2MPAS* on *Windows*.
 
+>> Repo ARCHIVED <<
+===================
+This repo has served it purpose as the base for co2mpas development,
+which has stopped being served as a standalone project with that bundle.
+
+
 Building & Packaging
 ====================
 The creation of a new AIO is based on 2 identical folder hierarchies:
